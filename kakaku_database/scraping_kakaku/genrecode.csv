@@ -1,0 +1,10 @@
+name,code
+cpu,"0510"
+cpu_cooler,"0512"
+motherboard,"0540"
+memory,"0520"
+gpu,"0550"
+ssd,"0537"
+hdd,"0530"
+case,"0580"
+power_supply,"0590"
