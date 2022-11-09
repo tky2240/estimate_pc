@@ -24,6 +24,9 @@ function App() {
         [prefersDarkMode],
     );
     const [totalPrice, setTotalPrice] = useState(0);
+    const changeTotalPrice = (price: number) => {
+        setTotalPrice(price);
+    }
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -37,7 +40,7 @@ function App() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <GenreList />
+            <GenreList ChangeTotalPrice={changeTotalPrice} />
         </ThemeProvider>
     );
 }

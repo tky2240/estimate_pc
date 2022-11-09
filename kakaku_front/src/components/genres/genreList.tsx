@@ -19,20 +19,31 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import CpuPriceDisplay from './cpu/cpuPriceDisplay';
+import { PropaneSharp } from '@mui/icons-material';
 
-const GenreList = () => {
-    const [expanded, setExpanded] = useState<PartGenre | null>(null)
-    const expandedChange =
-        (genre: PartGenre) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-            setExpanded(isExpanded ? genre : null);
-        };
-    const [open, setOpen] = useState(true);
+type Props = {
+    ChangeTotalPrice: (price: number) => void;
+}
 
-    const handleClick = () => {
-        setOpen(!open);
+const GenreList = (props: Props) => {
+    const [genrePrices, setGenrePrices] = useState<GenrePrice[]>([
+        { Genre: "Cpu", Price: 0 },
+        { Genre: "CpuCooler", Price: 0 },
+        { Genre: "Motherboard", Price: 0 },
+        { Genre: "Memory", Price: 0 },
+        { Genre: "Gpu", Price: 0 },
+        { Genre: "Ssd", Price: 0 },
+        { Genre: "Hdd", Price: 0 },
+        { Genre: "Case", Price: 0 },
+        { Genre: "PowerSupply", Price: 0 },
+    ]);
+    const changeGenrePrice = (genre: PartGenre, price: number) => {
+        setGenrePrices(genrePrices.map((genrePrice) => genrePrice.Genre == genre ? genrePrice : { Genre: genre, Price: price }));
+        props.ChangeTotalPrice(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0));
+        console.log(props.ChangeTotalPrice(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0)));
     };
     return (
-        <Box sx={{ margin: "auto", width: "80%", maxWidth: "1000px", padding: "20px", bgcolor: "background.paper" }}>
+        < Box sx={{ margin: "auto", width: "80%", maxWidth: "1000px", padding: "20px", bgcolor: "background.paper" }}>
             <Paper>
                 <List
                     sx={{ margin: "auto", alignContent: "center", width: '100%', maxWidth: "1000px" }}
@@ -42,7 +53,7 @@ const GenreList = () => {
                         </ListSubheader>
                     }
                 >
-                    <CpuPriceDisplay />
+                    <CpuPriceDisplay ChangeTotalPrice={changeGenrePrice} />
                 </List>
             </Paper>
 
@@ -65,7 +76,7 @@ const GenreList = () => {
 
                 </AccordionDetails>
             </Accordion> */}
-        </Box>
+        </Box >
     );
 }
 export default GenreList
@@ -75,7 +86,19 @@ export type PartGenre =
     "CpuCooler" |
     "Motherboard" |
     "Memory" |
+    "Gpu" |
     "Ssd" |
     "Hdd" |
     "Case" |
     "PowerSupply";
+
+export type SortOrder =
+    "PriceAsc" |
+    "PriceDesc" |
+    "RankAsc" |
+    "ReleaseDateDesc";
+
+export type GenrePrice = {
+    Genre: PartGenre;
+    Price: number;
+}

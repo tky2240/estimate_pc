@@ -28,6 +28,7 @@ import { CpuDescription } from './cpuPriceDisplay'
 
 type Props = {
     CpuDescription: CpuDescription;
+    DeleteSelectedCpuDescription: (cpuDescription: CpuDescription) => void;
 }
 
 const CpuSelectedRow = (props: Props) => {
@@ -61,7 +62,7 @@ const CpuSelectedRow = (props: Props) => {
                     </Typography>
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
-                    <IconButton>
+                    <IconButton onClick={() => props.DeleteSelectedCpuDescription(props.CpuDescription)}>
                         <Delete />
                     </IconButton>
                 </Grid>

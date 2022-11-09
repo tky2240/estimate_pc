@@ -26,66 +26,88 @@ import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Button from '@mui/material/Button';
 import CpuSelectedRow from './cpuSelectedRow';
 import Divider from '@mui/material/Divider';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import CpuSearcher from './cpuSearcher';
+import CpuDescriptionList from './cpuDescriptionList';
+import { PartGenre } from "../genreList"
 
-const CpuPriceDisplay = () => {
-    const [open, setOpen] = useState(true);
-    const handleClick = () => {
-        setOpen(!open);
+type Props = {
+    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+}
+
+const CpuPriceDisplay = (props: Props) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const genreClick = () => {
+        setIsOpen(!isOpen);
     };
-    const [cpuDescriptions, setCpuDescriptions] = useState<CpuDescription[]>([
-        {
-            item_id: "hoge",
-            name: "aaaaaa",
-            base_clock: 1.0,
-            boost_clock: 1.5,
-            core_count: 6,
-            generation: "第114514世代",
-            graphics: "iGPU",
-            is_exist: true,
-            maker_name: "fuga",
-            popular_rank: 114,
-            price: 514,
-            product_name: "hogehoge",
-            release_date: null,
-            socket_name: "364364",
-            tdp: null,
-            thread_count: 32
-        },
-        {
-            item_id: "hoge",
-            name: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-            base_clock: 1.0,
-            boost_clock: 1.5,
-            core_count: 6,
-            generation: "第114514世代",
-            graphics: "iGPU",
-            is_exist: true,
-            maker_name: "fuga",
-            popular_rank: 114,
-            price: 514,
-            product_name: "hogehoge",
-            release_date: null,
-            socket_name: "364364",
-            tdp: null,
-            thread_count: 32
-        },
-    ]);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const handleDialogOpen = () => {
+        setIsDialogOpen(!isDialogOpen);
+        setCpuDescriptions([]);
+    };
+    const [selectedCpuDescriptions, setSelectedCpuDescriptions] = useState<CpuDescription[]>([]);
+    const changeSelectedCpuDescriptions = (cpuDescriptions: CpuDescription[]) => {
+        setSelectedCpuDescriptions(cpuDescriptions);
+        props.ChangeTotalPrice("Cpu", selectedCpuDescriptions.reduce(function (total, cpuDescription) { return total + cpuDescription.price; }, 0));
+    };
+    const deleteSelectedCpuDescription = (cpuDescription: CpuDescription) => {
+        setSelectedCpuDescriptions(selectedCpuDescriptions.filter((selectedCpuDescription) => selectedCpuDescription != cpuDescription));
+        props.ChangeTotalPrice("Cpu", selectedCpuDescriptions.reduce(function (total, cpuDescription) { return total + cpuDescription.price; }, 0));
+    };
+    const addSelectedCpuDescription = (cpuDescription: CpuDescription) => {
+        setSelectedCpuDescriptions([...selectedCpuDescriptions, cpuDescription]);
+        props.ChangeTotalPrice("Cpu", selectedCpuDescriptions.reduce(function (total, cpuDescription) { return total + cpuDescription.price; }, 0));
+        handleDialogOpen();
+    };
+    const [cpuDescriptions, setCpuDescriptions] = useState<CpuDescription[]>([]);
+    const changeCpuDescriptions = (cpuDescriptions: CpuDescription[]) => {
+        setCpuDescriptions(cpuDescriptions);
+    };
     return (
         <Box sx={{ width: "100%" }}>
-            <ListItemButton onClick={handleClick}>
+            <ListItemButton onClick={genreClick}>
                 <ListItemText primary="Cpu" />
-                {open ? <ExpandLess /> : <ExpandMore />}
+                {isOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
-            <Collapse in={open} timeout="auto" unmountOnExit sx={{ width: '100%' }}>
+            <Collapse in={isOpen} timeout="auto" unmountOnExit sx={{ width: '100%' }}>
                 <Stack spacing={0} sx={{ alignItems: "center", justifyItems: "center" }}>
                     <Divider />
-                    {cpuDescriptions.map((cpuDescription) =>
-                        <CpuSelectedRow CpuDescription={cpuDescription} />
+                    {selectedCpuDescriptions.map((cpuDescription) =>
+                        <CpuSelectedRow CpuDescription={cpuDescription} DeleteSelectedCpuDescription={deleteSelectedCpuDescription} />
                     )}
                 </Stack>
                 <Divider sx={{ paddingTop: 2 }} />
-                <Button sx={{ padding: 1 }} fullWidth >新しいCPUを追加...</Button>
+                <Button sx={{ padding: 1 }} fullWidth onClick={handleDialogOpen}>新しいCPUを追加...</Button>
             </Collapse>
+            <Dialog
+                fullWidth={true}
+                maxWidth={false}
+                open={isDialogOpen}
+            >
+                <DialogTitle>CPU検索</DialogTitle>
+                <DialogContent>
+                    <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
+                        <Grid xs={6} justifyItems="center" alignItems="center">
+                            <CpuSearcher ChangeCpuDescriptions={changeCpuDescriptions} />
+                        </Grid>
+                        <Grid xs={6}>
+                            <CpuDescriptionList CpuDescriptions={cpuDescriptions} AddSelectedCpuDescription={addSelectedCpuDescription} />
+                        </Grid>
+                    </Grid>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogOpen}>Close</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }
