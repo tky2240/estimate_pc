@@ -49,29 +49,30 @@ const CpuPriceDisplay = (props: Props) => {
     const genreClick = () => {
         setIsOpen(!isOpen);
     };
+    const [cpuDescriptions, setCpuDescriptions] = useState<CpuDescription[]>([]);
+    const changeCpuDescriptions = (cpuDescriptions: CpuDescription[]) => {
+        setCpuDescriptions(cpuDescriptions);
+    };
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const handleDialogOpen = () => {
         setIsDialogOpen(!isDialogOpen);
         setCpuDescriptions([]);
     };
-    const [selectedCpuDescriptions, setSelectedCpuDescriptions] = useState<CpuDescription[]>([]);
-    const changeSelectedCpuDescriptions = (cpuDescriptions: CpuDescription[]) => {
-        setSelectedCpuDescriptions(cpuDescriptions);
-        props.ChangeTotalPrice("Cpu", selectedCpuDescriptions.reduce(function (total, cpuDescription) { return total + cpuDescription.price; }, 0));
-    };
-    const deleteSelectedCpuDescription = (cpuDescription: CpuDescription) => {
-        setSelectedCpuDescriptions(selectedCpuDescriptions.filter((selectedCpuDescription) => selectedCpuDescription != cpuDescription));
-        props.ChangeTotalPrice("Cpu", selectedCpuDescriptions.reduce(function (total, cpuDescription) { return total + cpuDescription.price; }, 0));
+    const [selectedCpuDescriptions, setSelectedCpuDescriptions] = useState<SelectedCpuDescription[]>([]);
+    const deleteSelectedCpuDescription = (selectedCpuDescription: SelectedCpuDescription) => {
+        setSelectedCpuDescriptions(selectedCpuDescriptions.filter((currentSelectedCpuDescription) => currentSelectedCpuDescription !== selectedCpuDescription));
     };
     const addSelectedCpuDescription = (cpuDescription: CpuDescription) => {
-        setSelectedCpuDescriptions([...selectedCpuDescriptions, cpuDescription]);
-        props.ChangeTotalPrice("Cpu", selectedCpuDescriptions.reduce(function (total, cpuDescription) { return total + cpuDescription.price; }, 0));
+        setSelectedCpuDescriptions([...selectedCpuDescriptions, { CpuDescription: cpuDescription, Count: 1 }]);
         handleDialogOpen();
     };
-    const [cpuDescriptions, setCpuDescriptions] = useState<CpuDescription[]>([]);
-    const changeCpuDescriptions = (cpuDescriptions: CpuDescription[]) => {
-        setCpuDescriptions(cpuDescriptions);
-    };
+    const changeSelectedCpuDescriptionCount = (selectedCpuDescription: SelectedCpuDescription, count: number) => {
+        setSelectedCpuDescriptions(selectedCpuDescriptions.map((currentSelectedCpuDescription) => currentSelectedCpuDescription === selectedCpuDescription ? { ...currentSelectedCpuDescription, Count: count } : currentSelectedCpuDescription));
+    }
+    useEffect(() => {
+        props.ChangeTotalPrice("Cpu", selectedCpuDescriptions.reduce(function (total, selectedCpuDescription) { return total + selectedCpuDescription.CpuDescription.price * selectedCpuDescription.Count; }, 0));
+        console.log(selectedCpuDescriptions.reduce(function (total, selectedCpuDescription) { return total + selectedCpuDescription.CpuDescription.price * selectedCpuDescription.Count; }, 0));
+    }, [selectedCpuDescriptions]);
     return (
         <Box sx={{ width: "100%" }}>
             <ListItemButton onClick={genreClick}>
@@ -81,8 +82,8 @@ const CpuPriceDisplay = (props: Props) => {
             <Collapse in={isOpen} timeout="auto" unmountOnExit sx={{ width: '100%' }}>
                 <Stack spacing={0} sx={{ alignItems: "center", justifyItems: "center" }}>
                     <Divider />
-                    {selectedCpuDescriptions.map((cpuDescription) =>
-                        <CpuSelectedRow CpuDescription={cpuDescription} DeleteSelectedCpuDescription={deleteSelectedCpuDescription} />
+                    {selectedCpuDescriptions.map((selectedCpuDescription) =>
+                        <CpuSelectedRow SelectedCpuDescription={selectedCpuDescription} DeleteSelectedCpuDescription={deleteSelectedCpuDescription} ChangeCount={changeSelectedCpuDescriptionCount} />
                     )}
                 </Stack>
                 <Divider sx={{ paddingTop: 2 }} />
@@ -132,4 +133,9 @@ export type CpuDescription = {
     graphics: string;
     release_date: Date | null;
     is_exist: boolean;
+};
+
+export type SelectedCpuDescription = {
+    CpuDescription: CpuDescription;
+    Count: number;
 };

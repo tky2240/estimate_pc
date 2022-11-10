@@ -38,10 +38,12 @@ const GenreList = (props: Props) => {
         { Genre: "PowerSupply", Price: 0 },
     ]);
     const changeGenrePrice = (genre: PartGenre, price: number) => {
-        setGenrePrices(genrePrices.map((genrePrice) => genrePrice.Genre == genre ? genrePrice : { Genre: genre, Price: price }));
-        props.ChangeTotalPrice(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0));
-        console.log(props.ChangeTotalPrice(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0)));
+        setGenrePrices(genrePrices.map((genrePrice) => genrePrice.Genre != genre ? genrePrice : { Genre: genre, Price: price }));
     };
+    useEffect(() => {
+        props.ChangeTotalPrice(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0));
+        console.log(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0));
+    }, [genrePrices]);
     return (
         < Box sx={{ margin: "auto", width: "80%", maxWidth: "1000px", padding: "20px", bgcolor: "background.paper" }}>
             <Paper>

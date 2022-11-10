@@ -24,45 +24,45 @@ import { Add, Remove, Delete } from '@mui/icons-material';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Button from '@mui/material/Button';
-import { CpuDescription } from './cpuPriceDisplay'
+import { CpuDescription, SelectedCpuDescription } from './cpuPriceDisplay'
 
 type Props = {
-    CpuDescription: CpuDescription;
-    DeleteSelectedCpuDescription: (cpuDescription: CpuDescription) => void;
+    SelectedCpuDescription: SelectedCpuDescription;
+    DeleteSelectedCpuDescription: (selectedCpuDescription: SelectedCpuDescription) => void;
+    ChangeCount: (selectedCpuDescription: SelectedCpuDescription, count: number) => void;
 }
 
 const CpuSelectedRow = (props: Props) => {
-    const [count, setCount] = useState(1);
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
                 <Grid xs={6} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
-                        {`${props.CpuDescription.name} : ${props.CpuDescription.price}円`}
+                        {`${props.SelectedCpuDescription.CpuDescription.name} : ${props.SelectedCpuDescription.CpuDescription.price}円`}
                     </Typography>
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="end" alignItems="center">
-                    <IconButton onClick={() => setCount(count + 1)}>
-                        <Add />
+                <Grid xs={1} display="flex" justifyContent="start" alignItems="center">
+                    <IconButton onClick={() => props.ChangeCount(props.SelectedCpuDescription, props.SelectedCpuDescription.Count < 2 ? 1 : props.SelectedCpuDescription.Count - 1)}>
+                        <Remove />
                     </IconButton>
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ textAlign: "center", overflowWrap: "anywhere" }}>
-                        {count} 個
+                        {props.SelectedCpuDescription.Count} 個
                     </Typography>
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="start" alignItems="center">
-                    <IconButton onClick={() => count < 2 ? setCount(1) : setCount(count - 1)}>
-                        <Remove />
+                <Grid xs={1} display="flex" justifyContent="end" alignItems="center">
+                    <IconButton onClick={() => props.ChangeCount(props.SelectedCpuDescription, props.SelectedCpuDescription.Count + 1)}>
+                        <Add />
                     </IconButton>
                 </Grid>
                 <Grid xs={2} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere", textAlign: "end" }}>
-                        計 {props.CpuDescription.price * count}円
+                        計 {props.SelectedCpuDescription.CpuDescription.price * props.SelectedCpuDescription.Count}円
                     </Typography>
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
-                    <IconButton onClick={() => props.DeleteSelectedCpuDescription(props.CpuDescription)}>
+                    <IconButton onClick={() => props.DeleteSelectedCpuDescription(props.SelectedCpuDescription)}>
                         <Delete />
                     </IconButton>
                 </Grid>
