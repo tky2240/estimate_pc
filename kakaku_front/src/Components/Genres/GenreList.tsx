@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
-import { Paper } from '@mui/material';
+import { Divider, Paper } from '@mui/material';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -18,7 +18,11 @@ import SendIcon from '@mui/icons-material/Send';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
-import CpuPriceDisplay from './cpu/cpuPriceDisplay';
+import CpuPriceDisplay from './Cpu/CpuPriceDisplay';
+import CpuCoolerPriceDisplay from './CpuCooler/CpuCoolerPriceDisplay';
+import MotherboardPriceDisplay from './Motherboard/MotherboardPriceDisplay';
+import MemoryPriceDisplay from './Memory/MemoryPriceDisplay';
+import GpuPriceDisplay from './Gpu/GpuPriceDisplay';
 import { PropaneSharp } from '@mui/icons-material';
 
 type Props = {
@@ -38,14 +42,14 @@ const GenreList = (props: Props) => {
         { Genre: "PowerSupply", Price: 0 },
     ]);
     const changeGenrePrice = (genre: PartGenre, price: number) => {
-        setGenrePrices(genrePrices.map((genrePrice) => genrePrice.Genre != genre ? genrePrice : { Genre: genre, Price: price }));
+        setGenrePrices(genrePrices.map((genrePrice) => genrePrice.Genre !== genre ? genrePrice : { Genre: genre, Price: price }));
     };
     useEffect(() => {
         props.ChangeTotalPrice(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0));
         console.log(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0));
     }, [genrePrices]);
     return (
-        < Box sx={{ margin: "auto", width: "80%", maxWidth: "1000px", padding: "20px", bgcolor: "background.paper" }}>
+        < Box sx={{ margin: "auto", width: "80%", maxWidth: "1000px", padding: "20px", }}>
             <Paper>
                 <List
                     sx={{ margin: "auto", alignContent: "center", width: '100%', maxWidth: "1000px" }}
@@ -56,6 +60,14 @@ const GenreList = (props: Props) => {
                     }
                 >
                     <CpuPriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <CpuCoolerPriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <MotherboardPriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <MemoryPriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <GpuPriceDisplay ChangeTotalPrice={changeGenrePrice} />
                 </List>
             </Paper>
 

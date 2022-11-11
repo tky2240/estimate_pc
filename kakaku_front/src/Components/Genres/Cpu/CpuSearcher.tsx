@@ -1,38 +1,18 @@
 import Box from '@mui/material/Box';
-import { useEffect, useState } from 'react';
-import { Paper, Select } from '@mui/material';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+import { useState } from 'react';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ListSubheader from '@mui/material/ListSubheader';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
-import IconButton from '@mui/material/IconButton';
-import { Add, Remove, Delete, Search } from '@mui/icons-material';
-import Stack from '@mui/material/Stack';
+import { Search } from '@mui/icons-material';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { CpuDescription } from './cpuPriceDisplay'
-import { SortOrder } from '../genreList';
+import { CpuDescription } from './CpuPriceDisplay'
+import { SortOrder } from '../GenreList';
 import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
-import { cpuUsage } from 'process';
 
 type Props = {
     ChangeCpuDescriptions: (cpuDescriptions: CpuDescription[]) => void;
@@ -50,23 +30,23 @@ const CpuSearcher = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={4}>
+                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         キーワード
                     </Typography>
                 </Grid>
-                <Grid xs={8} >
-                    <TextField label="Keyword" variant="filled"
+                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                    <TextField label="Keyword" variant="filled" fullWidth
                         value={searchCpuParameter.search_text}
                         onChange={(e) => setSearchCpuParameter({ ...searchCpuParameter, search_text: e.target.value })}
                     />
                 </Grid>
-                <Grid xs={4} >
+                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メーカー名
                     </Typography>
                 </Grid>
-                <Grid xs={8}>
+                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Maker</InputLabel>
                         <Select
@@ -80,12 +60,12 @@ const CpuSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} >
+                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ソケット名
                     </Typography>
                 </Grid>
-                <Grid xs={8}>
+                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Socket</InputLabel>
                         <Select
@@ -112,12 +92,12 @@ const CpuSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} >
+                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         価格
                     </Typography>
                 </Grid>
-                <Grid xs={3}>
+                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
                     <NumericFormat
                         value={searchCpuParameter.min_price}
                         thousandSeparator={true}
@@ -131,12 +111,12 @@ const CpuSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchCpuParameter({ ...searchCpuParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={2} >
+                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ～
                     </Typography>
                 </Grid>
-                <Grid xs={3}>
+                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
                     <NumericFormat
                         value={searchCpuParameter.max_price}
                         thousandSeparator={true}
@@ -150,12 +130,12 @@ const CpuSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchCpuParameter({ ...searchCpuParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={4} >
+                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         並び順
                     </Typography>
                 </Grid>
-                <Grid xs={8}>
+                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >SortOrder</InputLabel>
                         <Select
@@ -170,8 +150,8 @@ const CpuSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={12}>
-                    <Button endIcon={<Search />} fullWidth onClick={async () => props.ChangeCpuDescriptions(await SearchCpu(searchCpuParameter))}>検索</Button>
+                <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
+                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeCpuDescriptions(await SearchCpu(searchCpuParameter))}>検索</Button>
                 </Grid>
             </Grid>
         </Box>
@@ -192,12 +172,10 @@ const SearchCpu = async (searchCpuParameter: SearchCpuParameter): Promise<CpuDes
 
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        console.log(urlBase);
         const response = await fetch(urlJoin(urlBase, "cpu"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuParameter) });
         if (!response.ok) {
             return [];
         }
-        console.log(response);
         return response.json();
     } catch (e) {
         console.log(e)

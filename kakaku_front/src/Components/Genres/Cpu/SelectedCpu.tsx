@@ -24,45 +24,45 @@ import { Add, Remove, Delete } from '@mui/icons-material';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Button from '@mui/material/Button';
-import { CpuDescription, SelectedCpuDescription } from './cpuPriceDisplay'
+import { CpuDescription, CpuDescriptionAndCount } from './CpuPriceDisplay'
 
 type Props = {
-    SelectedCpuDescription: SelectedCpuDescription;
-    DeleteSelectedCpuDescription: (selectedCpuDescription: SelectedCpuDescription) => void;
-    ChangeCount: (selectedCpuDescription: SelectedCpuDescription, count: number) => void;
+    CpuDescriptionAndCount: CpuDescriptionAndCount;
+    DeleteCpuDescriptionAndCount: (cpuDescriptionAndCount: CpuDescriptionAndCount) => void;
+    ChangeCount: (cpuDescriptionAndCount: CpuDescriptionAndCount, count: number) => void;
 }
 
-const CpuSelectedRow = (props: Props) => {
+const SelectedCpu = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
                 <Grid xs={6} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
-                        {`${props.SelectedCpuDescription.CpuDescription.name} : ${props.SelectedCpuDescription.CpuDescription.price}円`}
+                        {`${props.CpuDescriptionAndCount.CpuDescription.maker_name} ${props.CpuDescriptionAndCount.CpuDescription.product_name} : ${props.CpuDescriptionAndCount.CpuDescription.price}円`}
                     </Typography>
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="start" alignItems="center">
-                    <IconButton onClick={() => props.ChangeCount(props.SelectedCpuDescription, props.SelectedCpuDescription.Count < 2 ? 1 : props.SelectedCpuDescription.Count - 1)}>
+                    <IconButton onClick={() => props.ChangeCount(props.CpuDescriptionAndCount, props.CpuDescriptionAndCount.Count < 2 ? 1 : props.CpuDescriptionAndCount.Count - 1)}>
                         <Remove />
                     </IconButton>
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ textAlign: "center", overflowWrap: "anywhere" }}>
-                        {props.SelectedCpuDescription.Count} 個
+                        {props.CpuDescriptionAndCount.Count}
                     </Typography>
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="end" alignItems="center">
-                    <IconButton onClick={() => props.ChangeCount(props.SelectedCpuDescription, props.SelectedCpuDescription.Count + 1)}>
+                    <IconButton onClick={() => props.ChangeCount(props.CpuDescriptionAndCount, props.CpuDescriptionAndCount.Count + 1)}>
                         <Add />
                     </IconButton>
                 </Grid>
                 <Grid xs={2} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere", textAlign: "end" }}>
-                        計 {props.SelectedCpuDescription.CpuDescription.price * props.SelectedCpuDescription.Count}円
+                        {props.CpuDescriptionAndCount.CpuDescription.price * props.CpuDescriptionAndCount.Count}円
                     </Typography>
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
-                    <IconButton onClick={() => props.DeleteSelectedCpuDescription(props.SelectedCpuDescription)}>
+                    <IconButton onClick={() => props.DeleteCpuDescriptionAndCount(props.CpuDescriptionAndCount)}>
                         <Delete />
                     </IconButton>
                 </Grid>
@@ -71,4 +71,4 @@ const CpuSelectedRow = (props: Props) => {
     );
 };
 
-export default CpuSelectedRow
+export default SelectedCpu

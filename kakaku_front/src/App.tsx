@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import GenreList from './components/genres/genreList';
+import GenreList from './Components/Genres/GenreList';
 
 function App() {
     //ref:https://amateur-engineer.com/react-mui-dark-mode/
@@ -19,6 +19,98 @@ function App() {
             createTheme({
                 palette: {
                     mode: prefersDarkMode ? 'dark' : 'light',
+                },
+                components: {
+                    //`MuiCssBaseline`になっているが`CssBaseLine`ても同様に作用した
+                    MuiCssBaseline: {
+                        styleOverrides: prefersDarkMode ? `
+                        ::-webkit-scrollbar
+                        {
+                                overflow:hidden;
+                                width:10px;
+                                background:#eee;
+                                
+                                -webkit-border-radius:3px;
+                                border-radius:3px;
+                        }
+                                ::-webkit-scrollbar:horizontal
+                                {
+                                        height:10px;
+                                }
+                        ::-webkit-scrollbar-button
+                        {
+                            display:none;
+                        }
+                        ::-webkit-scrollbar-piece
+                        {
+                                background:#eee;
+                        }
+                                ::-webkit-scrollbar-piece:start
+                                {
+                                        background:#eee;
+                                }
+                        ::-webkit-scrollbar-thumb
+                        {
+                                overflow:hidden;
+                                -webkit-border-radius:3px;
+                                border-radius:3px;
+                                
+                                background:#333;
+                        }
+                        ::-webkit-scrollbar-corner
+                        {
+                                overflow:hidden;
+                                -webkit-border-radius:3px;
+                                border-radius:3px;
+                                
+                                background:#333;
+                        }
+                        ` :
+                            `
+                        ::-webkit-scrollbar
+                        {
+                                overflow:hidden;
+                                width:10px;
+                                background:#eee;
+                                
+                                -webkit-border-radius:3px;
+                                border-radius:3px;
+                        }
+                                ::-webkit-scrollbar:horizontal
+                                {
+                                        height:10px;
+                                }
+                        ::-webkit-scrollbar-button
+                        {
+                            display:none;
+                        }
+                        ::-webkit-scrollbar-piece
+                        {
+                                background:#eee;
+                        }
+                                ::-webkit-scrollbar-piece:start
+                                {
+                                        background:#eee;
+                                }
+                        ::-webkit-scrollbar-thumb
+                        {
+                                overflow:hidden;
+                                -webkit-border-radius:3px;
+                                border-radius:3px;
+                                
+                                background:#aaa;
+                        }
+                        ::-webkit-scrollbar-corner
+                        {
+                                overflow:hidden;
+                                -webkit-border-radius:3px;
+                                border-radius:3px;
+                                
+                                background:#aaa;
+                        }
+                        `
+
+                    },
                 },
             }),
         [prefersDarkMode],

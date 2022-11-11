@@ -51,7 +51,7 @@ pub async fn search_cpu_cooler(
         searched_cpu_coolers = searched_cpu_coolers.filter(cpu_cooler::Column::Height.lte(height));
     }
     if let Some(max_tdp) = search_cpu_cooler_parameter.max_tdp {
-        searched_cpu_coolers = searched_cpu_coolers.filter(cpu_cooler::Column::MaxTdp.lte(max_tdp));
+        searched_cpu_coolers = searched_cpu_coolers.filter(cpu_cooler::Column::MaxTdp.gte(max_tdp));
     }
     if let Some(max_price) = search_cpu_cooler_parameter.max_price {
         searched_cpu_coolers =
