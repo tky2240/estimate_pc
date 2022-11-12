@@ -53,7 +53,7 @@ const GenreList = (props: Props) => {
         console.log(genrePrices.reduce(function (total, genrePrice) { return total + genrePrice.Price }, 0));
     }, [genrePrices]);
     return (
-        < Box sx={{ margin: "auto", width: "80%", maxWidth: "1000px", padding: "20px", }}>
+        < Box sx={{ margin: "auto", width: "90%", maxWidth: "1000px", padding: "20px", }}>
             <Paper>
                 <List
                     sx={{ margin: "auto", alignContent: "center", width: '100%', maxWidth: "1000px" }}

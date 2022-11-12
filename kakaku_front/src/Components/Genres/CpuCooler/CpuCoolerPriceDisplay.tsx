@@ -77,7 +77,7 @@ const CpuCoolerPriceDisplay = (props: Props) => {
             >
                 <DialogTitle>CPUクーラー検索</DialogTitle>
                 <DialogContent sx={{ width: '100%', height: "100%", }}>
-                    <Grid container spacing={2} sx={{ width: '100%', height: "100%", display: "flex", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1, justifyContent: "center", alignContent: "center" }} wrap="wrap" >
+                    <Grid container spacing={2} sx={{ width: '100%', height: "100%", display: "flex", justifyContent: "center", alignContent: "center" }} wrap="wrap" >
                         <Grid xs={12} md={6} >
                             <CpuCoolerSearcher ChangeCpuCoolerDescriptions={changeCpuCoolerDescriptions} />
                         </Grid>

@@ -34,23 +34,23 @@ const MemorySearcher = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         キーワード
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <TextField label="Keyword" variant="filled" fullWidth
                         value={searchMemoryParameter.search_text}
                         onChange={(e) => setSearchMemoryParameter({ ...searchMemoryParameter, search_text: e.target.value })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メーカー名
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Maker</InputLabel>
                         <Select
@@ -100,12 +100,12 @@ const MemorySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         1枚あたりの容量
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >CapacityPerModule</InputLabel>
                         <Select
@@ -124,12 +124,12 @@ const MemorySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         枚数
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >ModuleCount</InputLabel>
                         <Select
@@ -145,12 +145,12 @@ const MemorySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メモリ規格
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >MemoryType</InputLabel>
                         <Select
@@ -164,12 +164,12 @@ const MemorySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メモリスピード
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >ModuleType</InputLabel>
                         <Select
@@ -208,12 +208,12 @@ const MemorySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         価格
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchMemoryParameter.min_price}
                         thousandSeparator={true}
@@ -227,12 +227,12 @@ const MemorySearcher = (props: Props) => {
                         onValueChange={(e) => setSearchMemoryParameter({ ...searchMemoryParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ～
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchMemoryParameter.max_price}
                         thousandSeparator={true}
@@ -246,12 +246,12 @@ const MemorySearcher = (props: Props) => {
                         onValueChange={(e) => setSearchMemoryParameter({ ...searchMemoryParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         並び順
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >SortOrder</InputLabel>
                         <Select
@@ -266,7 +266,7 @@ const MemorySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
                     <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeMemoryDescriptions(await SearchMemory(searchMemoryParameter))}>検索</Button>
                 </Grid>
             </Grid>

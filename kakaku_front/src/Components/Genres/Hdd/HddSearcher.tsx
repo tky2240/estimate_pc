@@ -31,23 +31,23 @@ const HddSearcher = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         キーワード
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <TextField label="Keyword" variant="filled" fullWidth
                         value={searchHddParameter.search_text}
                         onChange={(e) => setSearchHddParameter({ ...searchHddParameter, search_text: e.target.value })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メーカー名
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Maker</InputLabel>
                         <Select
@@ -70,12 +70,12 @@ const HddSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         容量
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchHddParameter.capacity}
                         thousandSeparator={true}
@@ -89,12 +89,12 @@ const HddSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         書込方式
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >WriteStyle</InputLabel>
                         <Select
@@ -108,12 +108,12 @@ const HddSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         価格
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchHddParameter.min_price}
                         thousandSeparator={true}
@@ -127,12 +127,12 @@ const HddSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ～
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchHddParameter.max_price}
                         thousandSeparator={true}
@@ -146,12 +146,12 @@ const HddSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         並び順
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >SortOrder</InputLabel>
                         <Select
@@ -166,7 +166,7 @@ const HddSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
                     <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeHddDescriptions(await SearchHdd(searchHddParameter))}>検索</Button>
                 </Grid>
             </Grid>

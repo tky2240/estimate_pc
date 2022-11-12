@@ -34,23 +34,23 @@ const PowerSupplySearcher = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         キーワード
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <TextField label="Keyword" variant="filled" fullWidth
                         value={searchPowerSupplyParameter.search_text}
                         onChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, search_text: e.target.value })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メーカー名
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Maker</InputLabel>
                         <Select
@@ -95,12 +95,12 @@ const PowerSupplySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         フォームファクタ
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >FormFactor</InputLabel>
                         <Select
@@ -117,12 +117,12 @@ const PowerSupplySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         容量
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchPowerSupplyParameter.capacity}
                         thousandSeparator={true}
@@ -136,12 +136,12 @@ const PowerSupplySearcher = (props: Props) => {
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         80PLUS認証
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >80PLUS</InputLabel>
                         <Select
@@ -159,12 +159,12 @@ const PowerSupplySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         価格
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchPowerSupplyParameter.min_price}
                         thousandSeparator={true}
@@ -178,12 +178,12 @@ const PowerSupplySearcher = (props: Props) => {
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ～
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchPowerSupplyParameter.max_price}
                         thousandSeparator={true}
@@ -197,12 +197,12 @@ const PowerSupplySearcher = (props: Props) => {
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         並び順
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >SortOrder</InputLabel>
                         <Select
@@ -217,7 +217,7 @@ const PowerSupplySearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
                     <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangePowerSupplyDescriptions(await SearchPowerSupply(searchPowerSupplyParameter))}>検索</Button>
                 </Grid>
             </Grid>

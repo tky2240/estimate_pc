@@ -76,7 +76,7 @@ const MemoryPriceDisplay = (props: Props) => {
             >
                 <DialogTitle>メモリ検索</DialogTitle>
                 <DialogContent>
-                    <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
+                    <Grid container spacing={2} sx={{ width: "100%" }} wrap="wrap" >
                         <Grid xs={12} md={6} justifyItems="center" alignItems="center">
                             <MemorySearcher ChangeMemoryDescriptions={changeMemoryDescriptions} />
                         </Grid>

@@ -33,23 +33,23 @@ const MotherboardSearcher = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         キーワード
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <TextField label="Keyword" variant="filled" fullWidth
                         value={searchMotherboardParameter.search_text}
                         onChange={(e) => setSearchMotherboardParameter({ ...searchMotherboardParameter, search_text: e.target.value })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メーカー名
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Maker</InputLabel>
                         <Select
@@ -70,12 +70,12 @@ const MotherboardSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         チップセット
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Chipset</InputLabel>
                         <Select
@@ -144,12 +144,12 @@ const MotherboardSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ソケット名
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Socket</InputLabel>
                         <Select
@@ -179,12 +179,12 @@ const MotherboardSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         フォームファクタ
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >FormFactor</InputLabel>
                         <Select
@@ -203,12 +203,12 @@ const MotherboardSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メモリタイプ
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Memory</InputLabel>
                         <Select
@@ -226,12 +226,12 @@ const MotherboardSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         価格
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchMotherboardParameter.min_price}
                         thousandSeparator={true}
@@ -245,12 +245,12 @@ const MotherboardSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchMotherboardParameter({ ...searchMotherboardParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ～
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchMotherboardParameter.max_price}
                         thousandSeparator={true}
@@ -264,12 +264,12 @@ const MotherboardSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchMotherboardParameter({ ...searchMotherboardParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         並び順
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >SortOrder</InputLabel>
                         <Select
@@ -284,7 +284,7 @@ const MotherboardSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
                     <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeMotherboardDescriptions(await SearchMotherboard(searchMotherboardParameter))}>検索</Button>
                 </Grid>
             </Grid>

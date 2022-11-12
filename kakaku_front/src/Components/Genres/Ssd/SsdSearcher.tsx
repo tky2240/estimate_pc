@@ -30,25 +30,25 @@ const SsdSearcher = (props: Props) => {
         sort_order: "PriceAsc",
     });
     return (
-        <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
+        <Box sx={{ width: '100%', height: "100%", alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         キーワード
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <TextField label="Keyword" variant="filled" fullWidth
                         value={searchSsdParameter.search_text}
                         onChange={(e) => setSearchSsdParameter({ ...searchSsdParameter, search_text: e.target.value })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         メーカー名
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Maker</InputLabel>
                         <Select
@@ -110,12 +110,12 @@ const SsdSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         容量
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchSsdParameter.capacity}
                         thousandSeparator={true}
@@ -129,12 +129,12 @@ const SsdSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchSsdParameter({ ...searchSsdParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         接続規格
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >Interface</InputLabel>
                         <Select
@@ -151,12 +151,12 @@ const SsdSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         価格
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchSsdParameter.min_price}
                         thousandSeparator={true}
@@ -170,12 +170,12 @@ const SsdSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchSsdParameter({ ...searchSsdParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         ～
                     </Typography>
                 </Grid>
-                <Grid xs={3.5} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchSsdParameter.max_price}
                         thousandSeparator={true}
@@ -189,12 +189,12 @@ const SsdSearcher = (props: Props) => {
                         onValueChange={(e) => setSearchSsdParameter({ ...searchSsdParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
-                <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={4} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         並び順
                     </Typography>
                 </Grid>
-                <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <FormControl fullWidth>
                         <InputLabel >SortOrder</InputLabel>
                         <Select
@@ -209,7 +209,7 @@ const SsdSearcher = (props: Props) => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={12} display="flex" justifyContent="start" alignItems="center">
                     <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeSsdDescriptions(await SearchSsd(searchSsdParameter))}>検索</Button>
                 </Grid>
             </Grid>

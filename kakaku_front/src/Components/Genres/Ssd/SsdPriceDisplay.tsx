@@ -75,8 +75,8 @@ const SsdPriceDisplay = (props: Props) => {
                 onClose={handleDialogOpen}
             >
                 <DialogTitle>SSD検索</DialogTitle>
-                <DialogContent>
-                    <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
+                <DialogContent sx={{ width: "100%", height: "100%" }}>
+                    <Grid container spacing={2} sx={{ width: "100%", height: "100%" }} wrap="wrap" >
                         <Grid xs={12} md={6} justifyItems="center" alignItems="center">
                             <SsdSearcher ChangeSsdDescriptions={changeSsdDescriptions} />
                         </Grid>
