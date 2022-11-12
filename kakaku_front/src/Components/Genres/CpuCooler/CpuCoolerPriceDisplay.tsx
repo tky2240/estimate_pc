@@ -49,7 +49,7 @@ const CpuCoolerPriceDisplay = (props: Props) => {
         setCpuCoolerDescriptionAndCounts(cpuCoolerDescriptionAndCounts.map((currentCpuCoolerDescriptionAndCount) => currentCpuCoolerDescriptionAndCount === cpuCoolerDescriptionAndCount ? { ...currentCpuCoolerDescriptionAndCount, Count: count } : currentCpuCoolerDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Cpu", cpuCoolerDescriptionAndCounts.reduce((total, cpuCoolerDescriptionAndCount) => total + cpuCoolerDescriptionAndCount.CpuCoolerDescription.price * cpuCoolerDescriptionAndCount.Count, 0));
+        props.ChangeTotalPrice("CpuCooler", cpuCoolerDescriptionAndCounts.reduce((total, cpuCoolerDescriptionAndCount) => total + cpuCoolerDescriptionAndCount.CpuCoolerDescription.price * cpuCoolerDescriptionAndCount.Count, 0));
         console.log(cpuCoolerDescriptionAndCounts.reduce((total, cpuCoolerDescriptionAndCount) => total + cpuCoolerDescriptionAndCount.CpuCoolerDescription.price * cpuCoolerDescriptionAndCount.Count, 0));
     }, [cpuCoolerDescriptionAndCounts]);
     return (

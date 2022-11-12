@@ -21,7 +21,7 @@ function renderRow(props: ListChildComponentProps<{ MotherboardDescriptions: Mot
                 <ListItemText
                     sx={{ whiteSpace: 'nowrap', margin: 1 }}
                     primary={`${data.MotherboardDescriptions[index].maker_name} ${data.MotherboardDescriptions[index].product_name} : ${data.MotherboardDescriptions[index].price} 円`}
-                    secondary={`${data.MotherboardDescriptions[index].form_factor} | ${data.MotherboardDescriptions[index].socket_name} | ${data.MotherboardDescriptions[index].memory_type}}`}
+                    secondary={`${data.MotherboardDescriptions[index].form_factor} | ${data.MotherboardDescriptions[index].socket_name} | ${data.MotherboardDescriptions[index].memory_type}`}
                     onClick={() => data.AddMotherboardDescriptionAndCount(data.MotherboardDescriptions[index])}
                 />
             </ListItemButton>

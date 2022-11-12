@@ -15,7 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import CpuSearcher from './CaseSearcher';
+import CaseSearcher from './CaseSearcher';
 import CaseDescriptionList from './CaseDescriptionList';
 import { PartGenre } from "../GenreList"
 
@@ -49,7 +49,7 @@ const CasePriceDisplay = (props: Props) => {
         setCaseDescriptionAndCounts(caseDescriptionAndCounts.map((currentCaseDescriptionAndCount) => currentCaseDescriptionAndCount === caseDescriptionAndCount ? { ...currentCaseDescriptionAndCount, Count: count } : currentCaseDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Cpu", caseDescriptionAndCounts.reduce((total, caseDescriptionAndCount) => total + caseDescriptionAndCount.CaseDescription.price * caseDescriptionAndCount.Count, 0));
+        props.ChangeTotalPrice("Case", caseDescriptionAndCounts.reduce((total, caseDescriptionAndCount) => total + caseDescriptionAndCount.CaseDescription.price * caseDescriptionAndCount.Count, 0));
         console.log(caseDescriptionAndCounts.reduce((total, caseDescriptionAndCount) => total + caseDescriptionAndCount.CaseDescription.price * caseDescriptionAndCount.Count, 0));
     }, [caseDescriptionAndCounts]);
     return (
@@ -79,7 +79,7 @@ const CasePriceDisplay = (props: Props) => {
                 <DialogContent sx={{ width: '100%', height: "100%", }}>
                     <Grid container spacing={2} sx={{ width: '100%', height: "100%", display: "flex", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1, justifyContent: "center", alignContent: "center" }} wrap="wrap" >
                         <Grid xs={12} md={6} >
-                            <CpuSearcher ChangeCaseDescriptions={changeCaseDescriptions} />
+                            <CaseSearcher ChangeCaseDescriptions={changeCaseDescriptions} />
                         </Grid>
                         <Grid xs={12} md={6} >
                             <Paper sx={{ marginTop: 1 }}>
