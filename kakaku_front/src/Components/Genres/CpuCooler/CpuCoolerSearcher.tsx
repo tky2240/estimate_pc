@@ -18,8 +18,8 @@ type Props = {
     ChangeCpuCoolerDescriptions: (cpuCoolerDescriptions: CpuCoolerDescription[]) => void;
 }
 
-const CpuSearcher = (props: Props) => {
-    const [searchCpuCoolerParameter, setSearchCpuParameter] = useState<SearchCpuCoolerParameter>({
+const CpuCoolerSearcher = (props: Props) => {
+    const [searchCpuCoolerParameter, setSearchCpuCoolerParameter] = useState<SearchCpuCoolerParameter>({
         search_text: "",
         maker_name: " ",
         socket_name: " ",
@@ -41,7 +41,7 @@ const CpuSearcher = (props: Props) => {
                 <Grid xs={8} display="flex" justifyContent="center" alignItems="center">
                     <TextField label="Keyword" variant="filled" fullWidth
                         value={searchCpuCoolerParameter.search_text}
-                        onChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, search_text: e.target.value })}
+                        onChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, search_text: e.target.value })}
                     />
                 </Grid>
                 <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
@@ -55,7 +55,7 @@ const CpuSearcher = (props: Props) => {
                         <Select
                             value={searchCpuCoolerParameter.maker_name}
                             label="Maker"
-                            onChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, maker_name: e.target.value })}
+                            onChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, maker_name: e.target.value })}
                         >
                             <MenuItem value={"ADATA"}>ADATA</MenuItem>
                             <MenuItem value={"AINEX"}>AINEX</MenuItem>
@@ -116,7 +116,7 @@ const CpuSearcher = (props: Props) => {
                         <Select
                             value={searchCpuCoolerParameter.socket_name}
                             label="Socket"
-                            onChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, socket_name: e.target.value })}
+                            onChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, socket_name: e.target.value })}
                         >
                             <MenuItem value={"AM2"}>AM2</MenuItem>
                             <MenuItem value={"AM2+"}>AM2+</MenuItem>
@@ -162,7 +162,7 @@ const CpuSearcher = (props: Props) => {
                         <Select
                             value={searchCpuCoolerParameter.air_flow_type}
                             label="AirFlow"
-                            onChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, air_flow_type: e.target.value })}
+                            onChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, air_flow_type: e.target.value })}
                         >
                             <MenuItem value={"サイドフロー型"}>サイドフロー型</MenuItem>
                             <MenuItem value={"トップフロー型"}>トップフロー型</MenuItem>
@@ -188,7 +188,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={2}
                         suffix={'mm以下'}
-                        onValueChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, height: e.floatValue === undefined ? null : e.floatValue })}
+                        onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, height: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
                 <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
@@ -207,7 +207,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'W以上'}
-                        onValueChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, max_tdp: e.floatValue === undefined ? null : e.floatValue })}
+                        onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, max_tdp: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
                 <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
@@ -226,7 +226,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        onValueChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
+                        onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
                 <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
@@ -245,7 +245,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        onValueChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
+                        onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
                 <Grid xs={4} display="flex" justifyContent="center" alignItems="center">
@@ -259,7 +259,7 @@ const CpuSearcher = (props: Props) => {
                         <Select
                             value={searchCpuCoolerParameter.sort_order}
                             label="SortOrder"
-                            onChange={(e) => setSearchCpuParameter({ ...searchCpuCoolerParameter, sort_order: e.target.value as SortOrder })}
+                            onChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, sort_order: e.target.value as SortOrder })}
                         >
                             <MenuItem value={"PriceAsc"}>価格昇順</MenuItem>
                             <MenuItem value={"PriceDesc"}>価格降順</MenuItem>
@@ -269,13 +269,13 @@ const CpuSearcher = (props: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid xs={12} display="flex" justifyContent="center" alignItems="center">
-                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeCpuCoolerDescriptions(await SearchCpu(searchCpuCoolerParameter))}>検索</Button>
+                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeCpuCoolerDescriptions(await SearchCpuCooler(searchCpuCoolerParameter))}>検索</Button>
                 </Grid>
             </Grid>
         </Box>
     );
 }
-export default CpuSearcher;
+export default CpuCoolerSearcher;
 
 type SearchCpuCoolerParameter = {
     search_text: string;
@@ -289,7 +289,7 @@ type SearchCpuCoolerParameter = {
     max_price: number | null;
 }
 
-const SearchCpu = async (searchCpuCoolerParameter: SearchCpuCoolerParameter): Promise<CpuCoolerDescription[]> => {
+const SearchCpuCooler = async (searchCpuCoolerParameter: SearchCpuCoolerParameter): Promise<CpuCoolerDescription[]> => {
 
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";

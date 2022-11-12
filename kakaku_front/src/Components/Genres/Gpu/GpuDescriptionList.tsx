@@ -21,7 +21,7 @@ function renderRow(props: ListChildComponentProps<{ GpuDescriptions: GpuDescript
                 <ListItemText
                     sx={{ whiteSpace: 'nowrap', margin: 1 }}
                     primary={`${data.GpuDescriptions[index].maker_name} ${data.GpuDescriptions[index].product_name} : ${data.GpuDescriptions[index].price} 円`}
-                    secondary={`${data.GpuDescriptions[index].chip_name} | ${data.GpuDescriptions[index].gpu_memory_type} ${data.GpuDescriptions[index].gpu_memory_capacity} GB | ${data.GpuDescriptions[index].width}x${data.GpuDescriptions[index].height}x${data.GpuDescriptions[index].depth} mm`}
+                    secondary={`${data.GpuDescriptions[index].chip_name} | ${data.GpuDescriptions[index].gpu_memory_type} ${data.GpuDescriptions[index].gpu_memory_capacity} GB | ${data.GpuDescriptions[index].width ?? 0}x${data.GpuDescriptions[index].height ?? 0}x${data.GpuDescriptions[index].depth ?? 0} mm`}
                     onClick={() => data.AddGpuDescriptionAndCount(data.GpuDescriptions[index])}
                 />
             </ListItemButton>

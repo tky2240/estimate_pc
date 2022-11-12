@@ -55,7 +55,9 @@ pub async fn search_cpu(
     searched_cpus = match search_cpu_parameter.sort_order {
         SortOrder::PriceAsc => searched_cpus.order_by_asc(cpu::Column::Price),
         SortOrder::PriceDesc => searched_cpus.order_by_desc(cpu::Column::Price),
-        SortOrder::RankAsc => searched_cpus.order_by_asc(cpu::Column::PopularRank),
+        SortOrder::RankAsc => searched_cpus
+            .filter(cpu::Column::PopularRank.is_not_null())
+            .order_by_asc(cpu::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_cpus.order_by_desc(cpu::Column::ReleaseDate),
     };
     let db = db::create_db_connection().await?;

@@ -90,9 +90,9 @@ pub async fn search_power_supply(
     searched_power_supplies = match search_power_supply_parameter.sort_order {
         SortOrder::PriceAsc => searched_power_supplies.order_by_asc(power_supply::Column::Price),
         SortOrder::PriceDesc => searched_power_supplies.order_by_desc(power_supply::Column::Price),
-        SortOrder::RankAsc => {
-            searched_power_supplies.order_by_asc(power_supply::Column::PopularRank)
-        }
+        SortOrder::RankAsc => searched_power_supplies
+            .filter(power_supply::Column::PopularRank.is_not_null())
+            .order_by_asc(power_supply::Column::PopularRank),
         SortOrder::ReleaseDateDesc => {
             searched_power_supplies.order_by_desc(power_supply::Column::ReleaseDate)
         }

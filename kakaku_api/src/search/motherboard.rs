@@ -77,7 +77,9 @@ pub async fn search_motherboard(
     searched_motherboards = match search_motherboard_parameter.sort_order {
         SortOrder::PriceAsc => searched_motherboards.order_by_asc(motherboard::Column::Price),
         SortOrder::PriceDesc => searched_motherboards.order_by_desc(motherboard::Column::Price),
-        SortOrder::RankAsc => searched_motherboards.order_by_asc(motherboard::Column::PopularRank),
+        SortOrder::RankAsc => searched_motherboards
+            .filter(motherboard::Column::PopularRank.is_not_null())
+            .order_by_asc(motherboard::Column::PopularRank),
         SortOrder::ReleaseDateDesc => {
             searched_motherboards.order_by_desc(motherboard::Column::ReleaseDate)
         }

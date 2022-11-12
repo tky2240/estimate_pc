@@ -58,7 +58,7 @@ pub async fn search_case(
     searched_cases = match search_case_parameter.sort_order {
         SortOrder::PriceAsc => searched_cases.order_by_asc(case::Column::Price),
         SortOrder::PriceDesc => searched_cases.order_by_desc(case::Column::Price),
-        SortOrder::RankAsc => searched_cases.order_by_asc(case::Column::PopularRank),
+        SortOrder::RankAsc => searched_cases.filter(case::Column::PopularRank.is_not_null()).order_by_asc(case::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_cases.order_by_desc(case::Column::ReleaseDate),
     };
 

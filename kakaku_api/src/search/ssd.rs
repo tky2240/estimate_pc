@@ -63,7 +63,9 @@ pub async fn search_ssd(
     searched_ssds = match search_ssd_parameter.sort_order {
         SortOrder::PriceAsc => searched_ssds.order_by_asc(ssd::Column::Price),
         SortOrder::PriceDesc => searched_ssds.order_by_desc(ssd::Column::Price),
-        SortOrder::RankAsc => searched_ssds.order_by_asc(ssd::Column::PopularRank),
+        SortOrder::RankAsc => searched_ssds
+            .filter(ssd::Column::PopularRank.is_not_null())
+            .order_by_asc(ssd::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_ssds.order_by_desc(ssd::Column::ReleaseDate),
     };
     let db = db::create_db_connection().await?;

@@ -77,7 +77,7 @@ pub async fn search_memory(
     searched_memories = match search_memory_parameter.sort_order {
         SortOrder::PriceAsc => searched_memories.order_by_asc(memory::Column::Price),
         SortOrder::PriceDesc => searched_memories.order_by_desc(memory::Column::Price),
-        SortOrder::RankAsc => searched_memories.order_by_asc(memory::Column::PopularRank),
+        SortOrder::RankAsc => searched_memories.filter(memory::Column::PopularRank.is_not_null()).order_by_asc(memory::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_memories.order_by_desc(memory::Column::ReleaseDate),
     };
     let db = db::create_db_connection().await?;

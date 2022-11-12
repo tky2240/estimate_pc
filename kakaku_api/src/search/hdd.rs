@@ -59,7 +59,9 @@ pub async fn search_hdd(
     searched_hdds = match search_hdd_parameter.sort_order {
         SortOrder::PriceAsc => searched_hdds.order_by_asc(hdd::Column::Price),
         SortOrder::PriceDesc => searched_hdds.order_by_desc(hdd::Column::Price),
-        SortOrder::RankAsc => searched_hdds.order_by_asc(hdd::Column::PopularRank),
+        SortOrder::RankAsc => searched_hdds
+            .filter(hdd::Column::PopularRank.is_not_null())
+            .order_by_asc(hdd::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_hdds.order_by_desc(hdd::Column::ReleaseDate),
     };
     let db = db::create_db_connection().await?;

@@ -71,7 +71,9 @@ pub async fn search_cpu_cooler(
     searched_cpu_coolers = match search_cpu_cooler_parameter.sort_order {
         SortOrder::PriceAsc => searched_cpu_coolers.order_by_asc(cpu_cooler::Column::Price),
         SortOrder::PriceDesc => searched_cpu_coolers.order_by_desc(cpu_cooler::Column::Price),
-        SortOrder::RankAsc => searched_cpu_coolers.order_by_asc(cpu_cooler::Column::PopularRank),
+        SortOrder::RankAsc => searched_cpu_coolers
+            .filter(cpu_cooler::Column::PopularRank.is_not_null())
+            .order_by_asc(cpu_cooler::Column::PopularRank),
         SortOrder::ReleaseDateDesc => {
             searched_cpu_coolers.order_by_desc(cpu_cooler::Column::ReleaseDate)
         }

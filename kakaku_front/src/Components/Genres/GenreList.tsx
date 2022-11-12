@@ -23,6 +23,10 @@ import CpuCoolerPriceDisplay from './CpuCooler/CpuCoolerPriceDisplay';
 import MotherboardPriceDisplay from './Motherboard/MotherboardPriceDisplay';
 import MemoryPriceDisplay from './Memory/MemoryPriceDisplay';
 import GpuPriceDisplay from './Gpu/GpuPriceDisplay';
+import SsdPriceDisplay from './Ssd/SsdPriceDisplay';
+import HddPriceDisplay from './Hdd/HddPriceDisplay';
+import CasePriceDisplay from './Case/CasePriceDisplay';
+import PowerSupplyPriceDisplay from './PowerSupply/PowerSupplyPriceDisplay';
 import { PropaneSharp } from '@mui/icons-material';
 
 type Props = {
@@ -68,6 +72,14 @@ const GenreList = (props: Props) => {
                     <MemoryPriceDisplay ChangeTotalPrice={changeGenrePrice} />
                     <Divider />
                     <GpuPriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <SsdPriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <HddPriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <CasePriceDisplay ChangeTotalPrice={changeGenrePrice} />
+                    <Divider />
+                    <PowerSupplyPriceDisplay ChangeTotalPrice={changeGenrePrice} />
                 </List>
             </Paper>
 

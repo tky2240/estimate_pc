@@ -15,7 +15,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import CpuSearcher from './CpuCoolerSearcher';
+import CpuCoolerSearcher from './CpuCoolerSearcher';
 import CpuCoolerDescriptionList from './CpuCoolerDescriptionList';
 import { PartGenre } from "../GenreList"
 
@@ -79,7 +79,7 @@ const CpuCoolerPriceDisplay = (props: Props) => {
                 <DialogContent sx={{ width: '100%', height: "100%", }}>
                     <Grid container spacing={2} sx={{ width: '100%', height: "100%", display: "flex", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1, justifyContent: "center", alignContent: "center" }} wrap="wrap" >
                         <Grid xs={12} md={6} >
-                            <CpuSearcher ChangeCpuCoolerDescriptions={changeCpuCoolerDescriptions} />
+                            <CpuCoolerSearcher ChangeCpuCoolerDescriptions={changeCpuCoolerDescriptions} />
                         </Grid>
                         <Grid xs={12} md={6} >
                             <Paper sx={{ marginTop: 1 }}>

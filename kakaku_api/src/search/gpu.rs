@@ -71,7 +71,9 @@ pub async fn search_gpu(
     searched_gpus = match search_gpu_parameter.sort_order {
         SortOrder::PriceAsc => searched_gpus.order_by_asc(gpu::Column::Price),
         SortOrder::PriceDesc => searched_gpus.order_by_desc(gpu::Column::Price),
-        SortOrder::RankAsc => searched_gpus.order_by_asc(gpu::Column::PopularRank),
+        SortOrder::RankAsc => searched_gpus
+            .filter(gpu::Column::PopularRank.is_not_null())
+            .order_by_asc(gpu::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_gpus.order_by_desc(gpu::Column::ReleaseDate),
     };
     let db = db::create_db_connection().await?;
