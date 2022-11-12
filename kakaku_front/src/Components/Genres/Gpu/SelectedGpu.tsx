@@ -36,32 +36,32 @@ const SelectedGpu = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={12} md={6} display="flex" justifyContent="start" alignItems="center">
+                <Grid xs={12} sm={6} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         {`${props.GpuDescriptionAndCount.GpuDescription.maker_name} ${props.GpuDescriptionAndCount.GpuDescription.product_name} : ${props.GpuDescriptionAndCount.GpuDescription.price}円`}
                     </Typography>
                 </Grid>
-                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.ChangeCount(props.GpuDescriptionAndCount, props.GpuDescriptionAndCount.Count < 2 ? 1 : props.GpuDescriptionAndCount.Count - 1)}>
                         <Remove />
                     </IconButton>
                 </Grid>
-                <Grid xs={3} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={3} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ textAlign: "center", overflowWrap: "anywhere" }}>
                         {props.GpuDescriptionAndCount.Count}
                     </Typography>
                 </Grid>
-                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.ChangeCount(props.GpuDescriptionAndCount, props.GpuDescriptionAndCount.Count + 1)}>
                         <Add />
                     </IconButton>
                 </Grid>
-                <Grid xs={6} md={2} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={6} sm={2} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere", textAlign: "end" }}>
                         {props.GpuDescriptionAndCount.GpuDescription.price * props.GpuDescriptionAndCount.Count}円
                     </Typography>
                 </Grid>
-                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.DeleteGpuDescriptionAndCount(props.GpuDescriptionAndCount)}>
                         <Delete />
                     </IconButton>

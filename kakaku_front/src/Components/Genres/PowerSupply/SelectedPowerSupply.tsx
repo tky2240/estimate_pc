@@ -36,32 +36,32 @@ const SelectedPowerSupply = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={12} md={6} display="flex" justifyContent="start" alignItems="center">
+                <Grid xs={12} sm={6} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         {`${props.PowerSupplyDescriptionAndCount.PowerSupplyDescription.maker_name} ${props.PowerSupplyDescriptionAndCount.PowerSupplyDescription.product_name} : ${props.PowerSupplyDescriptionAndCount.PowerSupplyDescription.price}円`}
                     </Typography>
                 </Grid>
-                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.ChangeCount(props.PowerSupplyDescriptionAndCount, props.PowerSupplyDescriptionAndCount.Count < 2 ? 1 : props.PowerSupplyDescriptionAndCount.Count - 1)}>
                         <Remove />
                     </IconButton>
                 </Grid>
-                <Grid xs={3} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={3} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ textAlign: "center", overflowWrap: "anywhere" }}>
                         {props.PowerSupplyDescriptionAndCount.Count}
                     </Typography>
                 </Grid>
-                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.ChangeCount(props.PowerSupplyDescriptionAndCount, props.PowerSupplyDescriptionAndCount.Count + 1)}>
                         <Add />
                     </IconButton>
                 </Grid>
-                <Grid xs={6} md={2} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={6} sm={2} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere", textAlign: "end" }}>
                         {props.PowerSupplyDescriptionAndCount.PowerSupplyDescription.price * props.PowerSupplyDescriptionAndCount.Count}円
                     </Typography>
                 </Grid>
-                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.DeletePowerSupplyDescriptionAndCount(props.PowerSupplyDescriptionAndCount)}>
                         <Delete />
                     </IconButton>
