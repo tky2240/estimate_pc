@@ -36,32 +36,32 @@ const SelectedMemory = (props: Props) => {
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
-                <Grid xs={6} display="flex" justifyContent="start" alignItems="center">
+                <Grid xs={12} md={6} display="flex" justifyContent="start" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere" }} >
                         {`${props.MemoryDescriptionAndCount.MemoryDescription.maker_name} ${props.MemoryDescriptionAndCount.MemoryDescription.product_name} : ${props.MemoryDescriptionAndCount.MemoryDescription.price}円`}
                     </Typography>
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="start" alignItems="center">
+                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.ChangeCount(props.MemoryDescriptionAndCount, props.MemoryDescriptionAndCount.Count < 2 ? 1 : props.MemoryDescriptionAndCount.Count - 1)}>
                         <Remove />
                     </IconButton>
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={3} md={1} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ textAlign: "center", overflowWrap: "anywhere" }}>
                         {props.MemoryDescriptionAndCount.Count}
                     </Typography>
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="end" alignItems="center">
+                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.ChangeCount(props.MemoryDescriptionAndCount, props.MemoryDescriptionAndCount.Count + 1)}>
                         <Add />
                     </IconButton>
                 </Grid>
-                <Grid xs={2} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={6} md={2} display="flex" justifyContent="center" alignItems="center">
                     <Typography sx={{ overflowWrap: "anywhere", textAlign: "end" }}>
                         {props.MemoryDescriptionAndCount.MemoryDescription.price * props.MemoryDescriptionAndCount.Count}円
                     </Typography>
                 </Grid>
-                <Grid xs={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} md={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.DeleteMemoryDescriptionAndCount(props.MemoryDescriptionAndCount)}>
                         <Delete />
                     </IconButton>
