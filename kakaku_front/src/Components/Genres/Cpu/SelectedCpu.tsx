@@ -61,7 +61,7 @@ const SelectedCpu = (props: Props) => {
                         {props.CpuDescriptionAndCount.CpuDescription.price * props.CpuDescriptionAndCount.Count}円
                     </Typography>
                 </Grid>
-                <Grid sm={1} display="flex" justifyContent="center" alignItems="center">
+                <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.DeleteCpuDescriptionAndCount(props.CpuDescriptionAndCount)}>
                         <Delete />
                     </IconButton>
