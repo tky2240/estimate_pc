@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchHddParameter {
+    pub item_ids: Vec<String>,
     pub search_text: String,
     pub sort_order: SortOrder,
     pub maker_name: String,
@@ -31,6 +32,12 @@ pub async fn search_hdd(
         .split_whitespace()
         .collect();
     let mut searched_hdds = Hdd::find().filter(hdd::Column::IsExist.eq(true));
+
+    if !search_hdd_parameter.item_ids.is_empty() {
+        searched_hdds =
+            searched_hdds.filter(hdd::Column::ItemId.is_in(search_hdd_parameter.item_ids));
+    }
+
     let mut name_condition = Condition::any();
     for word in search_words {
         name_condition = name_condition.add(hdd::Column::Name.contains(word));

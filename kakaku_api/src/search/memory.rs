@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchMemoryParameter {
+    pub item_ids: Vec<String>,
     pub search_text: String,
     pub sort_order: SortOrder,
     pub maker_name: String,
@@ -34,6 +35,12 @@ pub async fn search_memory(
         .split_whitespace()
         .collect();
     let mut searched_memories = Memory::find().filter(memory::Column::IsExist.eq(true));
+
+    if !search_memory_parameter.item_ids.is_empty() {
+        searched_memories = searched_memories
+            .filter(memory::Column::ItemId.is_in(search_memory_parameter.item_ids));
+    }
+
     let mut name_condition = Condition::any();
     for word in search_words {
         name_condition = name_condition.add(memory::Column::Name.contains(word));
@@ -77,7 +84,9 @@ pub async fn search_memory(
     searched_memories = match search_memory_parameter.sort_order {
         SortOrder::PriceAsc => searched_memories.order_by_asc(memory::Column::Price),
         SortOrder::PriceDesc => searched_memories.order_by_desc(memory::Column::Price),
-        SortOrder::RankAsc => searched_memories.filter(memory::Column::PopularRank.is_not_null()).order_by_asc(memory::Column::PopularRank),
+        SortOrder::RankAsc => searched_memories
+            .filter(memory::Column::PopularRank.is_not_null())
+            .order_by_asc(memory::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_memories.order_by_desc(memory::Column::ReleaseDate),
     };
     let db = db::create_db_connection().await?;

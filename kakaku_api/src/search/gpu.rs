@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchGpuParameter {
+    pub item_ids: Vec<String>,
     pub search_text: String,
     pub sort_order: SortOrder,
     pub maker_name: String,
@@ -34,6 +35,12 @@ pub async fn search_gpu(
         .split_whitespace()
         .collect();
     let mut searched_gpus = Gpu::find().filter(gpu::Column::IsExist.eq(true));
+
+    if !search_gpu_parameter.item_ids.is_empty() {
+        searched_gpus =
+            searched_gpus.filter(gpu::Column::ItemId.is_in(search_gpu_parameter.item_ids));
+    }
+
     let mut name_condition = Condition::any();
     for word in search_words {
         name_condition = name_condition.add(gpu::Column::Name.contains(word));

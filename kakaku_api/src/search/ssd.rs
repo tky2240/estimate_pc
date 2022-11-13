@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchSsdParameter {
+    pub item_ids: Vec<String>,
     pub search_text: String,
     pub sort_order: SortOrder,
     pub maker_name: String,
@@ -32,6 +33,12 @@ pub async fn search_ssd(
         .split_whitespace()
         .collect();
     let mut searched_ssds = Ssd::find().filter(ssd::Column::IsExist.eq(true));
+
+    if !search_ssd_parameter.item_ids.is_empty() {
+        searched_ssds =
+            searched_ssds.filter(ssd::Column::ItemId.is_in(search_ssd_parameter.item_ids));
+    }
+
     let mut name_condition = Condition::any();
     for word in search_words {
         name_condition = name_condition.add(ssd::Column::Name.contains(word));

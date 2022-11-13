@@ -16,6 +16,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchCaseParameter {
+    pub item_ids: Vec<String>,
     pub search_text: String,
     pub sort_order: SortOrder,
     pub maker_name: String,
@@ -34,6 +35,12 @@ pub async fn search_case(
         .split_whitespace()
         .collect();
     let mut searched_cases = Case::find().filter(case::Column::IsExist.eq(true));
+
+    if !search_case_parameter.item_ids.is_empty() {
+        searched_cases =
+            searched_cases.filter(case::Column::ItemId.is_in(search_case_parameter.item_ids));
+    }
+
     let mut name_condition = Condition::any();
     for word in search_words {
         name_condition = name_condition.add(case::Column::Name.contains(word));
@@ -58,7 +65,9 @@ pub async fn search_case(
     searched_cases = match search_case_parameter.sort_order {
         SortOrder::PriceAsc => searched_cases.order_by_asc(case::Column::Price),
         SortOrder::PriceDesc => searched_cases.order_by_desc(case::Column::Price),
-        SortOrder::RankAsc => searched_cases.filter(case::Column::PopularRank.is_not_null()).order_by_asc(case::Column::PopularRank),
+        SortOrder::RankAsc => searched_cases
+            .filter(case::Column::PopularRank.is_not_null())
+            .order_by_asc(case::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_cases.order_by_desc(case::Column::ReleaseDate),
     };
 

@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub struct SearchMotherboardParameter {
+    pub item_ids: Vec<String>,
     pub search_text: String,
     pub sort_order: SortOrder,
     pub maker_name: String,
@@ -34,6 +35,12 @@ pub async fn search_motherboard(
         .collect();
     let mut searched_motherboards =
         Motherboard::find().filter(motherboard::Column::IsExist.eq(true));
+
+    if !search_motherboard_parameter.item_ids.is_empty() {
+        searched_motherboards = searched_motherboards
+            .filter(motherboard::Column::ItemId.is_in(search_motherboard_parameter.item_ids));
+    }
+
     let mut name_condition = Condition::any();
     for word in search_words {
         name_condition = name_condition.add(motherboard::Column::Name.contains(word));
