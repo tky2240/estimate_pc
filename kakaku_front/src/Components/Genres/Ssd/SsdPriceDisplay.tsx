@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import SsdSearcher from './SsdSearcher';
+import SsdSearcher, { SearchSsd, SearchSsdParameter } from './SsdSearcher';
 import SsdDescriptionList from './SsdDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const SsdPriceDisplay = (props: Props) => {
@@ -38,19 +43,71 @@ const SsdPriceDisplay = (props: Props) => {
         setSsdDescriptions([]);
     };
     const [ssdDescriptionAndCounts, setSsdDescriptionAndCounts] = useState<(SsdDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).Ssd as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedSsdParameter: SearchSsdParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    capacity: 0,
+                    interface: "",
+                    tbw: null,
+                    sort_order: "PriceAsc",
+                };
+                const searchedSsdDescriptions = await SearchSsd(searedSsdParameter);
+                setSsdDescriptionAndCounts(searchedSsdDescriptions.map(
+                    (searchedSsdDescription): SsdDescriptionAndCount => (
+                        {
+                            SsdDescription: searchedSsdDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedSsdDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteSsdDescriptionAndCount = (ssdDescriptionAndCount: SsdDescriptionAndCount) => {
-        setSsdDescriptionAndCounts(ssdDescriptionAndCounts.filter((currentSsdDescriptionAndCount) => currentSsdDescriptionAndCount !== ssdDescriptionAndCount));
+        setSsdDescriptionAndCounts([...ssdDescriptionAndCounts.filter((currentSsdDescriptionAndCount) => currentSsdDescriptionAndCount !== ssdDescriptionAndCount)]);
     };
     const addSsdDescriptionAndCount = (ssdDescription: SsdDescription) => {
         setSsdDescriptionAndCounts([...ssdDescriptionAndCounts, { SsdDescription: ssdDescription, Count: 1 }]);
         handleDialogOpen();
     };
-    const changeSsdDescriptionAndCountCount = (ssdDescriptionAndCount: SsdDescriptionAndCount, count: number) => {
-        setSsdDescriptionAndCounts(ssdDescriptionAndCounts.map((currentSsdDescriptionAndCount) => currentSsdDescriptionAndCount === ssdDescriptionAndCount ? { ...currentSsdDescriptionAndCount, Count: count } : currentSsdDescriptionAndCount));
+    const changeSsdDescriptionAndCount = (ssdDescriptionAndCount: SsdDescriptionAndCount, count: number) => {
+        setSsdDescriptionAndCounts([...ssdDescriptionAndCounts.map((currentSsdDescriptionAndCount) => currentSsdDescriptionAndCount === ssdDescriptionAndCount ? { ...currentSsdDescriptionAndCount, Count: count } : currentSsdDescriptionAndCount)]);
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Ssd", ssdDescriptionAndCounts.reduce((total, ssdDescriptionAndCount) => total + ssdDescriptionAndCount.SsdDescription.price * ssdDescriptionAndCount.Count, 0));
-        console.log(ssdDescriptionAndCounts.reduce((total, ssdDescriptionAndCount) => total + ssdDescriptionAndCount.SsdDescription.price * ssdDescriptionAndCount.Count, 0));
+        const genreSummary: GenreSummary = {
+            Genre: "Ssd",
+            ItemShortDescriptions: ssdDescriptionAndCounts.map(
+                (ssdDescriptionAndCount): ItemShortDescription => ({ item_id: ssdDescriptionAndCount.SsdDescription.item_id, price: ssdDescriptionAndCount.SsdDescription.price, count: ssdDescriptionAndCount.Count }
+                ))
+        };
+        props.ChangeGenreSummary(genreSummary);
     }, [ssdDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>
@@ -62,7 +119,7 @@ const SsdPriceDisplay = (props: Props) => {
                 <Stack spacing={0} sx={{ alignItems: "center", justifyItems: "center" }}>
                     <Divider />
                     {ssdDescriptionAndCounts.map((ssdDescriptionAndCount) =>
-                        <SelectedSsd SsdDescriptionAndCount={ssdDescriptionAndCount} DeleteSsdDescriptionAndCount={deleteSsdDescriptionAndCount} ChangeCount={changeSsdDescriptionAndCountCount} />
+                        <SelectedSsd SsdDescriptionAndCount={ssdDescriptionAndCount} DeleteSsdDescriptionAndCount={deleteSsdDescriptionAndCount} ChangeCount={changeSsdDescriptionAndCount} />
                     )}
                 </Stack>
                 <Divider sx={{ paddingTop: 2 }} />

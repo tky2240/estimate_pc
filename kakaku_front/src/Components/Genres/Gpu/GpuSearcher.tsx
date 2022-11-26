@@ -22,6 +22,7 @@ type Props = {
 
 const GpuSearcher = (props: Props) => {
     const [searchGpuParameter, setSearchGpuParameter] = useState<SearchGpuParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         chip_name: " ",
@@ -295,7 +296,8 @@ const GpuSearcher = (props: Props) => {
 }
 export default GpuSearcher;
 
-type SearchGpuParameter = {
+export type SearchGpuParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -308,8 +310,7 @@ type SearchGpuParameter = {
     max_price: number | null;
 }
 
-const SearchGpu = async (searchGpuParameter: SearchGpuParameter): Promise<GpuDescription[]> => {
-
+export const SearchGpu = async (searchGpuParameter: SearchGpuParameter): Promise<GpuDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(urlJoin(urlBase, "gpu"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchGpuParameter) });

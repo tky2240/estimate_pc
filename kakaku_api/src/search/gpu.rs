@@ -36,7 +36,8 @@ pub async fn search_gpu(
         .collect();
     let mut searched_gpus = Gpu::find().filter(gpu::Column::IsExist.eq(true));
 
-    if !search_gpu_parameter.item_ids.is_empty() {
+    let is_empty_item_ids = search_gpu_parameter.item_ids.is_empty();
+    if !is_empty_item_ids {
         searched_gpus =
             searched_gpus.filter(gpu::Column::ItemId.is_in(search_gpu_parameter.item_ids));
     }
@@ -59,8 +60,10 @@ pub async fn search_gpu(
         searched_gpus = searched_gpus
             .filter(gpu::Column::GpuMemoryCapacity.gte(search_gpu_parameter.gpu_memory_capacity))
     }
-    searched_gpus =
-        searched_gpus.filter(gpu::Column::IsLowProfile.eq(search_gpu_parameter.is_low_profile));
+    if is_empty_item_ids {
+        searched_gpus =
+            searched_gpus.filter(gpu::Column::IsLowProfile.eq(search_gpu_parameter.is_low_profile));
+    }
     if !search_gpu_parameter.cooling_solution.trim().is_empty() {
         searched_gpus = searched_gpus
             .filter(gpu::Column::CoolingSolution.eq(search_gpu_parameter.cooling_solution.trim()));

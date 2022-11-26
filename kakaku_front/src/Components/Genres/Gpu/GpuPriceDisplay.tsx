@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import GpuSearcher from './GpuSearcher';
+import GpuSearcher, { SearchGpu, SearchGpuParameter } from './GpuSearcher';
 import GpuDescriptionList from './GpuDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const GpuPriceDisplay = (props: Props) => {
@@ -38,6 +43,55 @@ const GpuPriceDisplay = (props: Props) => {
         setGpuDescriptions([]);
     };
     const [gpuDescriptionAndCounts, setGpuDescriptionAndCounts] = useState<(GpuDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).Gpu as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedGpuParameter: SearchGpuParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    chip_name: "",
+                    cooling_solution: "",
+                    gpu_memory_capacity: 0,
+                    is_low_profile: false,
+                    max_tdp: null,
+                    sort_order: "PriceAsc",
+                };
+                const searchedGpuDescriptions = await SearchGpu(searedGpuParameter);
+                setGpuDescriptionAndCounts(searchedGpuDescriptions.map(
+                    (searchedGpuDescription): GpuDescriptionAndCount => (
+                        {
+                            GpuDescription: searchedGpuDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedGpuDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteGpuDescriptionAndCount = (gpuDescriptionAndCount: GpuDescriptionAndCount) => {
         setGpuDescriptionAndCounts(gpuDescriptionAndCounts.filter((currentGpuDescriptionAndCount) => currentGpuDescriptionAndCount !== gpuDescriptionAndCount));
     };
@@ -49,8 +103,12 @@ const GpuPriceDisplay = (props: Props) => {
         setGpuDescriptionAndCounts(gpuDescriptionAndCounts.map((currentGpuDescriptionAndCount) => currentGpuDescriptionAndCount === gpuDescriptionAndCount ? { ...currentGpuDescriptionAndCount, Count: count } : currentGpuDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Gpu", gpuDescriptionAndCounts.reduce((total, gpuDescriptionAndCount) => total + gpuDescriptionAndCount.GpuDescription.price * gpuDescriptionAndCount.Count, 0));
-        console.log(gpuDescriptionAndCounts.reduce((total, gpuDescriptionAndCount) => total + gpuDescriptionAndCount.GpuDescription.price * gpuDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "Gpu",
+            ItemShortDescriptions: gpuDescriptionAndCounts.map(
+                (gpuDescriptionAndCount): ItemShortDescription => ({ item_id: gpuDescriptionAndCount.GpuDescription.item_id, price: gpuDescriptionAndCount.GpuDescription.price, count: gpuDescriptionAndCount.Count }
+                ))
+        });
     }, [gpuDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>

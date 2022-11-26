@@ -22,6 +22,7 @@ type Props = {
 
 const CaseSearcher = (props: Props) => {
     const [searchCaseParameter, setSearchCaseParameter] = useState<SearchCaseParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         form_factor: " ",
@@ -213,7 +214,8 @@ const CaseSearcher = (props: Props) => {
 }
 export default CaseSearcher;
 
-type SearchCaseParameter = {
+export type SearchCaseParameter = {
+    item_ids: string[]
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -223,7 +225,7 @@ type SearchCaseParameter = {
     max_price: number | null;
 }
 
-const SearchCase = async (searchCaseParameter: SearchCaseParameter): Promise<CaseDescription[]> => {
+export const SearchCase = async (searchCaseParameter: SearchCaseParameter): Promise<CaseDescription[]> => {
 
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";

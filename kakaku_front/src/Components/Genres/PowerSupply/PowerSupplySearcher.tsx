@@ -20,6 +20,7 @@ type Props = {
 
 const PowerSupplySearcher = (props: Props) => {
     const [searchPowerSupplyParameter, setSearchPowerSupplyParameter] = useState<SearchPowerSupplyParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         form_factor: " ",
@@ -226,7 +227,8 @@ const PowerSupplySearcher = (props: Props) => {
 }
 export default PowerSupplySearcher;
 
-type SearchPowerSupplyParameter = {
+export type SearchPowerSupplyParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -239,8 +241,7 @@ type SearchPowerSupplyParameter = {
     max_price: number | null;
 }
 
-const SearchPowerSupply = async (searchPowerSupplyParameter: SearchPowerSupplyParameter): Promise<PowerSupplyDescription[]> => {
-
+export const SearchPowerSupply = async (searchPowerSupplyParameter: SearchPowerSupplyParameter): Promise<PowerSupplyDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(urlJoin(urlBase, "power_supply"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchPowerSupplyParameter) });

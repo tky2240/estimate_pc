@@ -20,6 +20,7 @@ type Props = {
 
 const CpuCoolerSearcher = (props: Props) => {
     const [searchCpuCoolerParameter, setSearchCpuCoolerParameter] = useState<SearchCpuCoolerParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         socket_name: " ",
@@ -277,7 +278,8 @@ const CpuCoolerSearcher = (props: Props) => {
 }
 export default CpuCoolerSearcher;
 
-type SearchCpuCoolerParameter = {
+export type SearchCpuCoolerParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -289,8 +291,7 @@ type SearchCpuCoolerParameter = {
     max_price: number | null;
 }
 
-const SearchCpuCooler = async (searchCpuCoolerParameter: SearchCpuCoolerParameter): Promise<CpuCoolerDescription[]> => {
-
+export const SearchCpuCooler = async (searchCpuCoolerParameter: SearchCpuCoolerParameter): Promise<CpuCoolerDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(urlJoin(urlBase, "cpu_cooler"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuCoolerParameter) });

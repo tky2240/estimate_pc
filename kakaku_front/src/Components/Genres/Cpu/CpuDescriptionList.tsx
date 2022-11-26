@@ -3,7 +3,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { ListChildComponentProps, FixedSizeList } from 'react-window';
-import { CpuDescription } from './CpuPriceDisplay'
+import { CpuDescription } from './CpuPriceDisplay';
 
 type Props = {
     CpuDescriptions: CpuDescription[];

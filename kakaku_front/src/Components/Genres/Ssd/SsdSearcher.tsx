@@ -20,6 +20,7 @@ type Props = {
 
 const SsdSearcher = (props: Props) => {
     const [searchSsdParameter, setSearchSsdParameter] = useState<SearchSsdParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         capacity: 0,
@@ -218,7 +219,8 @@ const SsdSearcher = (props: Props) => {
 }
 export default SsdSearcher;
 
-type SearchSsdParameter = {
+export type SearchSsdParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -229,8 +231,7 @@ type SearchSsdParameter = {
     max_price: number | null;
 }
 
-const SearchSsd = async (searchSsdParameter: SearchSsdParameter): Promise<SsdDescription[]> => {
-
+export const SearchSsd = async (searchSsdParameter: SearchSsdParameter): Promise<SsdDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(urlJoin(urlBase, "ssd"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchSsdParameter) });

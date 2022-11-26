@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import HddSearcher from './HddSearcher';
+import HddSearcher, { SearchHdd, SearchHddParameter } from './HddSearcher';
 import HddDescriptionList from './HddDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const HddPriceDisplay = (props: Props) => {
@@ -38,6 +43,52 @@ const HddPriceDisplay = (props: Props) => {
         setHddDescriptions([]);
     };
     const [hddDescriptionAndCounts, setHddDescriptionAndCounts] = useState<(HddDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).Hdd as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedHddParameter: SearchHddParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    capacity: 0,
+                    write_style: "",
+                    sort_order: "PriceAsc",
+                };
+                const searchedHddDescriptions = await SearchHdd(searedHddParameter);
+                setHddDescriptionAndCounts(searchedHddDescriptions.map(
+                    (searchedHddDescription): HddDescriptionAndCount => (
+                        {
+                            HddDescription: searchedHddDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedHddDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteHddDescriptionAndCount = (hddDescriptionAndCount: HddDescriptionAndCount) => {
         setHddDescriptionAndCounts(hddDescriptionAndCounts.filter((currentHddDescriptionAndCount) => currentHddDescriptionAndCount !== hddDescriptionAndCount));
     };
@@ -49,8 +100,12 @@ const HddPriceDisplay = (props: Props) => {
         setHddDescriptionAndCounts(hddDescriptionAndCounts.map((currentHddDescriptionAndCount) => currentHddDescriptionAndCount === hddDescriptionAndCount ? { ...currentHddDescriptionAndCount, Count: count } : currentHddDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Hdd", hddDescriptionAndCounts.reduce((total, hddDescriptionAndCount) => total + hddDescriptionAndCount.HddDescription.price * hddDescriptionAndCount.Count, 0));
-        console.log(hddDescriptionAndCounts.reduce((total, hddDescriptionAndCount) => total + hddDescriptionAndCount.HddDescription.price * hddDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "Hdd",
+            ItemShortDescriptions: hddDescriptionAndCounts.map(
+                (hddDescriptionAndCount): ItemShortDescription => ({ item_id: hddDescriptionAndCount.HddDescription.item_id, price: hddDescriptionAndCount.HddDescription.price, count: hddDescriptionAndCount.Count }
+                ))
+        });
     }, [hddDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>

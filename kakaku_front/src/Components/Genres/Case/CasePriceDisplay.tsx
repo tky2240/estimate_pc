@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import CaseSearcher from './CaseSearcher';
+import CaseSearcher, { SearchCase, SearchCaseParameter } from './CaseSearcher';
 import CaseDescriptionList from './CaseDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const CasePriceDisplay = (props: Props) => {
@@ -38,6 +43,53 @@ const CasePriceDisplay = (props: Props) => {
         setCaseDescriptions([]);
     };
     const [caseDescriptionAndCounts, setCaseDescriptionAndCounts] = useState<(CaseDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).Case as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedCaseParameter: SearchCaseParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    form_factor: "",
+                    is_low_profile: false,
+                    sort_order: "PriceAsc",
+                };
+                const searchedCaseDescriptions = await SearchCase(searedCaseParameter);
+                setCaseDescriptionAndCounts(searchedCaseDescriptions.map(
+                    (searchedCaseDescription): CaseDescriptionAndCount => (
+                        {
+                            CaseDescription: searchedCaseDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedCaseDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteCaseDescriptionAndCount = (caseDescriptionAndCount: CaseDescriptionAndCount) => {
         setCaseDescriptionAndCounts(caseDescriptionAndCounts.filter((currentCaseDescriptionAndCount) => currentCaseDescriptionAndCount !== caseDescriptionAndCount));
     };
@@ -45,12 +97,16 @@ const CasePriceDisplay = (props: Props) => {
         setCaseDescriptionAndCounts([...caseDescriptionAndCounts, { CaseDescription: caseDescription, Count: 1 }]);
         handleDialogOpen();
     };
-    const changeCaseDescriptionAndCountCount = (caseDescriptionAndCount: CaseDescriptionAndCount, count: number) => {
+    const changeCaseDescriptionAndCount = (caseDescriptionAndCount: CaseDescriptionAndCount, count: number) => {
         setCaseDescriptionAndCounts(caseDescriptionAndCounts.map((currentCaseDescriptionAndCount) => currentCaseDescriptionAndCount === caseDescriptionAndCount ? { ...currentCaseDescriptionAndCount, Count: count } : currentCaseDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Case", caseDescriptionAndCounts.reduce((total, caseDescriptionAndCount) => total + caseDescriptionAndCount.CaseDescription.price * caseDescriptionAndCount.Count, 0));
-        console.log(caseDescriptionAndCounts.reduce((total, caseDescriptionAndCount) => total + caseDescriptionAndCount.CaseDescription.price * caseDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "Case",
+            ItemShortDescriptions: caseDescriptionAndCounts.map(
+                (caseDescriptionAndCount): ItemShortDescription => ({ item_id: caseDescriptionAndCount.CaseDescription.item_id, price: caseDescriptionAndCount.CaseDescription.price, count: caseDescriptionAndCount.Count }
+                ))
+        });
     }, [caseDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%", height: "100%" }}>
@@ -62,7 +118,7 @@ const CasePriceDisplay = (props: Props) => {
                 <Stack spacing={0} sx={{ alignItems: "center", justifyItems: "center" }}>
                     <Divider />
                     {caseDescriptionAndCounts.map((caseDescriptionAndCount) =>
-                        <SelectedCase CaseDescriptionAndCount={caseDescriptionAndCount} DeleteCaseDescriptionAndCount={deleteCaseDescriptionAndCount} ChangeCount={changeCaseDescriptionAndCountCount} />
+                        <SelectedCase CaseDescriptionAndCount={caseDescriptionAndCount} DeleteCaseDescriptionAndCount={deleteCaseDescriptionAndCount} ChangeCount={changeCaseDescriptionAndCount} />
                     )}
                 </Stack>
                 <Divider sx={{ paddingTop: 2 }} />

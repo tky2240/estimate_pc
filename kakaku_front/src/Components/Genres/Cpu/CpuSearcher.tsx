@@ -20,6 +20,7 @@ type Props = {
 
 const CpuSearcher = (props: Props) => {
     const [searchCpuParameter, setSearchCpuParameter] = useState<SearchCpuParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         socket_name: " ",
@@ -159,7 +160,8 @@ const CpuSearcher = (props: Props) => {
 }
 export default CpuSearcher;
 
-type SearchCpuParameter = {
+export type SearchCpuParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -168,7 +170,7 @@ type SearchCpuParameter = {
     max_price: number | null;
 }
 
-const SearchCpu = async (searchCpuParameter: SearchCpuParameter): Promise<CpuDescription[]> => {
+export const SearchCpu = async (searchCpuParameter: SearchCpuParameter): Promise<CpuDescription[]> => {
 
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";

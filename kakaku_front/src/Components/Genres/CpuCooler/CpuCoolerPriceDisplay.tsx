@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import CpuCoolerSearcher from './CpuCoolerSearcher';
+import CpuCoolerSearcher, { SearchCpuCooler, SearchCpuCoolerParameter } from './CpuCoolerSearcher';
 import CpuCoolerDescriptionList from './CpuCoolerDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const CpuCoolerPriceDisplay = (props: Props) => {
@@ -38,6 +43,54 @@ const CpuCoolerPriceDisplay = (props: Props) => {
         setCpuCoolerDescriptions([]);
     };
     const [cpuCoolerDescriptionAndCounts, setCpuCoolerDescriptionAndCounts] = useState<(CpuCoolerDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).CpuCooler as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedCpuCoolerParameter: SearchCpuCoolerParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    socket_name: "",
+                    air_flow_type: "",
+                    height: null,
+                    max_tdp: null,
+                    sort_order: "PriceAsc",
+                };
+                const searchedCpuCoolerDescriptions = await SearchCpuCooler(searedCpuCoolerParameter);
+                setCpuCoolerDescriptionAndCounts(searchedCpuCoolerDescriptions.map(
+                    (searchedCpuCoolerDescription): CpuCoolerDescriptionAndCount => (
+                        {
+                            CpuCoolerDescription: searchedCpuCoolerDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedCpuCoolerDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteCpuCoolerDescriptionAndCount = (cpuCoolerDescriptionAndCount: CpuCoolerDescriptionAndCount) => {
         setCpuCoolerDescriptionAndCounts(cpuCoolerDescriptionAndCounts.filter((currentCpuCoolerDescriptionAndCount) => currentCpuCoolerDescriptionAndCount !== cpuCoolerDescriptionAndCount));
     };
@@ -49,8 +102,12 @@ const CpuCoolerPriceDisplay = (props: Props) => {
         setCpuCoolerDescriptionAndCounts(cpuCoolerDescriptionAndCounts.map((currentCpuCoolerDescriptionAndCount) => currentCpuCoolerDescriptionAndCount === cpuCoolerDescriptionAndCount ? { ...currentCpuCoolerDescriptionAndCount, Count: count } : currentCpuCoolerDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("CpuCooler", cpuCoolerDescriptionAndCounts.reduce((total, cpuCoolerDescriptionAndCount) => total + cpuCoolerDescriptionAndCount.CpuCoolerDescription.price * cpuCoolerDescriptionAndCount.Count, 0));
-        console.log(cpuCoolerDescriptionAndCounts.reduce((total, cpuCoolerDescriptionAndCount) => total + cpuCoolerDescriptionAndCount.CpuCoolerDescription.price * cpuCoolerDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "CpuCooler",
+            ItemShortDescriptions: cpuCoolerDescriptionAndCounts.map(
+                (cpuCoolerDescriptionAndCount): ItemShortDescription => ({ item_id: cpuCoolerDescriptionAndCount.CpuCoolerDescription.item_id, price: cpuCoolerDescriptionAndCount.CpuCoolerDescription.price, count: cpuCoolerDescriptionAndCount.Count }
+                ))
+        });
     }, [cpuCoolerDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%", height: "100%" }}>

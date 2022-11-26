@@ -20,6 +20,7 @@ type Props = {
 
 const MotherboardSearcher = (props: Props) => {
     const [searchMotherboardParameter, setSearchMotherboardParameter] = useState<SearchMotherboardParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         chipset: " ",
@@ -293,7 +294,8 @@ const MotherboardSearcher = (props: Props) => {
 }
 export default MotherboardSearcher;
 
-type SearchMotherboardParameter = {
+export type SearchMotherboardParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -305,8 +307,7 @@ type SearchMotherboardParameter = {
     max_price: number | null;
 }
 
-const SearchMotherboard = async (searchMotherboardParameter: SearchMotherboardParameter): Promise<MotherboardDescription[]> => {
-
+export const SearchMotherboard = async (searchMotherboardParameter: SearchMotherboardParameter): Promise<MotherboardDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(urlJoin(urlBase, "motherboard"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchMotherboardParameter) });

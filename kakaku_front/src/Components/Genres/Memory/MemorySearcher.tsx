@@ -20,6 +20,7 @@ type Props = {
 
 const MemorySearcher = (props: Props) => {
     const [searchMemoryParameter, setSearchMemoryParameter] = useState<SearchMemoryParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         capacity_per_module: 0,
@@ -275,7 +276,8 @@ const MemorySearcher = (props: Props) => {
 }
 export default MemorySearcher;
 
-type SearchMemoryParameter = {
+export type SearchMemoryParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -288,8 +290,7 @@ type SearchMemoryParameter = {
     max_price: number | null;
 }
 
-const SearchMemory = async (searchMemoryParameter: SearchMemoryParameter): Promise<MemoryDescription[]> => {
-
+export const SearchMemory = async (searchMemoryParameter: SearchMemoryParameter): Promise<MemoryDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(urlJoin(urlBase, "memory"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchMemoryParameter) });

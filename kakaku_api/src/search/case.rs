@@ -35,8 +35,8 @@ pub async fn search_case(
         .split_whitespace()
         .collect();
     let mut searched_cases = Case::find().filter(case::Column::IsExist.eq(true));
-
-    if !search_case_parameter.item_ids.is_empty() {
+    let is_empty_item_ids = search_case_parameter.item_ids.is_empty();
+    if !is_empty_item_ids {
         searched_cases =
             searched_cases.filter(case::Column::ItemId.is_in(search_case_parameter.item_ids));
     }
@@ -51,10 +51,10 @@ pub async fn search_case(
         searched_cases = searched_cases
             .filter(case::Column::MakerName.eq(search_case_parameter.maker_name.trim()));
     }
-
-    searched_cases =
-        searched_cases.filter(case::Column::IsLowProfile.eq(search_case_parameter.is_low_profile));
-
+    if is_empty_item_ids {
+        searched_cases = searched_cases
+            .filter(case::Column::IsLowProfile.eq(search_case_parameter.is_low_profile));
+    }
     if let Some(max_price) = search_case_parameter.max_price {
         searched_cases = searched_cases.filter(case::Column::Price.lte(max_price));
     }

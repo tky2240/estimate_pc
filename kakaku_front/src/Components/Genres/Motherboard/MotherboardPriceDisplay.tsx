@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import MotherboardSearcher from './MotherboardSearcher';
+import MotherboardSearcher, { SearchMotherboard, SearchMotherboardParameter } from './MotherboardSearcher';
 import MotherboardDescriptionList from './MotherboardDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const MotherboardPriceDisplay = (props: Props) => {
@@ -38,6 +43,54 @@ const MotherboardPriceDisplay = (props: Props) => {
         setMotherboardDescriptions([]);
     };
     const [motherboardDescriptionAndCounts, setMotherboardDescriptionAndCounts] = useState<(MotherboardDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).Motherboard as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedMotherboardParameter: SearchMotherboardParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    socket_name: "",
+                    chipset: "",
+                    form_factor: "",
+                    memory_type: "",
+                    sort_order: "PriceAsc",
+                };
+                const searchedMotherboardDescriptions = await SearchMotherboard(searedMotherboardParameter);
+                setMotherboardDescriptionAndCounts(searchedMotherboardDescriptions.map(
+                    (searchedMotherboardDescription): MotherboardDescriptionAndCount => (
+                        {
+                            MotherboardDescription: searchedMotherboardDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedMotherboardDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteMotherboardDescriptionAndCount = (motherboardDescriptionAndCount: MotherboardDescriptionAndCount) => {
         setMotherboardDescriptionAndCounts(motherboardDescriptionAndCounts.filter((currentMotherboardDescriptionAndCount) => currentMotherboardDescriptionAndCount !== motherboardDescriptionAndCount));
     };
@@ -49,8 +102,12 @@ const MotherboardPriceDisplay = (props: Props) => {
         setMotherboardDescriptionAndCounts(motherboardDescriptionAndCounts.map((currentMotherboardDescriptionAndCount) => currentMotherboardDescriptionAndCount === motherboardDescriptionAndCount ? { ...currentMotherboardDescriptionAndCount, Count: count } : currentMotherboardDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Motherboard", motherboardDescriptionAndCounts.reduce((total, motherboardDescriptionAndCount) => total + motherboardDescriptionAndCount.MotherboardDescription.price * motherboardDescriptionAndCount.Count, 0));
-        console.log(motherboardDescriptionAndCounts.reduce((total, motherboardDescriptionAndCount) => total + motherboardDescriptionAndCount.MotherboardDescription.price * motherboardDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "Motherboard",
+            ItemShortDescriptions: motherboardDescriptionAndCounts.map(
+                (motherboardDescriptionAndCount): ItemShortDescription => ({ item_id: motherboardDescriptionAndCount.MotherboardDescription.item_id, price: motherboardDescriptionAndCount.MotherboardDescription.price, count: motherboardDescriptionAndCount.Count }
+                ))
+        });
     }, [motherboardDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>

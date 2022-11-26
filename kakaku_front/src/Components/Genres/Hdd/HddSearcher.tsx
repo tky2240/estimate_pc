@@ -20,6 +20,7 @@ type Props = {
 
 const HddSearcher = (props: Props) => {
     const [searchHddParameter, setSearchHddParameter] = useState<SearchHddParameter>({
+        item_ids: [],
         search_text: "",
         maker_name: " ",
         capacity: 0,
@@ -175,7 +176,8 @@ const HddSearcher = (props: Props) => {
 }
 export default HddSearcher;
 
-type SearchHddParameter = {
+export type SearchHddParameter = {
+    item_ids: string[];
     search_text: string;
     sort_order: SortOrder;
     maker_name: string;
@@ -185,8 +187,7 @@ type SearchHddParameter = {
     max_price: number | null;
 }
 
-const SearchHdd = async (searchHddParameter: SearchHddParameter): Promise<HddDescription[]> => {
-
+export const SearchHdd = async (searchHddParameter: SearchHddParameter): Promise<HddDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(urlJoin(urlBase, "hdd"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchHddParameter) });

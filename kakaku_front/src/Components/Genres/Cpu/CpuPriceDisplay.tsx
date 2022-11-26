@@ -15,15 +15,16 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import CpuSearcher from './CpuSearcher';
+import CpuSearcher, { SearchCpu, SearchCpuParameter } from './CpuSearcher';
 import CpuDescriptionList from './CpuDescriptionList';
-import { PartGenre } from "../GenreList";
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const CpuPriceDisplay = (props: Props) => {
@@ -40,24 +41,75 @@ const CpuPriceDisplay = (props: Props) => {
         setIsDialogOpen(!isDialogOpen);
         setCpuDescriptions([]);
     };
-    const location = useLocation();
-    //const parsed = JSON.parse(Buffer.from(queryString.parse(location.search).Cpu as string, 'base64').toString()) as CpuDescriptionAndCount[];
     const [cpuDescriptionAndCounts, setCpuDescriptionAndCounts] = useState<(CpuDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                //const itemIdAndCounts = JSON.parse(Buffer.from(queryString.parse(location.search).Cpu as string, 'base64').toString()) as ItemIDAndCount[];
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).Cpu as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedCpuParameter: SearchCpuParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    socket_name: "",
+                    sort_order: "PriceAsc",
+                };
+                const searchedCpuDescriptions = await SearchCpu(searedCpuParameter);
+                setCpuDescriptionAndCounts(searchedCpuDescriptions.map(
+                    (searchedCpuDescription): CpuDescriptionAndCount => (
+                        {
+                            CpuDescription: searchedCpuDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedCpuDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteCpuDescriptionAndCount = (cpuDescriptionAndCount: CpuDescriptionAndCount) => {
         setCpuDescriptionAndCounts(cpuDescriptionAndCounts.filter((currentCpuDescriptionAndCount) => currentCpuDescriptionAndCount !== cpuDescriptionAndCount));
     };
     const addCpuDescriptionAndCount = (cpuDescription: CpuDescription) => {
         setCpuDescriptionAndCounts([...cpuDescriptionAndCounts, { CpuDescription: cpuDescription, Count: 1 }]);
         handleDialogOpen();
+        console.log(JSON.stringify(cpuDescriptionAndCounts));
     };
     const changeCpuDescriptionAndCountCount = (cpuDescriptionAndCount: CpuDescriptionAndCount, count: number) => {
         setCpuDescriptionAndCounts(cpuDescriptionAndCounts.map((currentCpuDescriptionAndCount) => currentCpuDescriptionAndCount === cpuDescriptionAndCount ? { ...currentCpuDescriptionAndCount, Count: count } : currentCpuDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Cpu", cpuDescriptionAndCounts.reduce((total, cpuDescriptionAndCount) => total + cpuDescriptionAndCount.CpuDescription.price * cpuDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "Cpu",
+            ItemShortDescriptions: cpuDescriptionAndCounts.map(
+                (cpuDescriptionAndCount): ItemShortDescription => ({ item_id: cpuDescriptionAndCount.CpuDescription.item_id, price: cpuDescriptionAndCount.CpuDescription.price, count: cpuDescriptionAndCount.Count }
+                ))
+        });
+        console.log(cpuDescriptionAndCounts);
         //console.log(cpuDescriptionAndCounts.reduce((total, cpuDescriptionAndCount) => total + cpuDescriptionAndCount.CpuDescription.price * cpuDescriptionAndCount.Count, 0));
-        console.log(JSON.stringify(cpuDescriptionAndCounts));
-    }, [cpuDescriptionAndCounts]);
+        //console.log(JSON.stringify(cpuDescriptionAndCounts));
+    }, cpuDescriptionAndCounts);
     return (
         <Box sx={{ width: "100%" }}>
             <ListItemButton onClick={genreClick}>

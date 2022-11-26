@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import PowerSupplySearcher from './PowerSupplySearcher';
+import PowerSupplySearcher, { SearchPowerSupply, SearchPowerSupplyParameter } from './PowerSupplySearcher';
 import PowerSupplyDescriptionList from './PowerSupplyDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const PowerSupplyPriceDisplay = (props: Props) => {
@@ -38,6 +43,55 @@ const PowerSupplyPriceDisplay = (props: Props) => {
         setPowerSupplyDescriptions([]);
     };
     const [powerSupplyDescriptionAndCounts, setPowerSupplyDescriptionAndCounts] = useState<(PowerSupplyDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).PowerSupply as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedPowerSupplyParameter: SearchPowerSupplyParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    capacity: 0,
+                    cpu_connector_count: null,
+                    eight_pin_connector_count: null,
+                    eighty_plus_certification: "",
+                    form_factor: "",
+                    sort_order: "PriceAsc",
+                };
+                const searchedPowerSupplyDescriptions = await SearchPowerSupply(searedPowerSupplyParameter);
+                setPowerSupplyDescriptionAndCounts(searchedPowerSupplyDescriptions.map(
+                    (searchedPowerSupplyDescription): PowerSupplyDescriptionAndCount => (
+                        {
+                            PowerSupplyDescription: searchedPowerSupplyDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedPowerSupplyDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deletePowerSupplyDescriptionAndCount = (powerSupplyDescriptionAndCount: PowerSupplyDescriptionAndCount) => {
         setPowerSupplyDescriptionAndCounts(powerSupplyDescriptionAndCounts.filter((currentPowerSupplyDescriptionAndCount) => currentPowerSupplyDescriptionAndCount !== powerSupplyDescriptionAndCount));
     };
@@ -49,8 +103,12 @@ const PowerSupplyPriceDisplay = (props: Props) => {
         setPowerSupplyDescriptionAndCounts(powerSupplyDescriptionAndCounts.map((currentPowerSupplyDescriptionAndCount) => currentPowerSupplyDescriptionAndCount === powerSupplyDescriptionAndCount ? { ...currentPowerSupplyDescriptionAndCount, Count: count } : currentPowerSupplyDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("PowerSupply", powerSupplyDescriptionAndCounts.reduce((total, powerSupplyDescriptionAndCount) => total + powerSupplyDescriptionAndCount.PowerSupplyDescription.price * powerSupplyDescriptionAndCount.Count, 0));
-        console.log(powerSupplyDescriptionAndCounts.reduce((total, powerSupplyDescriptionAndCount) => total + powerSupplyDescriptionAndCount.PowerSupplyDescription.price * powerSupplyDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "PowerSupply",
+            ItemShortDescriptions: powerSupplyDescriptionAndCounts.map(
+                (powerSupplyDescriptionAndCount): ItemShortDescription => ({ item_id: powerSupplyDescriptionAndCount.PowerSupplyDescription.item_id, price: powerSupplyDescriptionAndCount.PowerSupplyDescription.price, count: powerSupplyDescriptionAndCount.Count }
+                ))
+        });
     }, [powerSupplyDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>

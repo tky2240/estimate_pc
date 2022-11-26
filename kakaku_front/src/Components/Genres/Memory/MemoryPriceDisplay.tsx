@@ -15,12 +15,17 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import MemorySearcher from './MemorySearcher';
+import MemorySearcher, { SearchMemory, SearchMemoryParameter } from './MemorySearcher';
 import MemoryDescriptionList from './MemoryDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
+import * as CSV from 'csv-string';
+
 
 type Props = {
-    ChangeTotalPrice: (genre: PartGenre, price: number) => void;
+    ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }
 
 const MemoryPriceDisplay = (props: Props) => {
@@ -38,6 +43,55 @@ const MemoryPriceDisplay = (props: Props) => {
         setMemoryDescriptions([]);
     };
     const [memoryDescriptionAndCounts, setMemoryDescriptionAndCounts] = useState<(MemoryDescriptionAndCount[])>([]);
+    const location = useLocation();
+    useEffect(() => {
+        const inner = async () => {
+            try {
+                const itemShortDescriptions = CSV.parse(
+                    Buffer.from(
+                        queryString.parse(location.search).Memory as string, 'base64'
+                    ).toString()
+                )
+                    .map((itemIdAndCountArray): ItemShortDescription => (
+                        {
+                            item_id: itemIdAndCountArray[0],
+                            price: 0,
+                            count: parseInt(itemIdAndCountArray[1])
+                        }
+                    ))
+                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                if (itemShortDescriptions.length == 0) {
+                    return;
+                }
+                const searedMemoryParameter: SearchMemoryParameter = {
+                    item_ids: itemShortDescriptions.map((itemShortDescription) => itemShortDescription.item_id),
+                    maker_name: "",
+                    max_price: null,
+                    min_price: null,
+                    search_text: "",
+                    capacity_per_module: 0,
+                    interface: "",
+                    memory_type: "",
+                    module_count: 0,
+                    module_type: "",
+                    sort_order: "PriceAsc",
+                };
+                const searchedMemoryDescriptions = await SearchMemory(searedMemoryParameter);
+                setMemoryDescriptionAndCounts(searchedMemoryDescriptions.map(
+                    (searchedMemoryDescription): MemoryDescriptionAndCount => (
+                        {
+                            MemoryDescription: searchedMemoryDescription,
+                            Count: itemShortDescriptions.filter((itemShortDescription) => itemShortDescription.item_id === searchedMemoryDescription.item_id)[0].count
+                        }
+                    )
+                ));
+                setIsOpen(true);
+            } catch (e) {
+                console.log(`parse error : ${e}`);
+            }
+        }
+        inner();
+    }, []);
     const deleteMemoryDescriptionAndCount = (memoryDescriptionAndCount: MemoryDescriptionAndCount) => {
         setMemoryDescriptionAndCounts(memoryDescriptionAndCounts.filter((currentMemoryDescriptionAndCount) => currentMemoryDescriptionAndCount !== memoryDescriptionAndCount));
     };
@@ -49,8 +103,12 @@ const MemoryPriceDisplay = (props: Props) => {
         setMemoryDescriptionAndCounts(memoryDescriptionAndCounts.map((currentMemoryDescriptionAndCount) => currentMemoryDescriptionAndCount === memoryDescriptionAndCount ? { ...currentMemoryDescriptionAndCount, Count: count } : currentMemoryDescriptionAndCount));
     }
     useEffect(() => {
-        props.ChangeTotalPrice("Memory", memoryDescriptionAndCounts.reduce((total, memoryDescriptionAndCount) => total + memoryDescriptionAndCount.MemoryDescription.price * memoryDescriptionAndCount.Count, 0));
-        console.log(memoryDescriptionAndCounts.reduce((total, memoryDescriptionAndCount) => total + memoryDescriptionAndCount.MemoryDescription.price * memoryDescriptionAndCount.Count, 0));
+        props.ChangeGenreSummary({
+            Genre: "Memory",
+            ItemShortDescriptions: memoryDescriptionAndCounts.map(
+                (memoryDescriptionAndCount): ItemShortDescription => ({ item_id: memoryDescriptionAndCount.MemoryDescription.item_id, price: memoryDescriptionAndCount.MemoryDescription.price, count: memoryDescriptionAndCount.Count }
+                ))
+        });
     }, [memoryDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>
