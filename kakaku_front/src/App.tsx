@@ -119,7 +119,7 @@ function App() {
     const changeTotalPrice = (price: number) => {
         setTotalPrice(price);
     }
-    return (
+    return (   
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <AppBar position="static">

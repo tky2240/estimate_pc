@@ -17,7 +17,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import CpuSearcher from './CpuSearcher';
 import CpuDescriptionList from './CpuDescriptionList';
-import { PartGenre } from "../GenreList"
+import { PartGenre } from "../GenreList";
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
 
 type Props = {
     ChangeTotalPrice: (genre: PartGenre, price: number) => void;
@@ -37,6 +40,8 @@ const CpuPriceDisplay = (props: Props) => {
         setIsDialogOpen(!isDialogOpen);
         setCpuDescriptions([]);
     };
+    const location = useLocation();
+    //const parsed = JSON.parse(Buffer.from(queryString.parse(location.search).Cpu as string, 'base64').toString()) as CpuDescriptionAndCount[];
     const [cpuDescriptionAndCounts, setCpuDescriptionAndCounts] = useState<(CpuDescriptionAndCount[])>([]);
     const deleteCpuDescriptionAndCount = (cpuDescriptionAndCount: CpuDescriptionAndCount) => {
         setCpuDescriptionAndCounts(cpuDescriptionAndCounts.filter((currentCpuDescriptionAndCount) => currentCpuDescriptionAndCount !== cpuDescriptionAndCount));
@@ -50,7 +55,8 @@ const CpuPriceDisplay = (props: Props) => {
     }
     useEffect(() => {
         props.ChangeTotalPrice("Cpu", cpuDescriptionAndCounts.reduce((total, cpuDescriptionAndCount) => total + cpuDescriptionAndCount.CpuDescription.price * cpuDescriptionAndCount.Count, 0));
-        console.log(cpuDescriptionAndCounts.reduce((total, cpuDescriptionAndCount) => total + cpuDescriptionAndCount.CpuDescription.price * cpuDescriptionAndCount.Count, 0));
+        //console.log(cpuDescriptionAndCounts.reduce((total, cpuDescriptionAndCount) => total + cpuDescriptionAndCount.CpuDescription.price * cpuDescriptionAndCount.Count, 0));
+        console.log(JSON.stringify(cpuDescriptionAndCounts));
     }, [cpuDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>

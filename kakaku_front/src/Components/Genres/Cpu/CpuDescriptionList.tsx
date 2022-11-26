@@ -5,12 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { ListChildComponentProps, FixedSizeList } from 'react-window';
 import { CpuDescription } from './CpuPriceDisplay'
 
-
 type Props = {
     CpuDescriptions: CpuDescription[];
     AddCpuDescriptionAndCount: (cpuDescription: CpuDescription) => void;
 }
-
 
 function renderRow(props: ListChildComponentProps<{ CpuDescriptions: CpuDescription[]; AddCpuDescriptionAndCount: (cpuDescription: CpuDescription) => void; }>) {
     const { style, index, data } = props;
