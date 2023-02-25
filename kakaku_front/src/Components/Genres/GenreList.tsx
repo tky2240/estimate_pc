@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Divider, Paper, Stack, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import Accordion from '@mui/material/Accordion';
@@ -136,7 +136,12 @@ const GenreList = (props: Props) => {
         navigator.clipboard.writeText(shareUrl);
         handleSnackBarOpen();
     }
+    const processingShareUrl = useRef(false);
     const CreateShareURL = async () => {
+        if (processingShareUrl.current) {
+            return;
+        }
+        processingShareUrl.current = true;
         const baseUrl = window.location.href.split('?')[0];
         console.log(baseUrl);
         const parseParameter = (partGenre: PartGenre) => {
@@ -173,6 +178,7 @@ const GenreList = (props: Props) => {
         const createdShortUrl = CreateShortUrl(createdShareUrl);
         console.log(createdShortUrl);
         setShareUrl(await createdShortUrl);
+        processingShareUrl.current = false;
         handleDialogOpen();
     }
     useEffect(() => {
