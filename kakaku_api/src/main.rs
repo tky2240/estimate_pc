@@ -5,6 +5,7 @@ use axum::http::StatusCode;
 use axum::response::IntoResponse;
 use axum::routing;
 use axum::Router;
+use axum::{error_handling::HandleErrorLayer, BoxError};
 use axum_macros::debug_handler;
 use http::header::CONTENT_TYPE;
 use kakaku_api::search::search::SearchFromItemIdParameter;
@@ -14,6 +15,10 @@ use kakaku_api::*;
 use sea_orm::prelude::Date;
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
+use std::time::Duration;
+use tower::buffer::BufferLayer;
+use tower::limit::RateLimitLayer;
+use tower::ServiceBuilder;
 use tower_http::cors::{Any, CorsLayer};
 
 #[tokio::main]
@@ -44,10 +49,21 @@ async fn main() {
             routing::post(create_short_url_handler),
         )
         .layer(
-            CorsLayer::new()
-                .allow_origin(Any)
-                .allow_methods([Method::POST])
-                .allow_headers([CONTENT_TYPE]),
+            ServiceBuilder::new()
+                .layer(HandleErrorLayer::new(|err: BoxError| async move {
+                    (
+                        StatusCode::INTERNAL_SERVER_ERROR,
+                        format!("Unhandled error: {}", err),
+                    )
+                }))
+                .layer(
+                    CorsLayer::new()
+                        .allow_origin(Any)
+                        .allow_methods([Method::POST])
+                        .allow_headers([CONTENT_TYPE]),
+                )
+                .layer(BufferLayer::new(1024))
+                .layer(RateLimitLayer::new(20, Duration::from_secs(1))),
         );
     let addr = SocketAddr::from(([0, 0, 0, 0], 3340));
     println!("listening on {}", addr);
