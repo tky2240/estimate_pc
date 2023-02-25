@@ -52,11 +52,11 @@ const CpuPriceDisplay = (props: Props) => {
                         queryString.parse(location.search).Cpu as string, 'base64'
                     ).toString()
                 )
-                    .map((itemIdAndCountArray): ItemShortDescription => (
+                    .map((itemShortDescriptionArray): ItemShortDescription => (
                         {
-                            item_id: itemIdAndCountArray[0],
-                            price: 0,
-                            count: parseInt(itemIdAndCountArray[1])
+                            item_id: itemShortDescriptionArray[0],
+                            price: parseInt(itemShortDescriptionArray[1]),
+                            count: parseInt(itemShortDescriptionArray[2])
                         }
                     ))
                     .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
@@ -94,7 +94,6 @@ const CpuPriceDisplay = (props: Props) => {
     const addCpuDescriptionAndCount = (cpuDescription: CpuDescription) => {
         setCpuDescriptionAndCounts([...cpuDescriptionAndCounts, { CpuDescription: cpuDescription, Count: 1 }]);
         handleDialogOpen();
-        console.log(JSON.stringify(cpuDescriptionAndCounts));
     };
     const changeCpuDescriptionAndCountCount = (cpuDescriptionAndCount: CpuDescriptionAndCount, count: number) => {
         setCpuDescriptionAndCounts(cpuDescriptionAndCounts.map((currentCpuDescriptionAndCount) => currentCpuDescriptionAndCount === cpuDescriptionAndCount ? { ...currentCpuDescriptionAndCount, Count: count } : currentCpuDescriptionAndCount));
@@ -109,7 +108,7 @@ const CpuPriceDisplay = (props: Props) => {
         console.log(cpuDescriptionAndCounts);
         //console.log(cpuDescriptionAndCounts.reduce((total, cpuDescriptionAndCount) => total + cpuDescriptionAndCount.CpuDescription.price * cpuDescriptionAndCount.Count, 0));
         //console.log(JSON.stringify(cpuDescriptionAndCounts));
-    }, cpuDescriptionAndCounts);
+    }, [cpuDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>
             <ListItemButton onClick={genreClick}>

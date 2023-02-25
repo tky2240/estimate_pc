@@ -26,6 +26,14 @@ pub struct SearchCaseParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_case_from_ids(
+    case_item_ids: Vec<String>,
+) -> Result<Vec<case::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_case = Case::find().filter(case::Column::ItemId.is_in(case_item_ids));
+    return Ok(searched_case.all(&db).await?);
+}
+
 pub async fn search_case(
     search_case_parameter: SearchCaseParameter,
 ) -> Result<Vec<(case::Model, Vec<case_support_form_factor::Model>)>, SearchError> {

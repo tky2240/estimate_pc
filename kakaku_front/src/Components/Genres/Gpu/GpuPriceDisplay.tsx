@@ -52,11 +52,11 @@ const GpuPriceDisplay = (props: Props) => {
                         queryString.parse(location.search).Gpu as string, 'base64'
                     ).toString()
                 )
-                    .map((itemIdAndCountArray): ItemShortDescription => (
+                    .map((itemShortDescriptionArray): ItemShortDescription => (
                         {
-                            item_id: itemIdAndCountArray[0],
-                            price: 0,
-                            count: parseInt(itemIdAndCountArray[1])
+                            item_id: itemShortDescriptionArray[0],
+                            price: parseInt(itemShortDescriptionArray[1]),
+                            count: parseInt(itemShortDescriptionArray[2])
                         }
                     ))
                     .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));

@@ -26,6 +26,14 @@ pub struct SearchGpuParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_gpu_from_ids(
+    gpu_item_ids: Vec<String>,
+) -> Result<Vec<gpu::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_gpu = Gpu::find().filter(gpu::Column::ItemId.is_in(gpu_item_ids));
+    return Ok(searched_gpu.all(&db).await?);
+}
+
 pub async fn search_gpu(
     search_gpu_parameter: SearchGpuParameter,
 ) -> Result<Vec<gpu::Model>, SearchError> {

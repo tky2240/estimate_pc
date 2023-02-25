@@ -26,6 +26,14 @@ pub struct SearchMemoryParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_memory_from_ids(
+    memory_item_ids: Vec<String>,
+) -> Result<Vec<memory::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_memory = Memory::find().filter(memory::Column::ItemId.is_in(memory_item_ids));
+    return Ok(searched_memory.all(&db).await?);
+}
+
 pub async fn search_memory(
     search_memory_parameter: SearchMemoryParameter,
 ) -> Result<Vec<memory::Model>, SearchError> {

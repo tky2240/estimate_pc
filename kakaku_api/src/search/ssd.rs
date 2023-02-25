@@ -24,6 +24,14 @@ pub struct SearchSsdParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_ssd_from_ids(
+    ssd_item_ids: Vec<String>,
+) -> Result<Vec<ssd::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_ssd = Ssd::find().filter(ssd::Column::ItemId.is_in(ssd_item_ids));
+    return Ok(searched_ssd.all(&db).await?);
+}
+
 pub async fn search_ssd(
     search_ssd_parameter: SearchSsdParameter,
 ) -> Result<Vec<ssd::Model>, SearchError> {

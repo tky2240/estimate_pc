@@ -26,6 +26,15 @@ pub struct SearchPowerSupplyParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_power_supply_from_ids(
+    power_supply_item_ids: Vec<String>,
+) -> Result<Vec<power_supply::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_power_supply =
+        PowerSupply::find().filter(power_supply::Column::ItemId.is_in(power_supply_item_ids));
+    return Ok(searched_power_supply.all(&db).await?);
+}
+
 pub async fn search_power_supply(
     search_power_supply_parameter: SearchPowerSupplyParameter,
 ) -> Result<Vec<power_supply::Model>, SearchError> {

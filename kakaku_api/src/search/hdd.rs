@@ -23,6 +23,14 @@ pub struct SearchHddParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_hdd_from_ids(
+    hdd_item_ids: Vec<String>,
+) -> Result<Vec<hdd::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_hdd = Hdd::find().filter(hdd::Column::ItemId.is_in(hdd_item_ids));
+    return Ok(searched_hdd.all(&db).await?);
+}
+
 pub async fn search_hdd(
     search_hdd_parameter: SearchHddParameter,
 ) -> Result<Vec<hdd::Model>, SearchError> {

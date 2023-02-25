@@ -25,6 +25,15 @@ pub struct SearchMotherboardParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_motherboard_from_ids(
+    motherboard_item_ids: Vec<String>,
+) -> Result<Vec<motherboard::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_motherboard =
+        Motherboard::find().filter(motherboard::Column::ItemId.is_in(motherboard_item_ids));
+    return Ok(searched_motherboard.all(&db).await?);
+}
+
 pub async fn search_motherboard(
     search_motherboard_parameter: SearchMotherboardParameter,
 ) -> Result<Vec<motherboard::Model>, SearchError> {

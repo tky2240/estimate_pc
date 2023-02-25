@@ -52,12 +52,12 @@ const MemoryPriceDisplay = (props: Props) => {
                         queryString.parse(location.search).Memory as string, 'base64'
                     ).toString()
                 )
-                    .map((itemIdAndCountArray): ItemShortDescription => (
-                        {
-                            item_id: itemIdAndCountArray[0],
-                            price: 0,
-                            count: parseInt(itemIdAndCountArray[1])
-                        }
+                .map((itemShortDescriptionArray): ItemShortDescription => (
+                    {
+                        item_id: itemShortDescriptionArray[0],
+                        price: parseInt(itemShortDescriptionArray[1]),
+                        count: parseInt(itemShortDescriptionArray[2])
+                    }
                     ))
                     .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
                 if (itemShortDescriptions.length == 0) {

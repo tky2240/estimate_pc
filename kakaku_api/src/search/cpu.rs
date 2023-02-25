@@ -22,6 +22,14 @@ pub struct SearchCpuParameter {
     pub max_price: Option<i32>,
 }
 
+pub async fn search_cpu_from_ids(
+    cpu_item_ids: Vec<String>,
+) -> Result<Vec<cpu::Model>, SearchError> {
+    let db = db::create_db_connection().await?;
+    let searched_cpu = Cpu::find().filter(cpu::Column::ItemId.is_in(cpu_item_ids));
+    return Ok(searched_cpu.all(&db).await?);
+}
+
 pub async fn search_cpu(
     search_cpu_parameter: SearchCpuParameter,
 ) -> Result<Vec<cpu::Model>, SearchError> {

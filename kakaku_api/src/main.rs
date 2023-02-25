@@ -7,7 +7,9 @@ use axum::routing;
 use axum::Router;
 use axum_macros::debug_handler;
 use http::header::CONTENT_TYPE;
+use kakaku_api::search::search::SearchFromItemIdParameter;
 use kakaku_api::search_error::SearchError;
+use kakaku_api::short_url::CreateShortUrlError;
 use kakaku_api::*;
 use sea_orm::prelude::Date;
 use serde::{Deserialize, Serialize};
@@ -18,7 +20,6 @@ use tower_http::cors::{Any, CorsLayer};
 async fn main() {
     tracing_subscriber::fmt::init();
     let router = Router::new()
-        .route("/", routing::get(root))
         .route("/v1/search/cpu", routing::post(search_cpu_handler))
         .route(
             "/v1/search/cpu_cooler",
@@ -37,6 +38,11 @@ async fn main() {
             "/v1/search/power_supply",
             routing::post(search_power_supply_handler),
         )
+        .route("/v1/search/all", routing::post(search_all_handler))
+        .route(
+            "/v1/create/short_url",
+            routing::post(create_short_url_handler),
+        )
         .layer(
             CorsLayer::new()
                 .allow_origin(Any)
@@ -51,8 +57,60 @@ async fn main() {
         .unwrap();
 }
 
-async fn root() -> &'static str {
-    "Hello, World!"
+#[debug_handler]
+async fn create_short_url_handler(body: String) -> Result<impl IntoResponse, CreateShortUrlError> {
+    let short_url = short_url::create_short_url(body).await?;
+    Ok((StatusCode::OK, short_url).into_response())
+}
+
+#[debug_handler]
+async fn search_all_handler(
+    payload: Result<Json<SearchFromItemIdParameter>, JsonRejection>,
+) -> Result<impl IntoResponse, impl IntoResponse> {
+    search_all(payload).await
+}
+
+async fn search_all(
+    payload: Result<Json<SearchFromItemIdParameter>, JsonRejection>,
+) -> Result<impl IntoResponse, SearchError> {
+    let search_from_item_id_parameter_json = payload?;
+    let searched_cases =
+        search::case::search_case_from_ids(search_from_item_id_parameter_json.0.case_ids).await?;
+    let searched_cpus =
+        search::cpu::search_cpu_from_ids(search_from_item_id_parameter_json.0.cpu_ids).await?;
+    let searched_cpu_coolers = search::cpu_cooler::search_cpu_cooler_from_ids(
+        search_from_item_id_parameter_json.0.cpu_cooler_ids,
+    )
+    .await?;
+    let searched_gpus =
+        search::gpu::search_gpu_from_ids(search_from_item_id_parameter_json.0.gpu_ids).await?;
+    let searched_hdds =
+        search::hdd::search_hdd_from_ids(search_from_item_id_parameter_json.0.hdd_ids).await?;
+    let searched_memories =
+        search::memory::search_memory_from_ids(search_from_item_id_parameter_json.0.memory_ids)
+            .await?;
+    let searched_motherboards = search::motherboard::search_motherboard_from_ids(
+        search_from_item_id_parameter_json.0.motherboard_ids,
+    )
+    .await?;
+    let searched_power_supplies = search::power_supply::search_power_supply_from_ids(
+        search_from_item_id_parameter_json.0.power_supply_ids,
+    )
+    .await?;
+    let searched_ssds =
+        search::ssd::search_ssd_from_ids(search_from_item_id_parameter_json.0.ssd_ids).await?;
+    let searched_parts = search::search::SearchedParts {
+        cases: searched_cases,
+        cpu_coolers: searched_cpu_coolers,
+        cpus: searched_cpus,
+        gpus: searched_gpus,
+        hdds: searched_hdds,
+        memories: searched_memories,
+        motherboards: searched_motherboards,
+        power_supplies: searched_power_supplies,
+        ssds: searched_ssds,
+    };
+    Ok((StatusCode::OK, Json(searched_parts).into_response()))
 }
 
 #[debug_handler]

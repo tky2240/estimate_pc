@@ -23,7 +23,7 @@ def main():
 
 
 def run(csv_path, json_path):
-    return json_path
+    # return json_path
     base_url = "https://kakaku.com/specsearch/"
 
     with open(csv_path) as f:
@@ -150,7 +150,7 @@ def update_cpu_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "generation":  table_data[9].text.strip(),
                     "socket_name": table_data[10].text.strip(),
                     "core_count": int(re.findall(r"(\d+)コア", table_data[11].text.strip())[0]),
@@ -186,7 +186,7 @@ def update_cpu_cooler_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "air_flow_type": table_data[10].text.strip(),
                     "noise_level": table_data[11].text.strip(),
                     "max_tdp": None if table_data[19].text.strip() == "" else int(re.findall(r"(\d+)W", table_data[19].text.strip())[0]),
@@ -235,7 +235,7 @@ def update_motherboard_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "chipset":  table_data[8].get_text(" ").strip(),
                     "socket_name": table_data[9].text.strip(),
                     "form_factor": table_data[10].text.strip(),
@@ -275,7 +275,7 @@ def update_memory_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "capacity_per_module":  int(re.findall(r"(\d+)GB", table_data[8].text.strip())[0]),
                     "module_count":  int(re.findall(r"(\d+)枚", table_data[9].text.strip())[0]),
                     "interface": table_data[10].text.strip(),
@@ -309,7 +309,7 @@ def update_gpu_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "chip_name": table_data[8].get_text(" ").strip(),
                     "gpu_memory_type": table_data[11].get_text(",").split(",")[0].strip(),
                     "gpu_memory_capacity": int(re.findall(r"(\d+)GB", table_data[11].get_text(",").split(",")[1].strip())[0]),
@@ -354,7 +354,7 @@ def update_ssd_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "capacity": int(re.findall(r"(\d+)GB", table_data[8].text.strip())[0]),
                     "size": table_data[9].text.strip(),
                     "interface": table_data[10].text.strip(),
@@ -386,7 +386,7 @@ def update_hdd_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "capacity": int(re.findall(r"(\d+)GB", table_data[9].text.strip())[0]) if re.match(r"(\d+)GB", table_data[9].text.strip()) is not None else int(re.findall(r"(\d+)TB", table_data[9].text.strip())[0]) * 1000,
                     "rpm": None if table_data[10].text.strip() == "" else int(re.findall(r"(\d+)rpm", table_data[10].text.strip())[0]),
                     "write_style": table_data[11].text.strip(),
@@ -417,7 +417,7 @@ def update_case_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "max_gpu_length": None if re.match(r"(\d+)mm", re.sub(r"[^0-9m]", "", table_data[9].text.strip())) is None else int(re.findall(r"(\d+)mm", re.sub(r"[^0-9m]", "", table_data[9].text.strip()))[0]),
                     "max_cpu_cooler_height": None if re.match(r"(\d+)mm", re.sub(r"[^0-9m]", "", table_data[10].text.strip())) is None else int(re.findall(r"(\d+)mm", re.sub(r"[^0-9m]", "", table_data[10].text.strip()))[0]),
                     "max_power_supply_size": None if re.match(r"(\d+)mm", re.sub(r"[^0-9m]", "", table_data[11].text.strip())) is None else int(re.findall(r"(\d+)mm", re.sub(r"[^0-9m]", "", table_data[11].text.strip()))[0]),
@@ -462,7 +462,7 @@ def update_power_supply_information(item_tables: List[Tag]):
                     "price": int(re.findall(r"¥([,\d]+)", table_data[3].find('a').text.strip())[0].replace(",", "")),
                     "popular_rank": None if table_data[5].text == "-" else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0]),
                     "maker_name": table_data[2].find_all('strong')[0].text.strip(),
-                    "product_name": table_data[2].find_all('strong')[1].text.strip(),
+                    "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "form_factor": table_data[8].text.strip(),
                     "capacity": int(re.findall(r"(\d+)W", table_data[9].text.strip())[0]),
                     "eighty_plus_certification": table_data[10].text.strip(),
