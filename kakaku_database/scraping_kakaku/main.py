@@ -31,7 +31,7 @@ def run(csv_path, json_path):
         item_data_dictionary = dict()
         for genre in reader:
             print(f"name: {genre['name']} code: {genre['code']}")
-            # if genre["name"] != "ssd":
+            # if genre["name"] != "power_supply":
             #     continue
             time.sleep(random.uniform(2, 4))
             current_genre_url = urllib.parse.urljoin(base_url, genre['code'])
@@ -94,6 +94,7 @@ def run(csv_path, json_path):
                 soup = BeautifulSoup(response.text, 'html.parser')
                 item_tables.append(soup.select_one(
                     "table.alignC.tblBorderGray02.mTop5"))
+                # break
 
             if genre["name"] == "cpu":
                 item_data_dictionary[genre["name"]
@@ -465,22 +466,23 @@ def update_power_supply_information(item_tables: List[Tag]):
                     "product_name": table_data[2].find_all('strong')[1].text.strip()[:100],
                     "form_factor": table_data[8].text.strip(),
                     "capacity": int(re.findall(r"(\d+)W", table_data[9].text.strip())[0]),
-                    "eighty_plus_certification": table_data[10].text.strip(),
-                    "cpu_connector_count": None if re.match(r"x(\d)", table_data[15].text.strip()) is None else len(re.findall(r"x\d", table_data[15].text.strip())),
-                    "six_pin_connector_count": None if re.match(r"6ピンx(\d)", table_data[16].text.strip()) is None else int(re.findall(r"6ピンx(\d)", table_data[16].text.strip())[0]),
-                    "eight_pin_connector_count": None if re.match(r"6\+2ピンx(\d)", table_data[16].text.strip()) is None else int(re.findall(r"6\+2ピンx(\d)", table_data[16].text.strip())[0]),
-                    "sata_connector_count": None if re.match(r"(\d+)個", table_data[17].text.strip()) is None else int(re.findall(r"(\d+)個", table_data[17].text.strip())[0]),
-                    "peripheral_connector_count": None if re.match(r"(\d+)個", table_data[18].text.strip()) is None else int(re.findall(r"(\d+)個", table_data[18].text.strip())[0]),
-                    "fdd_connector_count": None if re.match(r"(\d+)個", table_data[19].text.strip()) is None else int(re.findall(r"(\d+)個", table_data[19].text.strip())[0]),
-                    "weight": None if table_data[21].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)kg", table_data[21].text.strip())[0]),
-                    "width": None if table_data[20].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)x(\d+\.\d+|\d+)x(\d+\.\d+|\d+)", table_data[20].text.strip())[0][0]),
-                    "height": None if table_data[20].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)x(\d+\.\d+|\d+)x(\d+\.\d+|\d+)", table_data[20].text.strip())[0][1]),
-                    "depth": None if table_data[20].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)x(\d+\.\d+|\d+)x(\d+\.\d+|\d+)", table_data[20].text.strip())[0][2]),
-                    "release_date": None if table_data[22].text.strip() == "" else datetime.datetime.strptime(re.sub(r"\s", "", table_data[22].text), "%Y年%m月%d日").date()
-                    if re.match(r"\d+年\d+月\d+日", re.sub(r"\s", "", table_data[22].text)) is not None else datetime.datetime.strptime(re.findall(r"(\d+年\d+月)", re.sub(r"\s", "", table_data[22].text))[0], "%Y年%m月").date(),
+                    "eighty_plus_certification": table_data[15].text.strip(),
+                    "cpu_connector_count": None if re.match(r"x(\d)", table_data[20].text.strip()) is None else len(re.findall(r"x\d", table_data[20].text.strip())),
+                    "six_pin_connector_count": None if re.match(r"6ピンx(\d)", table_data[21].text.strip()) is None else int(re.findall(r"6ピンx(\d)", table_data[21].text.strip())[0]),
+                    "eight_pin_connector_count": None if re.match(r"6\+2ピンx(\d)", table_data[21].text.strip()) is None else int(re.findall(r"6\+2ピンx(\d)", table_data[21].text.strip())[0]),
+                    "sata_connector_count": None if re.match(r"(\d+)個", table_data[22].text.strip()) is None else int(re.findall(r"(\d+)個", table_data[22].text.strip())[0]),
+                    "peripheral_connector_count": None if re.match(r"(\d+)個", table_data[23].text.strip()) is None else int(re.findall(r"(\d+)個", table_data[23].text.strip())[0]),
+                    "fdd_connector_count": None if re.match(r"(\d+)個", table_data[24].text.strip()) is None else int(re.findall(r"(\d+)個", table_data[24].text.strip())[0]),
+                    "weight": None if table_data[27].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)kg", table_data[27].text.strip())[0]),
+                    "width": None if table_data[26].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)x(\d+\.\d+|\d+)x(\d+\.\d+|\d+)", table_data[26].text.strip())[0][0]),
+                    "height": None if table_data[26].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)x(\d+\.\d+|\d+)x(\d+\.\d+|\d+)", table_data[26].text.strip())[0][1]),
+                    "depth": None if table_data[26].text.strip() == "" else float(re.findall(r"(\d+\.\d+|\d+)x(\d+\.\d+|\d+)x(\d+\.\d+|\d+)", table_data[26].text.strip())[0][2]),
+                    "release_date": None if table_data[28].text.strip() == "" else datetime.datetime.strptime(re.sub(r"\s", "", table_data[28].text), "%Y年%m月%d日").date()
+                    if re.match(r"\d+年\d+月\d+日", re.sub(r"\s", "", table_data[28].text)) is not None else datetime.datetime.strptime(re.findall(r"(\d+年\d+月)", re.sub(r"\s", "", table_data[28].text))[0], "%Y年%m月").date(),
                     "is_exist": True
                 }
             except Exception as exception:
+                print(f"table data count: {len(table_data)}")
                 print(f"error with {exception}")
                 print(traceback.format_exc())
                 continue
