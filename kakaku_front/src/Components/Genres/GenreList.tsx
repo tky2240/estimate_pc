@@ -90,7 +90,7 @@ const GenreList = (props: Props) => {
                 { Genre: "Motherboard", ItemShortDescriptions: parseToItemShortDescriptions("Motherboard") },
                 { Genre: "Memory", ItemShortDescriptions: parseToItemShortDescriptions("Memory") },
                 { Genre: "Gpu", ItemShortDescriptions: parseToItemShortDescriptions("Gpu") },
-                { Genre: "Ssd", ItemShortDescriptions: parseToItemShortDescriptions("Gpu") },
+                { Genre: "Ssd", ItemShortDescriptions: parseToItemShortDescriptions("Ssd") },
                 { Genre: "Hdd", ItemShortDescriptions: parseToItemShortDescriptions("Hdd") },
                 { Genre: "Case", ItemShortDescriptions: parseToItemShortDescriptions("Case") },
                 { Genre: "PowerSupply", ItemShortDescriptions: parseToItemShortDescriptions("PowerSupply") },
@@ -100,10 +100,10 @@ const GenreList = (props: Props) => {
                 (total, genreSummary) => total + genreSummary.ItemShortDescriptions.reduce(
                     (itemTotal, itemShortDescription) => itemTotal + itemShortDescription.price * itemShortDescription.count, 0)
                 , 0);
-            props.ChangeTotalPrice(totalPrice);
-            console.log(totalPrice);
+            //props.ChangeTotalPrice(totalPrice);
+            //console.log(totalPrice);
         } catch (e) {
-            console.log(e);
+            //console.log(e);
             setGenreSummaries([
                 { Genre: "Cpu", ItemShortDescriptions: [] },
                 { Genre: "CpuCooler", ItemShortDescriptions: [] },
@@ -129,8 +129,8 @@ const GenreList = (props: Props) => {
     const changeGenreSummary = (genreSummary: GenreSummary) => {
         const filteredGenreSummaries = genreSummaries.filter((currentGenreSummaries) => currentGenreSummaries.Genre !== genreSummary.Genre);
         setGenreSummaries([...filteredGenreSummaries, genreSummary]);
-        console.log(genreSummary);
-        console.log(genreSummaries);
+        //console.log(genreSummary);
+        //console.log(genreSummaries);
     };
     const copyLink = () => {
         navigator.clipboard.writeText(shareUrl);
@@ -143,7 +143,7 @@ const GenreList = (props: Props) => {
         }
         processingShareUrl.current = true;
         const baseUrl = window.location.href.split('?')[0];
-        console.log(baseUrl);
+        //console.log(baseUrl);
         const parseParameter = (partGenre: PartGenre) => {
             return Buffer.from(
                 CSV.stringify(
@@ -152,7 +152,7 @@ const GenreList = (props: Props) => {
                 )
             ).toString('base64');
         };
-        console.log(genreSummaries);
+        //console.log(genreSummaries);
         // const cpuParameter = parseParameter("Cpu");
         // const cpuCoolerParameter = parseParameter("CpuCooler");
         // const motherboardParameter = parseParameter("Motherboard");
@@ -174,18 +174,21 @@ const GenreList = (props: Props) => {
             `?Case=${parseParameter("Case")}`,
             `?PowerSupply=${parseParameter("PowerSupply")}`,
         )
-        console.log(createdShareUrl);
+        //console.log(createdShareUrl);
         const createdShortUrl = CreateShortUrl(createdShareUrl);
-        console.log(createdShortUrl);
+        //console.log(createdShortUrl);
         setShareUrl(await createdShortUrl);
         processingShareUrl.current = false;
         handleDialogOpen();
     }
     useEffect(() => {
+        //console.log(`changed from genre change, genre summery`);
+        //console.log(genreSummaries);
         const totalPrice = genreSummaries.reduce(
             (total, genreSummary) => total + genreSummary.ItemShortDescriptions.reduce(
                 (itemTotal, itemShortDescription) => itemTotal + itemShortDescription.price * itemShortDescription.count, 0)
             , 0);
+        //console.log(`changed from genre change, total price : ${totalPrice}`)
         props.ChangeTotalPrice(totalPrice);
     }, genreSummaries);
     return (
