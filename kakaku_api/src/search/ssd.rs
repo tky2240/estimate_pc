@@ -3,10 +3,11 @@ use crate::models::ssd;
 use crate::search_error::SearchError;
 use sea_orm::{EntityTrait, QueryFilter};
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -25,14 +26,15 @@ pub struct SearchSsdParameter {
 }
 
 pub async fn search_ssd_from_ids(
+    db: &DatabaseConnection,
     ssd_item_ids: Vec<String>,
 ) -> Result<Vec<ssd::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_ssd = Ssd::find().filter(ssd::Column::ItemId.is_in(ssd_item_ids));
-    return Ok(searched_ssd.all(&db).await?);
+    Ok(searched_ssd.all(db).await?)
 }
 
 pub async fn search_ssd(
+    db: &DatabaseConnection,
     search_ssd_parameter: SearchSsdParameter,
 ) -> Result<Vec<ssd::Model>, SearchError> {
     let search_words: Vec<&str> = search_ssd_parameter
@@ -83,7 +85,6 @@ pub async fn search_ssd(
             .order_by_asc(ssd::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_ssds.order_by_desc(ssd::Column::ReleaseDate),
     };
-    let db = db::create_db_connection().await?;
 
-    Ok(searched_ssds.all(&db).await?)
+    Ok(searched_ssds.all(db).await?)
 }

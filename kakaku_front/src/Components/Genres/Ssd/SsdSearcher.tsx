@@ -119,7 +119,7 @@ const SsdSearcher = (props: Props) => {
                 <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchSsdParameter.capacity}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="Capacity"
                         variant="filled"
@@ -127,6 +127,7 @@ const SsdSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'GB以上'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchSsdParameter({ ...searchSsdParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
@@ -160,7 +161,7 @@ const SsdSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchSsdParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -168,6 +169,7 @@ const SsdSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchSsdParameter({ ...searchSsdParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -179,7 +181,7 @@ const SsdSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchSsdParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -187,6 +189,7 @@ const SsdSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchSsdParameter({ ...searchSsdParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

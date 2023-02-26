@@ -126,7 +126,7 @@ const PowerSupplySearcher = (props: Props) => {
                 <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchPowerSupplyParameter.capacity}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="Capacity"
                         variant="filled"
@@ -134,6 +134,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'W以上'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
@@ -168,7 +169,7 @@ const PowerSupplySearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchPowerSupplyParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -176,6 +177,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -187,7 +189,7 @@ const PowerSupplySearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchPowerSupplyParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -195,6 +197,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

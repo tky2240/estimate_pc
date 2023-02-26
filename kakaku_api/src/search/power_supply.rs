@@ -3,10 +3,11 @@ use crate::models::prelude::PowerSupply;
 use crate::search_error::SearchError;
 use sea_orm::{EntityTrait, QueryFilter};
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -27,15 +28,16 @@ pub struct SearchPowerSupplyParameter {
 }
 
 pub async fn search_power_supply_from_ids(
+    db: &DatabaseConnection,
     power_supply_item_ids: Vec<String>,
 ) -> Result<Vec<power_supply::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_power_supply =
         PowerSupply::find().filter(power_supply::Column::ItemId.is_in(power_supply_item_ids));
-    return Ok(searched_power_supply.all(&db).await?);
+    Ok(searched_power_supply.all(db).await?)
 }
 
 pub async fn search_power_supply(
+    db: &DatabaseConnection,
     search_power_supply_parameter: SearchPowerSupplyParameter,
 ) -> Result<Vec<power_supply::Model>, SearchError> {
     let search_words: Vec<&str> = search_power_supply_parameter
@@ -113,7 +115,6 @@ pub async fn search_power_supply(
             searched_power_supplies.order_by_desc(power_supply::Column::ReleaseDate)
         }
     };
-    let db = db::create_db_connection().await?;
 
-    Ok(searched_power_supplies.all(&db).await?)
+    Ok(searched_power_supplies.all(db).await?)
 }

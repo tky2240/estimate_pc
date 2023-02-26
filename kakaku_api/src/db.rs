@@ -11,7 +11,7 @@ pub async fn create_db_connection() -> Result<DatabaseConnection, DbErr> {
     let db_uri = env::var("DATABASE_URL").unwrap();
     let mut opt = ConnectOptions::new(db_uri.to_owned());
     opt.max_connections(150)
-        .min_connections(1)
+        //.min_connections(1)
         .connect_timeout(Duration::from_secs(8))
         .idle_timeout(Duration::from_secs(8))
         .max_lifetime(Duration::from_secs(8))

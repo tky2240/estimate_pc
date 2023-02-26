@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import GenreList from './Components/Genres/GenreList';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 function App() {
     //ref:https://amateur-engineer.com/react-mui-dark-mode/
@@ -128,6 +129,9 @@ function App() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: "start" }}>
                         PC Estimate
                     </Typography>
+                    <IconButton onClick={() => window.open("https://github.com/tky2240/estimate_pc")}>
+                        <GitHubIcon />
+                    </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: "end" }}>
                         {totalPrice} 円
                     </Typography>

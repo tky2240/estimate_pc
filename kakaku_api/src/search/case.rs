@@ -4,12 +4,13 @@ use crate::models::prelude::Case;
 use crate::models::prelude::CaseSupportFormFactor;
 use crate::search_error::SearchError;
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{EntityTrait, QueryFilter};
 
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -27,14 +28,15 @@ pub struct SearchCaseParameter {
 }
 
 pub async fn search_case_from_ids(
+    db: &DatabaseConnection,
     case_item_ids: Vec<String>,
 ) -> Result<Vec<case::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_case = Case::find().filter(case::Column::ItemId.is_in(case_item_ids));
-    return Ok(searched_case.all(&db).await?);
+    Ok(searched_case.all(db).await?)
 }
 
 pub async fn search_case(
+    db: &DatabaseConnection,
     search_case_parameter: SearchCaseParameter,
 ) -> Result<Vec<(case::Model, Vec<case_support_form_factor::Model>)>, SearchError> {
     let search_words: Vec<&str> = search_case_parameter
@@ -99,6 +101,5 @@ pub async fn search_case(
         }
     }
 
-    let db = db::create_db_connection().await?;
-    Ok(searched_case_with_form_factors.all(&db).await?)
+    Ok(searched_case_with_form_factors.all(db).await?)
 }

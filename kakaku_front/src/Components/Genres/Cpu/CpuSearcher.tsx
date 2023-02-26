@@ -101,7 +101,7 @@ const CpuSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCpuParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -109,6 +109,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchCpuParameter({ ...searchCpuParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -120,7 +121,7 @@ const CpuSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCpuParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -128,6 +129,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchCpuParameter({ ...searchCpuParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

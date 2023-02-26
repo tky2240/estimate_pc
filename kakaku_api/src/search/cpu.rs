@@ -3,10 +3,11 @@ use crate::models::prelude::Cpu;
 use crate::search_error::SearchError;
 use sea_orm::{EntityTrait, QueryFilter};
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -23,14 +24,15 @@ pub struct SearchCpuParameter {
 }
 
 pub async fn search_cpu_from_ids(
+    db: &DatabaseConnection,
     cpu_item_ids: Vec<String>,
 ) -> Result<Vec<cpu::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_cpu = Cpu::find().filter(cpu::Column::ItemId.is_in(cpu_item_ids));
-    return Ok(searched_cpu.all(&db).await?);
+    Ok(searched_cpu.all(db).await?)
 }
 
 pub async fn search_cpu(
+    db: &DatabaseConnection,
     search_cpu_parameter: SearchCpuParameter,
 ) -> Result<Vec<cpu::Model>, SearchError> {
     let search_words: Vec<&str> = search_cpu_parameter
@@ -75,7 +77,6 @@ pub async fn search_cpu(
             .order_by_asc(cpu::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_cpus.order_by_desc(cpu::Column::ReleaseDate),
     };
-    let db = db::create_db_connection().await?;
 
-    Ok(searched_cpus.all(&db).await?)
+    Ok(searched_cpus.all(db).await?)
 }

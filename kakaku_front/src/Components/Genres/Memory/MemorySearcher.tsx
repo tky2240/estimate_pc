@@ -217,7 +217,7 @@ const MemorySearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchMemoryParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -225,6 +225,7 @@ const MemorySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchMemoryParameter({ ...searchMemoryParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -236,7 +237,7 @@ const MemorySearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchMemoryParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -244,6 +245,7 @@ const MemorySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchMemoryParameter({ ...searchMemoryParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

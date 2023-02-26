@@ -4,12 +4,13 @@ use crate::models::prelude::CpuCooler;
 use crate::models::prelude::CpuCoolerSocket;
 use crate::search_error::SearchError;
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{EntityTrait, QueryFilter};
 
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -29,15 +30,16 @@ pub struct SearchCpuCoolerParameter {
 }
 
 pub async fn search_cpu_cooler_from_ids(
+    db: &DatabaseConnection,
     cpu_cooler_item_ids: Vec<String>,
 ) -> Result<Vec<cpu_cooler::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_cpu_cooler =
         CpuCooler::find().filter(cpu_cooler::Column::ItemId.is_in(cpu_cooler_item_ids));
-    return Ok(searched_cpu_cooler.all(&db).await?);
+    return Ok(searched_cpu_cooler.all(db).await?);
 }
 
 pub async fn search_cpu_cooler(
+    db: &DatabaseConnection,
     search_cpu_cooler_parameter: SearchCpuCoolerParameter,
 ) -> Result<Vec<(cpu_cooler::Model, Vec<cpu_cooler_socket::Model>)>, SearchError> {
     let search_words: Vec<&str> = search_cpu_cooler_parameter
@@ -104,6 +106,5 @@ pub async fn search_cpu_cooler(
         );
     }
 
-    let db = db::create_db_connection().await?;
-    Ok(searched_cpu_cooler_with_sockets.all(&db).await?)
+    Ok(searched_cpu_cooler_with_sockets.all(db).await?)
 }

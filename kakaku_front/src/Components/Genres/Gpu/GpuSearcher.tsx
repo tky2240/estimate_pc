@@ -237,7 +237,7 @@ const GpuSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchGpuParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -245,6 +245,7 @@ const GpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchGpuParameter({ ...searchGpuParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -256,7 +257,7 @@ const GpuSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchGpuParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -264,6 +265,7 @@ const GpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchGpuParameter({ ...searchGpuParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

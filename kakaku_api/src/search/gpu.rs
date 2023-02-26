@@ -3,10 +3,11 @@ use crate::models::prelude::Gpu;
 use crate::search_error::SearchError;
 use sea_orm::{EntityTrait, QueryFilter};
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -27,14 +28,15 @@ pub struct SearchGpuParameter {
 }
 
 pub async fn search_gpu_from_ids(
+    db: &DatabaseConnection,
     gpu_item_ids: Vec<String>,
 ) -> Result<Vec<gpu::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_gpu = Gpu::find().filter(gpu::Column::ItemId.is_in(gpu_item_ids));
-    return Ok(searched_gpu.all(&db).await?);
+    Ok(searched_gpu.all(db).await?)
 }
 
 pub async fn search_gpu(
+    db: &DatabaseConnection,
     search_gpu_parameter: SearchGpuParameter,
 ) -> Result<Vec<gpu::Model>, SearchError> {
     let search_words: Vec<&str> = search_gpu_parameter
@@ -94,7 +96,6 @@ pub async fn search_gpu(
             .order_by_asc(gpu::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_gpus.order_by_desc(gpu::Column::ReleaseDate),
     };
-    let db = db::create_db_connection().await?;
 
-    Ok(searched_gpus.all(&db).await?)
+    Ok(searched_gpus.all(db).await?)
 }

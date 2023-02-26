@@ -181,7 +181,7 @@ const CpuCoolerSearcher = (props: Props) => {
                 <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCpuCoolerParameter.height}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="Height"
                         variant="filled"
@@ -189,6 +189,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={2}
                         suffix={'mm以下'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, height: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -200,7 +201,7 @@ const CpuCoolerSearcher = (props: Props) => {
                 <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCpuCoolerParameter.max_tdp}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxTDP"
                         variant="filled"
@@ -208,6 +209,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'W以上'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, max_tdp: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -219,7 +221,7 @@ const CpuCoolerSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCpuCoolerParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -227,6 +229,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -238,7 +241,7 @@ const CpuCoolerSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCpuCoolerParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -246,6 +249,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

@@ -3,10 +3,11 @@ use crate::models::prelude::Memory;
 use crate::search_error::SearchError;
 use sea_orm::{EntityTrait, QueryFilter};
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -27,14 +28,15 @@ pub struct SearchMemoryParameter {
 }
 
 pub async fn search_memory_from_ids(
+    db: &DatabaseConnection,
     memory_item_ids: Vec<String>,
 ) -> Result<Vec<memory::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_memory = Memory::find().filter(memory::Column::ItemId.is_in(memory_item_ids));
-    return Ok(searched_memory.all(&db).await?);
+    Ok(searched_memory.all(db).await?)
 }
 
 pub async fn search_memory(
+    db: &DatabaseConnection,
     search_memory_parameter: SearchMemoryParameter,
 ) -> Result<Vec<memory::Model>, SearchError> {
     let search_words: Vec<&str> = search_memory_parameter
@@ -97,7 +99,6 @@ pub async fn search_memory(
             .order_by_asc(memory::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_memories.order_by_desc(memory::Column::ReleaseDate),
     };
-    let db = db::create_db_connection().await?;
 
-    Ok(searched_memories.all(&db).await?)
+    Ok(searched_memories.all(db).await?)
 }

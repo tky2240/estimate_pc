@@ -3,7 +3,7 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, DeriveEntityModel)]
 #[sea_orm(table_name = "power_supply")]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]

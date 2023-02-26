@@ -1,5 +1,6 @@
 use axum::extract::rejection::*;
 use axum::extract::Json;
+use axum::extract::State;
 use axum::http::Method;
 use axum::http::StatusCode;
 use axum::response::IntoResponse;
@@ -8,11 +9,13 @@ use axum::Router;
 use axum::{error_handling::HandleErrorLayer, BoxError};
 use axum_macros::debug_handler;
 use http::header::CONTENT_TYPE;
+use kakaku_api::db;
 use kakaku_api::search::search::SearchFromItemIdParameter;
 use kakaku_api::search_error::SearchError;
 use kakaku_api::short_url::CreateShortUrlError;
 use kakaku_api::*;
 use sea_orm::prelude::Date;
+use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 use std::time::Duration;
@@ -24,6 +27,10 @@ use tower_http::cors::{Any, CorsLayer};
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
+    let db = db::create_db_connection()
+        .await
+        .expect("failed to connect database");
+    let state = AppState { db };
     let router = Router::new()
         .route("/v1/search/cpu", routing::post(search_cpu_handler))
         .route(
@@ -64,13 +71,19 @@ async fn main() {
                 )
                 .layer(BufferLayer::new(1024))
                 .layer(RateLimitLayer::new(20, Duration::from_secs(1))),
-        );
+        )
+        .with_state(state);
     let addr = SocketAddr::from(([0, 0, 0, 0], 3340));
     println!("listening on {}", addr);
     axum::Server::bind(&addr)
         .serve(router.into_make_service())
         .await
         .unwrap();
+}
+
+#[derive(Clone)]
+struct AppState {
+    pub db: DatabaseConnection,
 }
 
 #[debug_handler]
@@ -81,40 +94,54 @@ async fn create_short_url_handler(body: String) -> Result<impl IntoResponse, Cre
 
 #[debug_handler]
 async fn search_all_handler(
+    state: State<AppState>,
     payload: Result<Json<SearchFromItemIdParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_all(payload).await
+    search_all(state, payload).await
 }
 
 async fn search_all(
+    state: State<AppState>,
     payload: Result<Json<SearchFromItemIdParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_from_item_id_parameter_json = payload?;
-    let searched_cases =
-        search::case::search_case_from_ids(search_from_item_id_parameter_json.0.case_ids).await?;
+    let searched_cases = search::case::search_case_from_ids(
+        &state.db,
+        search_from_item_id_parameter_json.0.case_ids,
+    )
+    .await?;
     let searched_cpus =
-        search::cpu::search_cpu_from_ids(search_from_item_id_parameter_json.0.cpu_ids).await?;
+        search::cpu::search_cpu_from_ids(&state.db, search_from_item_id_parameter_json.0.cpu_ids)
+            .await?;
     let searched_cpu_coolers = search::cpu_cooler::search_cpu_cooler_from_ids(
+        &state.db,
         search_from_item_id_parameter_json.0.cpu_cooler_ids,
     )
     .await?;
     let searched_gpus =
-        search::gpu::search_gpu_from_ids(search_from_item_id_parameter_json.0.gpu_ids).await?;
-    let searched_hdds =
-        search::hdd::search_hdd_from_ids(search_from_item_id_parameter_json.0.hdd_ids).await?;
-    let searched_memories =
-        search::memory::search_memory_from_ids(search_from_item_id_parameter_json.0.memory_ids)
+        search::gpu::search_gpu_from_ids(&state.db, search_from_item_id_parameter_json.0.gpu_ids)
             .await?;
+    let searched_hdds =
+        search::hdd::search_hdd_from_ids(&state.db, search_from_item_id_parameter_json.0.hdd_ids)
+            .await?;
+    let searched_memories = search::memory::search_memory_from_ids(
+        &state.db,
+        search_from_item_id_parameter_json.0.memory_ids,
+    )
+    .await?;
     let searched_motherboards = search::motherboard::search_motherboard_from_ids(
+        &state.db,
         search_from_item_id_parameter_json.0.motherboard_ids,
     )
     .await?;
     let searched_power_supplies = search::power_supply::search_power_supply_from_ids(
+        &state.db,
         search_from_item_id_parameter_json.0.power_supply_ids,
     )
     .await?;
     let searched_ssds =
-        search::ssd::search_ssd_from_ids(search_from_item_id_parameter_json.0.ssd_ids).await?;
+        search::ssd::search_ssd_from_ids(&state.db, search_from_item_id_parameter_json.0.ssd_ids)
+            .await?;
     let searched_parts = search::search::SearchedParts {
         cases: searched_cases,
         cpu_coolers: searched_cpu_coolers,
@@ -131,34 +158,39 @@ async fn search_all(
 
 #[debug_handler]
 async fn search_cpu_handler(
+    state: State<AppState>,
     payload: Result<Json<search::cpu::SearchCpuParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_cpu(payload).await
+    search_cpu(state, payload).await
 }
 
 async fn search_cpu(
+    state: State<AppState>,
     payload: Result<Json<search::cpu::SearchCpuParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_cpu_parameter_json = payload?;
 
-    let searched_cpus = search::cpu::search_cpu(search_cpu_parameter_json.0).await?;
+    let searched_cpus = search::cpu::search_cpu(&state.db, search_cpu_parameter_json.0).await?;
     Ok((StatusCode::OK, Json(searched_cpus)).into_response())
 }
 
 #[debug_handler]
 async fn search_cpu_cooler_handler(
+    state: State<AppState>,
     payload: Result<Json<search::cpu_cooler::SearchCpuCoolerParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_cpu_cooler(payload).await
+    search_cpu_cooler(state, payload).await
 }
 
 async fn search_cpu_cooler(
+    state: State<AppState>,
     payload: Result<Json<search::cpu_cooler::SearchCpuCoolerParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_cpu_cooler_parameter_json = payload?;
 
     let searched_cpu_coolers =
-        search::cpu_cooler::search_cpu_cooler(search_cpu_cooler_parameter_json.0).await?;
+        search::cpu_cooler::search_cpu_cooler(&state.db, search_cpu_cooler_parameter_json.0)
+            .await?;
 
     let searched_cpu_cooler_with_sockets: Vec<CpuCoolerWithSocket> = searched_cpu_coolers
         .iter()
@@ -208,98 +240,112 @@ struct CpuCoolerWithSocket {
 
 #[debug_handler]
 async fn search_motherboard_handler(
+    state: State<AppState>,
     payload: Result<Json<search::motherboard::SearchMotherboardParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_motherboard(payload).await
+    search_motherboard(state, payload).await
 }
 
 async fn search_motherboard(
+    state: State<AppState>,
     payload: Result<Json<search::motherboard::SearchMotherboardParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_motherboard_parameter_json = payload?;
 
     let searched_motherboards =
-        search::motherboard::search_motherboard(search_motherboard_parameter_json.0).await?;
+        search::motherboard::search_motherboard(&state.db, search_motherboard_parameter_json.0)
+            .await?;
     Ok((StatusCode::OK, Json(searched_motherboards)).into_response())
 }
 
 #[debug_handler]
 async fn search_memory_handler(
+    state: State<AppState>,
     payload: Result<Json<search::memory::SearchMemoryParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_memory(payload).await
+    search_memory(state, payload).await
 }
 
 async fn search_memory(
+    state: State<AppState>,
     payload: Result<Json<search::memory::SearchMemoryParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_memory_parameter_json = payload?;
 
-    let searched_memories = search::memory::search_memory(search_memory_parameter_json.0).await?;
+    let searched_memories =
+        search::memory::search_memory(&state.db, search_memory_parameter_json.0).await?;
     Ok((StatusCode::OK, Json(searched_memories)).into_response())
 }
 
 #[debug_handler]
 async fn search_gpu_handler(
+    state: State<AppState>,
     payload: Result<Json<search::gpu::SearchGpuParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_gpu(payload).await
+    search_gpu(state, payload).await
 }
 
 async fn search_gpu(
+    state: State<AppState>,
     payload: Result<Json<search::gpu::SearchGpuParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_gpu_parameter_json = payload?;
 
-    let searched_gpus = search::gpu::search_gpu(search_gpu_parameter_json.0).await?;
+    let searched_gpus = search::gpu::search_gpu(&state.db, search_gpu_parameter_json.0).await?;
     Ok((StatusCode::OK, Json(searched_gpus)).into_response())
 }
 
 #[debug_handler]
 async fn search_ssd_handler(
+    state: State<AppState>,
     payload: Result<Json<search::ssd::SearchSsdParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_ssd(payload).await
+    search_ssd(state, payload).await
 }
 
 async fn search_ssd(
+    state: State<AppState>,
     payload: Result<Json<search::ssd::SearchSsdParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_ssd_parameter_json = payload?;
 
-    let searched_ssds = search::ssd::search_ssd(search_ssd_parameter_json.0).await?;
+    let searched_ssds = search::ssd::search_ssd(&state.db, search_ssd_parameter_json.0).await?;
     Ok((StatusCode::OK, Json(searched_ssds)).into_response())
 }
 
 #[debug_handler]
 async fn search_hdd_handler(
+    state: State<AppState>,
     payload: Result<Json<search::hdd::SearchHddParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_hdd(payload).await
+    search_hdd(state, payload).await
 }
 
 async fn search_hdd(
+    state: State<AppState>,
     payload: Result<Json<search::hdd::SearchHddParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_hdd_parameter_json = payload?;
 
-    let searched_hdds = search::hdd::search_hdd(search_hdd_parameter_json.0).await?;
+    let searched_hdds = search::hdd::search_hdd(&state.db, search_hdd_parameter_json.0).await?;
     Ok((StatusCode::OK, Json(searched_hdds)).into_response())
 }
 
 #[debug_handler]
 async fn search_case_handler(
+    state: State<AppState>,
     payload: Result<Json<search::case::SearchCaseParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_case(payload).await
+    search_case(state, payload).await
 }
 
 async fn search_case(
+    state: State<AppState>,
     payload: Result<Json<search::case::SearchCaseParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_case_parameter_json = payload?;
 
-    let searched_cases = search::case::search_case(search_case_parameter_json.0).await?;
+    let searched_cases = search::case::search_case(&state.db, search_case_parameter_json.0).await?;
     let searched_case_with_form_factors: Vec<CaseWithFormFactor> = searched_cases
         .iter()
         .map(|x| CaseWithFormFactor {
@@ -356,17 +402,20 @@ struct CaseWithFormFactor {
 
 #[debug_handler]
 async fn search_power_supply_handler(
+    state: State<AppState>,
     payload: Result<Json<search::power_supply::SearchPowerSupplyParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, impl IntoResponse> {
-    search_power_supply(payload).await
+    search_power_supply(state, payload).await
 }
 
 async fn search_power_supply(
+    state: State<AppState>,
     payload: Result<Json<search::power_supply::SearchPowerSupplyParameter>, JsonRejection>,
 ) -> Result<impl IntoResponse, SearchError> {
     let search_power_supply_parameter_json = payload?;
 
     let searched_power_supplies =
-        search::power_supply::search_power_supply(search_power_supply_parameter_json.0).await?;
+        search::power_supply::search_power_supply(&state.db, search_power_supply_parameter_json.0)
+            .await?;
     Ok((StatusCode::OK, Json(searched_power_supplies)).into_response())
 }

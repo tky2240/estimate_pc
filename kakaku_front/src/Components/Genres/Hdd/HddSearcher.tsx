@@ -79,7 +79,7 @@ const HddSearcher = (props: Props) => {
                 <Grid xs={12} sm={8} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchHddParameter.capacity}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="Capacity"
                         variant="filled"
@@ -87,6 +87,7 @@ const HddSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'GB以上'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
@@ -117,7 +118,7 @@ const HddSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchHddParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -125,6 +126,7 @@ const HddSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -136,7 +138,7 @@ const HddSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchHddParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -144,6 +146,7 @@ const HddSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{inputMode: "decimal"}}
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

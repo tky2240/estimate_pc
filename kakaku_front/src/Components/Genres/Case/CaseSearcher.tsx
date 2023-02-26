@@ -155,7 +155,7 @@ const CaseSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCaseParameter.min_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MinPrice"
                         variant="filled"
@@ -163,6 +163,7 @@ const CaseSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCaseParameter({ ...searchCaseParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -174,7 +175,7 @@ const CaseSearcher = (props: Props) => {
                 <Grid xs={12} sm={3.5} display="flex" justifyContent="start" alignItems="center">
                     <NumericFormat
                         value={searchCaseParameter.max_price}
-                        thousandSeparator={true}
+                        thousandSeparator={false}
                         customInput={TextField}
                         label="MaxPrice"
                         variant="filled"
@@ -182,6 +183,7 @@ const CaseSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCaseParameter({ ...searchCaseParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>

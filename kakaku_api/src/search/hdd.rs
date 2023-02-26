@@ -3,10 +3,11 @@ use crate::models::prelude::Hdd;
 use crate::search_error::SearchError;
 use sea_orm::{EntityTrait, QueryFilter};
 
+use sea_orm::DatabaseConnection;
 use sea_orm::{entity::*, query::*};
 
 use super::search::SortOrder;
-use crate::db;
+
 use std::result::Result;
 
 use serde::{Deserialize, Serialize};
@@ -24,14 +25,15 @@ pub struct SearchHddParameter {
 }
 
 pub async fn search_hdd_from_ids(
+    db: &DatabaseConnection,
     hdd_item_ids: Vec<String>,
 ) -> Result<Vec<hdd::Model>, SearchError> {
-    let db = db::create_db_connection().await?;
     let searched_hdd = Hdd::find().filter(hdd::Column::ItemId.is_in(hdd_item_ids));
-    return Ok(searched_hdd.all(&db).await?);
+    Ok(searched_hdd.all(db).await?)
 }
 
 pub async fn search_hdd(
+    db: &DatabaseConnection,
     search_hdd_parameter: SearchHddParameter,
 ) -> Result<Vec<hdd::Model>, SearchError> {
     let search_words: Vec<&str> = search_hdd_parameter
@@ -79,7 +81,6 @@ pub async fn search_hdd(
             .order_by_asc(hdd::Column::PopularRank),
         SortOrder::ReleaseDateDesc => searched_hdds.order_by_desc(hdd::Column::ReleaseDate),
     };
-    let db = db::create_db_connection().await?;
 
-    Ok(searched_hdds.all(&db).await?)
+    Ok(searched_hdds.all(db).await?)
 }
