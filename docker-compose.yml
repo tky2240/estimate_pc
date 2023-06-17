@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  api:
+    build: "./kakaku_api"
+    container_name: ${API_CONTAINER_NAME}
+    environment:
+      - DATABASE_URL
+  db:
+    image: mariadb
+    restart: always
+    container_name: ${DATABASE_CONTAINER_NAME}
+    environment:
+      - MARIADB_ROOT_PASSWORD
+      - MARIADB_DATABASE
+      - MARIADB_USER
+      -
+  scraping:
+    build: "./kakaku_database"
+    container_name: ${SCRAPING_CONTAINER_NAME}
+    environment:
+      - DATABASE_URL
