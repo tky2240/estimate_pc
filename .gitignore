@@ -1,5 +1,6 @@
 .env
 target/
+dist/
 
 settings.yml
 __pycache__

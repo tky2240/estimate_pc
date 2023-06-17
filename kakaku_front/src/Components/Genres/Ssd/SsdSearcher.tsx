@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 import Select from '@mui/material/Select';
@@ -11,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { SsdDescription } from './SsdPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -237,7 +238,7 @@ export type SearchSsdParameter = {
 export const SearchSsd = async (searchSsdParameter: SearchSsdParameter): Promise<SsdDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "ssd"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchSsdParameter) });
+        const response = await fetch(new URL("ssd", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchSsdParameter) });
         if (!response.ok) {
             return [];
         }

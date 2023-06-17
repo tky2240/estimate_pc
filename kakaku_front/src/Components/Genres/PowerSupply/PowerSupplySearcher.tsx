@@ -1,3 +1,4 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
 import Select from '@mui/material/Select';
@@ -11,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { PowerSupplyDescription } from './PowerSupplyPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -134,7 +135,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'W以上'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
@@ -177,7 +178,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -197,7 +198,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -247,7 +248,7 @@ export type SearchPowerSupplyParameter = {
 export const SearchPowerSupply = async (searchPowerSupplyParameter: SearchPowerSupplyParameter): Promise<PowerSupplyDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "power_supply"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchPowerSupplyParameter) });
+        const response = await fetch(new URL(urlBase, "power_supply"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchPowerSupplyParameter) });
         if (!response.ok) {
             return [];
         }

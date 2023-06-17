@@ -1,14 +1,15 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { hydrateRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 
-const rootElement = document.getElementById('root');
-const root = createRoot(rootElement as HTMLElement);
-root.render(
+const rootElement = document.getElementById('root') as HTMLElement;
+//const root = createRoot(rootElement as HTMLElement);
+hydrateRoot(
+  rootElement,
   <React.StrictMode>
     <BrowserRouter>
       <App />
