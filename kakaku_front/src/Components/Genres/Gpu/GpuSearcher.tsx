@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { GpuDescription } from './GpuPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 import CheckBox from '@mui/material/Checkbox'
 
@@ -315,7 +315,7 @@ export type SearchGpuParameter = {
 export const SearchGpu = async (searchGpuParameter: SearchGpuParameter): Promise<GpuDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "gpu"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchGpuParameter) });
+        const response = await fetch(new URL("gpu", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchGpuParameter) });
         if (!response.ok) {
             return [];
         }

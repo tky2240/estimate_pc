@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { CpuCoolerDescription } from './CpuCoolerPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -298,7 +298,7 @@ export type SearchCpuCoolerParameter = {
 export const SearchCpuCooler = async (searchCpuCoolerParameter: SearchCpuCoolerParameter): Promise<CpuCoolerDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "cpu_cooler"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuCoolerParameter) });
+        const response = await fetch(new URL("cpu_cooler", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuCoolerParameter) });
         if (!response.ok) {
             return [];
         }

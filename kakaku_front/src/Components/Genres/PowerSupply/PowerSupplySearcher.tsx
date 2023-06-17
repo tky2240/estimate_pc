@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { PowerSupplyDescription } from './PowerSupplyPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -247,7 +247,7 @@ export type SearchPowerSupplyParameter = {
 export const SearchPowerSupply = async (searchPowerSupplyParameter: SearchPowerSupplyParameter): Promise<PowerSupplyDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "power_supply"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchPowerSupplyParameter) });
+        const response = await fetch(new URL("power_supply", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchPowerSupplyParameter) });
         if (!response.ok) {
             return [];
         }

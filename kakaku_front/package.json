@@ -19,6 +19,7 @@
     "@types/react-window": "^1.8.5",
     "buffer": "^6.0.3",
     "comma-separated-values": "^3.6.4",
+    "csv-parse": "^5.4.0",
     "csv-string": "^4.1.1",
     "dotenv-webpack": "^8.0.1",
     "query-string": "^7.1.1",
@@ -33,7 +34,6 @@
     "react-window": "^1.8.8",
     "stream-browserify": "^3.0.0",
     "typescript": "^4.8.4",
-    "url-join": "^5.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

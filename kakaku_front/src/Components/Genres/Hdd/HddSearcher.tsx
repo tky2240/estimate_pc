@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { HddDescription } from './HddPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -193,7 +193,7 @@ export type SearchHddParameter = {
 export const SearchHdd = async (searchHddParameter: SearchHddParameter): Promise<HddDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "hdd"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchHddParameter) });
+        const response = await fetch(new URL("hdd", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchHddParameter) });
         if (!response.ok) {
             return [];
         }

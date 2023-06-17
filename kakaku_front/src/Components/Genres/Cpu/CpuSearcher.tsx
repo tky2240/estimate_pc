@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { CpuDescription } from './CpuPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -109,7 +109,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCpuParameter({ ...searchCpuParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -129,7 +129,7 @@ const CpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCpuParameter({ ...searchCpuParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -176,7 +176,7 @@ export const SearchCpu = async (searchCpuParameter: SearchCpuParameter): Promise
 
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "cpu"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuParameter) });
+        const response = await fetch(new URL("cpu", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuParameter) });
         if (!response.ok) {
             return [];
         }

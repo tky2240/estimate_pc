@@ -36,7 +36,7 @@ import PowerSupplyPriceDisplay from './PowerSupply/PowerSupplyPriceDisplay';
 import { PropaneSharp, Search } from '@mui/icons-material';
 import * as CSV from 'csv-string';
 import { Buffer } from 'buffer';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { Share, ContentCopy } from '@mui/icons-material'
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Snackbar from '@mui/material/Snackbar';
@@ -152,30 +152,21 @@ const GenreList = (props: Props) => {
                 )
             ).toString('base64');
         };
-        //console.log(genreSummaries);
-        // const cpuParameter = parseParameter("Cpu");
-        // const cpuCoolerParameter = parseParameter("CpuCooler");
-        // const motherboardParameter = parseParameter("Motherboard");
-        // const memoryParameter = parseParameter("Memory");
-        // const gpuParameter = parseParameter("Gpu");
-        // const ssdParameter = parseParameter("Ssd");
-        // const hddParameter = parseParameter("Hdd");
-        // const caseParameter = parseParameter("Case");
-        // const powerSupplyParameter = parseParameter("PowerSupply");
-        const createdShareUrl = urlJoin(
-            baseUrl,
-            `?Cpu=${parseParameter("Cpu")}`,
-            `?CpuCooler=${parseParameter("CpuCooler")}`,
-            `?Motherboard=${parseParameter("Motherboard")}`,
-            `?Memory=${parseParameter("Memory")}`,
-            `?Gpu=${parseParameter("Gpu")}`,
-            `?Ssd=${parseParameter("Ssd")}`,
-            `?Hdd=${parseParameter("Hdd")}`,
-            `?Case=${parseParameter("Case")}`,
-            `?PowerSupply=${parseParameter("PowerSupply")}`,
-        )
-        //console.log(createdShareUrl);
-        const createdShortUrl = CreateShortUrl(createdShareUrl);
+        const shareParameters = new URLSearchParams({
+            "Cpu": parseParameter("Cpu"),
+            "CpuCooler": parseParameter("CpuCooler"),
+            "Motherboard": parseParameter("Motherboard"),
+            "Memory": parseParameter("Memory"),
+            "Gpu": parseParameter("Gpu"),
+            "Ssd": parseParameter("Ssd"),
+            "Hdd": parseParameter("Hdd"),
+            "Case": parseParameter("Case"),
+            "PowerSupply": parseParameter("PowerSupply"),
+        });
+
+        const longUrl = new URL(baseUrl);
+        longUrl.search = shareParameters.toString();
+        const createdShortUrl = CreateShortUrl(longUrl.toString());
         //console.log(createdShortUrl);
         setShareUrl(await createdShortUrl);
         processingShareUrl.current = false;
@@ -282,7 +273,7 @@ const GenreList = (props: Props) => {
 const CreateShortUrl = async (long_url: string): Promise<string> => {
     try {
         const urlBase = process.env.REACT_APP_CREATE_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "short_url"), { method: "POST", headers: { 'Content-Type': 'text/plain' }, body: long_url });
+        const response = await fetch(new URL("short_url", urlBase), { method: "POST", headers: { 'Content-Type': 'text/plain' }, body: long_url });
         if (!response.ok) {
             return '';
         }

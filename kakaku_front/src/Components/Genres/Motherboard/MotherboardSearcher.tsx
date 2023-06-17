@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { MotherboardDescription } from './MotherboardPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -312,7 +312,7 @@ export type SearchMotherboardParameter = {
 export const SearchMotherboard = async (searchMotherboardParameter: SearchMotherboardParameter): Promise<MotherboardDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "motherboard"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchMotherboardParameter) });
+        const response = await fetch(new URL("motherboard", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchMotherboardParameter) });
         if (!response.ok) {
             return [];
         }

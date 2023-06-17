@@ -11,7 +11,7 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { MemoryDescription } from './MemoryPriceDisplay'
 import { SortOrder } from '../GenreList';
-import urlJoin from 'url-join';
+//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {
@@ -295,7 +295,7 @@ export type SearchMemoryParameter = {
 export const SearchMemory = async (searchMemoryParameter: SearchMemoryParameter): Promise<MemoryDescription[]> => {
     try {
         const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
-        const response = await fetch(urlJoin(urlBase, "memory"), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchMemoryParameter) });
+        const response = await fetch(new URL("memory", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchMemoryParameter) });
         if (!response.ok) {
             return [];
         }
