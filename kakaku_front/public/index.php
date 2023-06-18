@@ -24,8 +24,26 @@
     -->
     <meta property="og:url" content="https://estimate-pc.uouo.fish/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Estimate PC" />
-    <meta property="og:description" content="Compare DIY PC parts' price" />
+    <?php
+        $composition_name = '';
+        if(isset($_GET['Name'])) {
+            $encoded_composition_name = $_GET['Name'];
+            $decode_composition_name_result = base64_decode($encoded_composition_name, true);
+            if(is_string($decode_composition_name_result)){
+                $composition_name = $decode_composition_name_result;
+            }
+        }
+        $total_price = '';
+        if(isset($_GET['Price'])) {
+            $encoded_total_price = $_GET['Price'];
+            $decode_total_price_result = base64_decode($encoded_total_price, true);
+            if(is_string($decode_total_price_result)){
+                $total_price = $decode_total_price_result . "円";
+            }
+        }
+        echo("<meta property=\"og:title\" content=\"{$composition_name}\" />");
+        echo("<meta property=\"og:description\" content=\"{$total_price}\" />");
+    ?>
     <meta property="og:site_name" content="Estimate PC" />
 
   <title>Estimate PC</title>
