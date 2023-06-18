@@ -11,6 +11,10 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import GenreList from './Components/Genres/GenreList';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import { Stack, TextField } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+import { Buffer } from 'buffer';
 
 function App() {
     //ref:https://amateur-engineer.com/react-mui-dark-mode/
@@ -121,6 +125,19 @@ function App() {
         setTotalPrice(price);
         //console.log(price);
     }
+    const [compositionName, setCompositionName] = useState("");
+    const location = useLocation();
+    useEffect(() => {
+        try {
+            setCompositionName(
+                Buffer.from(
+                    queryString.parse(location.search).Name as string, 'base64'
+                ).toString()
+            );
+        } catch (e) {
+            console.log(`parse error : ${e}`);
+        }
+    }, []);
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -137,7 +154,12 @@ function App() {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <GenreList ChangeTotalPrice={changeTotalPrice} />
+            < Box sx={{ margin: "auto", width: "90%", maxWidth: "1000px", padding: "20px", }}>
+                <Stack>
+                    <TextField sx={{ marginBottom: "10px" }} variant='standard' label='構成名' placeholder='ぼくのかんがえたさいきょうのPC' value={compositionName} onChange={(e) => setCompositionName(e.target.value)} />
+                    <GenreList TotalPrice={totalPrice} CompositionName={compositionName} ChangeTotalPrice={changeTotalPrice} />
+                </Stack>
+            </Box>
         </ThemeProvider>
     );
 }
