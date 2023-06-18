@@ -84,13 +84,16 @@ const MotherboardSearcher = (props: Props) => {
                             label="Chipset"
                             onChange={(e) => setSearchMotherboardParameter({ ...searchMotherboardParameter, chipset: e.target.value })}
                         >
+                            <MenuItem value={"AMD 890FX+SB850"}>AMD 890FX+SB850</MenuItem>
                             <MenuItem value={"AMD 970+SB950"}>AMD 970+SB950</MenuItem>
                             <MenuItem value={"AMD A320"}>AMD A320</MenuItem>
                             <MenuItem value={"AMD A520"}>AMD A520</MenuItem>
                             <MenuItem value={"AMD A55"}>AMD A55</MenuItem>
                             <MenuItem value={"AMD A58"}>AMD A58</MenuItem>
+                            <MenuItem value={"AMD A620"}>AMD A620</MenuItem>
                             <MenuItem value={"AMD A75"}>AMD A75</MenuItem>
                             <MenuItem value={"AMD A85X"}>AMD A85X</MenuItem>
+                            <MenuItem value={"AMD B450"}>AMD B450</MenuItem>
                             <MenuItem value={"AMD B550"}>AMD B550</MenuItem>
                             <MenuItem value={"AMD B650"}>AMD B650</MenuItem>
                             <MenuItem value={"AMD B650E"}>AMD B650E</MenuItem>
@@ -101,9 +104,11 @@ const MotherboardSearcher = (props: Props) => {
                             <MenuItem value={"AMD X570"}>AMD X570</MenuItem>
                             <MenuItem value={"AMD X670"}>AMD X670</MenuItem>
                             <MenuItem value={"AMD X670E"}>AMD X670E</MenuItem>
+                            <MenuItem value={"INTEL B365"}>INTEL B365</MenuItem>
                             <MenuItem value={"INTEL B460"}>INTEL B460</MenuItem>
                             <MenuItem value={"INTEL B560"}>INTEL B560</MenuItem>
                             <MenuItem value={"INTEL B660"}>INTEL B660</MenuItem>
+                            <MenuItem value={"INTEL B760"}>INTEL B760</MenuItem>
                             <MenuItem value={"INTEL C226"}>INTEL C226</MenuItem>
                             <MenuItem value={"INTEL C232"}>INTEL C232</MenuItem>
                             <MenuItem value={"INTEL C236"}>INTEL C236</MenuItem>
@@ -123,6 +128,7 @@ const MotherboardSearcher = (props: Props) => {
                             <MenuItem value={"INTEL H61"}>INTEL H61</MenuItem>
                             <MenuItem value={"INTEL H610"}>INTEL H610</MenuItem>
                             <MenuItem value={"INTEL H670"}>INTEL H670</MenuItem>
+                            <MenuItem value={"INTEL H770"}>INTEL H770</MenuItem>
                             <MenuItem value={"INTEL H81"}>INTEL H81</MenuItem>
                             <MenuItem value={"INTEL P55"}>INTEL P55</MenuItem>
                             <MenuItem value={"INTEL P67"}>INTEL P67</MenuItem>
@@ -134,8 +140,11 @@ const MotherboardSearcher = (props: Props) => {
                             <MenuItem value={"INTEL W480"}>INTEL W480</MenuItem>
                             <MenuItem value={"INTEL W480E"}>INTEL W480E</MenuItem>
                             <MenuItem value={"INTEL W580"}>INTEL W580</MenuItem>
+                            <MenuItem value={"INTEL W680"}>INTEL W680</MenuItem>
+                            <MenuItem value={"INTEL W790"}>INTEL W790</MenuItem>
                             <MenuItem value={"INTEL X299"}>INTEL X299</MenuItem>
                             <MenuItem value={"INTEL X79"}>INTEL X79</MenuItem>
+                            <MenuItem value={"INTEL Z370"}>INTEL Z370</MenuItem>
                             <MenuItem value={"INTEL Z390"}>INTEL Z390</MenuItem>
                             <MenuItem value={"INTEL Z490"}>INTEL Z490</MenuItem>
                             <MenuItem value={"INTEL Z590"}>INTEL Z590</MenuItem>

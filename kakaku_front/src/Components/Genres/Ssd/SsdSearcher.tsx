@@ -147,6 +147,7 @@ const SsdSearcher = (props: Props) => {
                             <MenuItem value={"PCI-Express"}>PCI-Express</MenuItem>
                             <MenuItem value={"PCI-Express Gen3"}>PCI-Express Gen3</MenuItem>
                             <MenuItem value={"PCI-Express Gen4"}>PCI-Express Gen4</MenuItem>
+                            <MenuItem value={"PCI-Express Gen5"}>PCI-Express Gen5</MenuItem>
                             <MenuItem value={"SAS 12Gb/s"}>SAS 12Gb/s</MenuItem>
                             <MenuItem value={"Serial ATA"}>Serial ATA</MenuItem>
                             <MenuItem value={" "}>全て</MenuItem>

@@ -104,7 +104,25 @@ const GpuSearcher = (props: Props) => {
                             label="ChipName"
                             onChange={(e) => setSearchGpuParameter({ ...searchGpuParameter, chip_name: e.target.value })}
                         >
+                            <MenuItem value={"AMD FirePro W4100"}>AMD FirePro W4100</MenuItem>
+                            <MenuItem value={"AMD FirePro W5100"}>AMD FirePro W5100</MenuItem>
                             <MenuItem value={"AMD Radeon 550"}>AMD Radeon 550</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 5450"}>AMD RADEON HD 5450</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 5770"}>AMD RADEON HD 5770</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6450"}>AMD RADEON HD 6450</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6570"}>AMD RADEON HD 6570</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6670"}>AMD RADEON HD 6670</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6750"}>AMD RADEON HD 6750</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6770"}>AMD RADEON HD 6770</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6790"}>AMD RADEON HD 6790</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6850"}>AMD RADEON HD 6850</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 6870"}>AMD RADEON HD 6870</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 7750"}>AMD RADEON HD 7750</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 7770"}>AMD RADEON HD 7770</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 7850"}>AMD RADEON HD 7850</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 7870"}>AMD RADEON HD 7870</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 7950"}>AMD RADEON HD 7950</MenuItem>
+                            <MenuItem value={"AMD RADEON HD 7970"}>AMD RADEON HD 7970</MenuItem>
                             <MenuItem value={"AMD Radeon Pro W5500X"}>AMD Radeon Pro W5500X</MenuItem>
                             <MenuItem value={"AMD Radeon Pro W5700X"}>AMD Radeon Pro W5700X</MenuItem>
                             <MenuItem value={"AMD Radeon Pro W6400"}>AMD Radeon Pro W6400</MenuItem>
@@ -112,6 +130,11 @@ const GpuSearcher = (props: Props) => {
                             <MenuItem value={"AMD Radeon Pro W6800"}>AMD Radeon Pro W6800</MenuItem>
                             <MenuItem value={"AMD Radeon Pro WX 3200"}>AMD Radeon Pro WX 3200</MenuItem>
                             <MenuItem value={"AMD Radeon Pro WX 8200"}>AMD Radeon Pro WX 8200</MenuItem>
+                            <MenuItem value={"AMD Radeon R7 240"}>AMD Radeon R7 240</MenuItem>
+                            <MenuItem value={"AMD Radeon R7 250X"}>AMD Radeon R7 250X</MenuItem>
+                            <MenuItem value={"AMD Radeon R7 260"}>AMD Radeon R7 260</MenuItem>
+                            <MenuItem value={"AMD Radeon R7 260X"}>AMD Radeon R7 260X</MenuItem>
+                            <MenuItem value={"AMD Radeon R9 270X"}>AMD Radeon R9 270X</MenuItem>
                             <MenuItem value={"AMD Radeon RX 550"}>AMD Radeon RX 550</MenuItem>
                             <MenuItem value={"AMD Radeon RX 560"}>AMD Radeon RX 560</MenuItem>
                             <MenuItem value={"AMD Radeon RX 5700 XT"}>AMD Radeon RX 5700 XT</MenuItem>
@@ -128,20 +151,63 @@ const GpuSearcher = (props: Props) => {
                             <MenuItem value={"AMD Radeon RX 6800 XT"}>AMD Radeon RX 6800 XT</MenuItem>
                             <MenuItem value={"AMD Radeon RX 6900 XT"}>AMD Radeon RX 6900 XT</MenuItem>
                             <MenuItem value={"AMD Radeon RX 6950 XT"}>AMD Radeon RX 6950 XT</MenuItem>
+                            <MenuItem value={"AMD Radeon RX 7600"}>AMD Radeon RX 7600</MenuItem>
+                            <MenuItem value={"AMD Radeon RX 7900 XT"}>AMD Radeon RX 7900 XT</MenuItem>
+                            <MenuItem value={"AMD Radeon RX 7900 XTX"}>AMD Radeon RX 7900 XTX</MenuItem>
                             <MenuItem value={"AMD Vega10"}>AMD Vega10</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 3850"}>ATI RADEON HD 3850</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 4650"}>ATI RADEON HD 4650</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 4670"}>ATI RADEON HD 4670</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 4870"}>ATI RADEON HD 4870</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 5550"}>ATI RADEON HD 5550</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 5570"}>ATI RADEON HD 5570</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 5670"}>ATI RADEON HD 5670</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 5750"}>ATI RADEON HD 5750</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 5770"}>ATI RADEON HD 5770</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 5830"}>ATI RADEON HD 5830</MenuItem>
+                            <MenuItem value={"ATI RADEON HD 5850"}>ATI RADEON HD 5850</MenuItem>
                             <MenuItem value={"Intel Arc A380"}>Intel Arc A380</MenuItem>
                             <MenuItem value={"Intel Arc A750"}>Intel Arc A750</MenuItem>
+                            <MenuItem value={"Intel Arc A770"}>Intel Arc A770</MenuItem>
+                            <MenuItem value={"NVIDIA A100"}>NVIDIA A100</MenuItem>
+                            <MenuItem value={"NVIDIA A30"}>NVIDIA A30</MenuItem>
+                            <MenuItem value={"NVIDIA A40"}>NVIDIA A40</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce 9800 GT"}>NVIDIA GeForce 9800 GT</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GT 1030"}>NVIDIA GeForce GT 1030</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 220"}>NVIDIA GeForce GT 220</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 430"}>NVIDIA GeForce GT 430</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 440"}>NVIDIA GeForce GT 440</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 630"}>NVIDIA GeForce GT 630</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 640"}>NVIDIA GeForce GT 640</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 710"}>NVIDIA GeForce GT 710</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 730 (128-bit DDR3)"}>NVIDIA GeForce GT 730 (128-bit DDR3)</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GT 730 (64-bit DDR3)"}>NVIDIA GeForce GT 730 (64-bit DDR3)</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GT 730 (64-bit GDDR5)"}>NVIDIA GeForce GT 730 (64-bit GDDR5)</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GT 740"}>NVIDIA GeForce GT 740</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTS 450"}>NVIDIA GeForce GTS 450</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GTX 1050 Ti"}>NVIDIA GeForce GTX 1050 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 1060"}>NVIDIA GeForce GTX 1060</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GTX 1630"}>NVIDIA GeForce GTX 1630</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GTX 1650 (G5)"}>NVIDIA GeForce GTX 1650 (G5)</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GTX 1650 (G6)"}>NVIDIA GeForce GTX 1650 (G6)</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GTX 1660"}>NVIDIA GeForce GTX 1660</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GTX 1660 SUPER"}>NVIDIA GeForce GTX 1660 SUPER</MenuItem>
                             <MenuItem value={"NVIDIA GeForce GTX 1660 Ti"}>NVIDIA GeForce GTX 1660 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA Geforce GTX 280"}>NVIDIA Geforce GTX 280</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 460"}>NVIDIA GeForce GTX 460</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 480"}>NVIDIA GeForce GTX 480</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 550 Ti"}>NVIDIA GeForce GTX 550 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 560"}>NVIDIA GeForce GTX 560</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 560 Ti"}>NVIDIA GeForce GTX 560 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 580"}>NVIDIA GeForce GTX 580</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 760"}>NVIDIA GeForce GTX 760</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 770"}>NVIDIA GeForce GTX 770</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 780"}>NVIDIA GeForce GTX 780</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 960"}>NVIDIA GeForce GTX 960</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 980"}>NVIDIA GeForce GTX 980</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce GTX 980 Ti"}>NVIDIA GeForce GTX 980 Ti</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 2060"}>NVIDIA GeForce RTX 2060</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce RTX 2080 Ti"}>NVIDIA GeForce RTX 2080 Ti</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 3050"}>NVIDIA GeForce RTX 3050</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 3060"}>NVIDIA GeForce RTX 3060</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 3060 Ti"}>NVIDIA GeForce RTX 3060 Ti</MenuItem>
@@ -151,22 +217,37 @@ const GpuSearcher = (props: Props) => {
                             <MenuItem value={"NVIDIA GeForce RTX 3080 Ti"}>NVIDIA GeForce RTX 3080 Ti</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 3090"}>NVIDIA GeForce RTX 3090</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 3090 Ti"}>NVIDIA GeForce RTX 3090 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce RTX 4060 Ti"}>NVIDIA GeForce RTX 4060 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce RTX 4070"}>NVIDIA GeForce RTX 4070</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce RTX 4070 Ti"}>NVIDIA GeForce RTX 4070 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce RTX 4080"}>NVIDIA GeForce RTX 4080</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 4090"}>NVIDIA GeForce RTX 4090</MenuItem>
+                            <MenuItem value={"NVIDIA H100"}>NVIDIA H100</MenuItem>
+                            <MenuItem value={"NVIDIA Quadro FX 5800"}>NVIDIA Quadro FX 5800</MenuItem>
                             <MenuItem value={"NVIDIA Quadro GV100"}>NVIDIA Quadro GV100</MenuItem>
                             <MenuItem value={"NVIDIA Quadro K6000"}>NVIDIA Quadro K6000</MenuItem>
+                            <MenuItem value={"NVIDIA Quadro P1000"}>NVIDIA Quadro P1000</MenuItem>
+                            <MenuItem value={"NVIDIA Quadro P2200"}>NVIDIA Quadro P2200</MenuItem>
                             <MenuItem value={"NVIDIA Quadro P400"}>NVIDIA Quadro P400</MenuItem>
+                            <MenuItem value={"NVIDIA Quadro P620"}>NVIDIA Quadro P620</MenuItem>
+                            <MenuItem value={"NVIDIA Quadro RTX 3000"}>NVIDIA Quadro RTX 3000</MenuItem>
                             <MenuItem value={"NVIDIA Quadro RTX 4000"}>NVIDIA Quadro RTX 4000</MenuItem>
                             <MenuItem value={"NVIDIA Quadro RTX 5000"}>NVIDIA Quadro RTX 5000</MenuItem>
                             <MenuItem value={"NVIDIA Quadro RTX 6000"}>NVIDIA Quadro RTX 6000</MenuItem>
                             <MenuItem value={"NVIDIA Quadro RTX 8000"}>NVIDIA Quadro RTX 8000</MenuItem>
+                            <MenuItem value={"NVIDIA Quadro T1000"}>NVIDIA Quadro T1000</MenuItem>
+                            <MenuItem value={"NVIDIA RTX 6000 Ada"}>NVIDIA RTX 6000 Ada</MenuItem>
                             <MenuItem value={"NVIDIA RTX A2000"}>NVIDIA RTX A2000</MenuItem>
                             <MenuItem value={"NVIDIA RTX A4000"}>NVIDIA RTX A4000</MenuItem>
                             <MenuItem value={"NVIDIA RTX A4500"}>NVIDIA RTX A4500</MenuItem>
                             <MenuItem value={"NVIDIA RTX A5000"}>NVIDIA RTX A5000</MenuItem>
+                            <MenuItem value={"NVIDIA RTX A5500"}>NVIDIA RTX A5500</MenuItem>
                             <MenuItem value={"NVIDIA RTX A6000"}>NVIDIA RTX A6000</MenuItem>
                             <MenuItem value={"NVIDIA T1000"}>NVIDIA T1000</MenuItem>
                             <MenuItem value={"NVIDIA T400"}>NVIDIA T400</MenuItem>
                             <MenuItem value={"NVIDIA T600"}>NVIDIA T600</MenuItem>
+                            <MenuItem value={"NVIDIA Tesla K40"}>NVIDIA Tesla K40</MenuItem>
+                            <MenuItem value={"NVIDIA Tesla P40"}>NVIDIA Tesla P40</MenuItem>
                             <MenuItem value={"NVIDIA Tesla T4"}>NVIDIA Tesla T4</MenuItem>
                             <MenuItem value={" "}>全て</MenuItem>
                         </Select>
@@ -245,7 +326,7 @@ const GpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchGpuParameter({ ...searchGpuParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -265,7 +346,7 @@ const GpuSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchGpuParameter({ ...searchGpuParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
