@@ -1,28 +1,10 @@
-import Box from '@mui/material/Box';
 import { useEffect, useState, useRef } from 'react';
 import { Divider, Paper, Stack, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ListSubheader from '@mui/material/ListSubheader';
 import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
-import SendIcon from '@mui/icons-material/Send';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import StarBorder from '@mui/icons-material/StarBorder';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CpuPriceDisplay from './Cpu/CpuPriceDisplay';
 import CpuCoolerPriceDisplay from './CpuCooler/CpuCoolerPriceDisplay';
@@ -33,12 +15,9 @@ import SsdPriceDisplay from './Ssd/SsdPriceDisplay';
 import HddPriceDisplay from './Hdd/HddPriceDisplay';
 import CasePriceDisplay from './Case/CasePriceDisplay';
 import PowerSupplyPriceDisplay from './PowerSupply/PowerSupplyPriceDisplay';
-import { PropaneSharp, Search } from '@mui/icons-material';
 import * as CSV from 'csv-string';
 import { Buffer } from 'buffer';
-//import urlJoin from 'url-join';
 import { Share, ContentCopy } from '@mui/icons-material'
-import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Snackbar from '@mui/material/Snackbar';
 import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
@@ -71,54 +50,54 @@ const GenreList = (props: Props) => {
         { Genre: "Case", ItemShortDescriptions: [] },
         { Genre: "PowerSupply", ItemShortDescriptions: [] },
     ]);
-    useEffect(() => {
-        try {
-            const parseToItemShortDescriptions = (genre: PartGenre): ItemShortDescription[] => {
-                return CSV.parse(
-                    Buffer.from(
-                        Reflect.get(queryString.parse(location.search), genre) as string, 'base64url'
-                    ).toString()
-                ).map((itemShortDescriptionArray): ItemShortDescription => (
-                    {
-                        item_id: itemShortDescriptionArray[0],
-                        price: parseInt(itemShortDescriptionArray[1]),
-                        count: parseInt(itemShortDescriptionArray[2])
-                    }
-                )).filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
-            }
-            const initialGenreSummaries: GenreSummary[] = [
-                { Genre: "Cpu", ItemShortDescriptions: parseToItemShortDescriptions("Cpu") },
-                { Genre: "CpuCooler", ItemShortDescriptions: parseToItemShortDescriptions("CpuCooler") },
-                { Genre: "Motherboard", ItemShortDescriptions: parseToItemShortDescriptions("Motherboard") },
-                { Genre: "Memory", ItemShortDescriptions: parseToItemShortDescriptions("Memory") },
-                { Genre: "Gpu", ItemShortDescriptions: parseToItemShortDescriptions("Gpu") },
-                { Genre: "Ssd", ItemShortDescriptions: parseToItemShortDescriptions("Ssd") },
-                { Genre: "Hdd", ItemShortDescriptions: parseToItemShortDescriptions("Hdd") },
-                { Genre: "Case", ItemShortDescriptions: parseToItemShortDescriptions("Case") },
-                { Genre: "PowerSupply", ItemShortDescriptions: parseToItemShortDescriptions("PowerSupply") },
-            ];
-            setGenreSummaries(initialGenreSummaries);
-            const totalPrice = initialGenreSummaries.reduce(
-                (total, genreSummary) => total + genreSummary.ItemShortDescriptions.reduce(
-                    (itemTotal, itemShortDescription) => itemTotal + itemShortDescription.price * itemShortDescription.count, 0)
-                , 0);
-            //props.ChangeTotalPrice(totalPrice);
-            //console.log(totalPrice);
-        } catch (e) {
-            //console.log(e);
-            setGenreSummaries([
-                { Genre: "Cpu", ItemShortDescriptions: [] },
-                { Genre: "CpuCooler", ItemShortDescriptions: [] },
-                { Genre: "Motherboard", ItemShortDescriptions: [] },
-                { Genre: "Memory", ItemShortDescriptions: [] },
-                { Genre: "Gpu", ItemShortDescriptions: [] },
-                { Genre: "Ssd", ItemShortDescriptions: [] },
-                { Genre: "Hdd", ItemShortDescriptions: [] },
-                { Genre: "Case", ItemShortDescriptions: [] },
-                { Genre: "PowerSupply", ItemShortDescriptions: [] },
-            ]);
-        }
-    }, [])
+    // useEffect(() => {
+    //     try {
+    //         const parseToItemShortDescriptions = (genre: PartGenre): ItemShortDescription[] => {
+    //             return CSV.parse(
+    //                 Buffer.from(
+    //                     Reflect.get(queryString.parse(location.search), genre) as string, 'base64url'
+    //                 ).toString()
+    //             ).map((itemShortDescriptionArray): ItemShortDescription => (
+    //                 {
+    //                     item_id: itemShortDescriptionArray[0],
+    //                     price: parseInt(itemShortDescriptionArray[1]),
+    //                     count: parseInt(itemShortDescriptionArray[2])
+    //                 }
+    //             )).filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+    //         }
+    //         const initialGenreSummaries: GenreSummary[] = [
+    //             { Genre: "Cpu", ItemShortDescriptions: parseToItemShortDescriptions("Cpu") },
+    //             { Genre: "CpuCooler", ItemShortDescriptions: parseToItemShortDescriptions("CpuCooler") },
+    //             { Genre: "Motherboard", ItemShortDescriptions: parseToItemShortDescriptions("Motherboard") },
+    //             { Genre: "Memory", ItemShortDescriptions: parseToItemShortDescriptions("Memory") },
+    //             { Genre: "Gpu", ItemShortDescriptions: parseToItemShortDescriptions("Gpu") },
+    //             { Genre: "Ssd", ItemShortDescriptions: parseToItemShortDescriptions("Ssd") },
+    //             { Genre: "Hdd", ItemShortDescriptions: parseToItemShortDescriptions("Hdd") },
+    //             { Genre: "Case", ItemShortDescriptions: parseToItemShortDescriptions("Case") },
+    //             { Genre: "PowerSupply", ItemShortDescriptions: parseToItemShortDescriptions("PowerSupply") },
+    //         ];
+    //         setGenreSummaries(initialGenreSummaries);
+    //         // const totalPrice = initialGenreSummaries.reduce(
+    //         //     (total, genreSummary) => total + genreSummary.ItemShortDescriptions.reduce(
+    //         //         (itemTotal, itemShortDescription) => itemTotal + itemShortDescription.price * itemShortDescription.count, 0)
+    //         //     , 0);
+    //         // props.ChangeTotalPrice(totalPrice);
+    //         //console.log(totalPrice);
+    //     } catch (e) {
+    //         //console.log(e);
+    //         setGenreSummaries([
+    //             { Genre: "Cpu", ItemShortDescriptions: [] },
+    //             { Genre: "CpuCooler", ItemShortDescriptions: [] },
+    //             { Genre: "Motherboard", ItemShortDescriptions: [] },
+    //             { Genre: "Memory", ItemShortDescriptions: [] },
+    //             { Genre: "Gpu", ItemShortDescriptions: [] },
+    //             { Genre: "Ssd", ItemShortDescriptions: [] },
+    //             { Genre: "Hdd", ItemShortDescriptions: [] },
+    //             { Genre: "Case", ItemShortDescriptions: [] },
+    //             { Genre: "PowerSupply", ItemShortDescriptions: [] },
+    //         ]);
+    //     }
+    // }, [])
     const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
     const handleDialogOpen = () => {
         setIsShareDialogOpen(!isShareDialogOpen);
@@ -129,8 +108,8 @@ const GenreList = (props: Props) => {
     }
     const [shareUrl, setShareUrl] = useState("");
     const changeGenreSummary = (genreSummary: GenreSummary) => {
-        const filteredGenreSummaries = genreSummaries.filter((currentGenreSummaries) => currentGenreSummaries.Genre !== genreSummary.Genre);
-        setGenreSummaries([...filteredGenreSummaries, genreSummary]);
+        //const filteredGenreSummaries = genreSummaries;
+        setGenreSummaries((previousGenreSummaries) => [...previousGenreSummaries.filter((previousGenreSummaries) => previousGenreSummaries.Genre !== genreSummary.Genre), genreSummary]);
         //console.log(genreSummary);
         //console.log(genreSummaries);
     };
@@ -185,7 +164,7 @@ const GenreList = (props: Props) => {
             , 0);
         //console.log(`changed from genre change, total price : ${totalPrice}`)
         props.ChangeTotalPrice(totalPrice);
-    }, genreSummaries);
+    }, [genreSummaries]);
     return (
         <Stack spacing={2}>
             <Paper>

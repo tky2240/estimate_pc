@@ -17,7 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import PowerSupplySearcher, { SearchPowerSupply, SearchPowerSupplyParameter } from './PowerSupplySearcher';
 import PowerSupplyDescriptionList from './PowerSupplyDescriptionList';
-import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { ItemShortDescription, GenreSummary } from "../GenreList";
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { Buffer } from 'buffer';
@@ -60,7 +60,7 @@ const PowerSupplyPriceDisplay = (props: Props) => {
                         }
                     ))
                     .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
-                if (itemShortDescriptions.length == 0) {
+                if (itemShortDescriptions.length === 0) {
                     return;
                 }
                 const searedPowerSupplyParameter: SearchPowerSupplyParameter = {

@@ -17,7 +17,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import SsdSearcher, { SearchSsd, SearchSsdParameter } from './SsdSearcher';
 import SsdDescriptionList from './SsdDescriptionList';
-import { PartGenre, ItemShortDescription, GenreSummary } from "../GenreList";
+import { ItemShortDescription, GenreSummary } from "../GenreList";
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { Buffer } from 'buffer';
@@ -60,7 +60,7 @@ const SsdPriceDisplay = (props: Props) => {
                         }
                     ))
                     .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
-                if (itemShortDescriptions.length == 0) {
+                if (itemShortDescriptions.length === 0) {
                     return;
                 }
                 const searedSsdParameter: SearchSsdParameter = {
@@ -98,7 +98,7 @@ const SsdPriceDisplay = (props: Props) => {
         handleDialogOpen();
     };
     const changeSsdDescriptionAndCount = (ssdDescriptionAndCount: SsdDescriptionAndCount, count: number) => {
-        setSsdDescriptionAndCounts([...ssdDescriptionAndCounts.map((currentSsdDescriptionAndCount) => currentSsdDescriptionAndCount === ssdDescriptionAndCount ? { ...currentSsdDescriptionAndCount, Count: count } : currentSsdDescriptionAndCount)]);
+        setSsdDescriptionAndCounts(ssdDescriptionAndCounts.map((currentSsdDescriptionAndCount) => currentSsdDescriptionAndCount === ssdDescriptionAndCount ? { ...currentSsdDescriptionAndCount, Count: count } : currentSsdDescriptionAndCount));
     }
     useEffect(() => {
         const genreSummary: GenreSummary = {

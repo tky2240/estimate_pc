@@ -6,9 +6,7 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import GenreList from './Components/Genres/GenreList';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Stack, TextField } from '@mui/material';
@@ -123,7 +121,7 @@ function App() {
     const [totalPrice, setTotalPrice] = useState(0);
     const changeTotalPrice = (price: number) => {
         setTotalPrice(price);
-        //console.log(price);
+        //console.log(`合計金額 ${price}`);
     }
     const [compositionName, setCompositionName] = useState("");
     const location = useLocation();
