@@ -25,6 +25,7 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2/Grid2';
 import Button from '@mui/material/Button';
 import { CpuCoolerDescription, CpuCoolerDescriptionAndCount } from './CpuCoolerPriceDisplay'
+import Link from '@mui/material/Link';
 
 type Props = {
     CpuCoolerDescriptionAndCount: CpuCoolerDescriptionAndCount;
@@ -37,9 +38,9 @@ const SelectedCpuCooler = (props: Props) => {
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
                 <Grid xs={12} sm={6} display="flex" justifyContent="start" alignItems="center">
-                    <Typography sx={{ overflowWrap: "anywhere" }} >
+                    <Link sx={{ overflowWrap: "anywhere" }} target="_blank" rel="noopener noreferrer" href={`https://kakaku.com/item/${props.CpuCoolerDescriptionAndCount.CpuCoolerDescription.item_id}`} >
                         {`${props.CpuCoolerDescriptionAndCount.CpuCoolerDescription.maker_name} ${props.CpuCoolerDescriptionAndCount.CpuCoolerDescription.product_name} : ${props.CpuCoolerDescriptionAndCount.CpuCoolerDescription.price}円`}
-                    </Typography>
+                    </Link>
                 </Grid>
                 <Grid xs={1} sm={1} display="flex" justifyContent="center" alignItems="center">
                     <IconButton onClick={() => props.ChangeCount(props.CpuCoolerDescriptionAndCount, props.CpuCoolerDescriptionAndCount.Count < 2 ? 1 : props.CpuCoolerDescriptionAndCount.Count - 1)}>

@@ -219,7 +219,9 @@ const GpuSearcher = (props: Props) => {
                             <MenuItem value={"NVIDIA GeForce RTX 3090 Ti"}>NVIDIA GeForce RTX 3090 Ti</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 4060 Ti"}>NVIDIA GeForce RTX 4060 Ti</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 4070"}>NVIDIA GeForce RTX 4070</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce RTX 4070 SUPER"}>NVIDIA GeForce RTX 4070 SUPER</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 4070 Ti"}>NVIDIA GeForce RTX 4070 Ti</MenuItem>
+                            <MenuItem value={"NVIDIA GeForce RTX 4070 Ti Super"}>NVIDIA GeForce RTX 4070 Ti SUPER</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 4080"}>NVIDIA GeForce RTX 4080</MenuItem>
                             <MenuItem value={"NVIDIA GeForce RTX 4090"}>NVIDIA GeForce RTX 4090</MenuItem>
                             <MenuItem value={"NVIDIA H100"}>NVIDIA H100</MenuItem>
