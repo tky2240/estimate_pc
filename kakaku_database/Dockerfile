@@ -6,7 +6,7 @@ COPY ./kakaku_database/scraping_kakaku /app/scraping_kakaku
 
 WORKDIR /app
 
-RUN pip3 insrall -r ./scraping_kakaku/requirements.txt
+RUN pip insrall -r ./scraping_kakaku/requirements.txt
 
 RUN apt-get update && apt-get install -y \
     cron
