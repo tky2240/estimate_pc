@@ -5,7 +5,7 @@ COPY ./kakaku_api/Cargo.toml /app
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install libssl-dev
+RUN apt-get update && apt-get install -y libssl-dev
 RUN cargo build -r
 
 COPY ./.env ./target/release/
