@@ -1,4 +1,4 @@
-FROM rust:1.67.1-slim-bookworm
+FROM rust:1.67.1-bookworm
 
 COPY ./kakaku_database/src /app/src
 COPY ./kakaku_database/Cargo.toml /app
