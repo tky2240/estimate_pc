@@ -21,6 +21,7 @@ WORKDIR /src
 
 RUN curl -o ./composer-setup.php https://getcomposer.org/installer
 RUN php ./composer-setup.php
+RUN mv ./composer.phar /usr/local/bin/composer
 RUN composer require -d /usr/share/php "ivopetkov/html5-dom-document-php:2.*"
 
 RUN apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
