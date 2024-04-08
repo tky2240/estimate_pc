@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
     caddy
 
 COPY ./Caddyfile /etc/Caddyfile
-COPY --from=npm_builder /app/src/build/* /srv/
+COPY --from=npm_builder /app/build/* /srv/
 
 CMD ["/usr/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout"]
 
