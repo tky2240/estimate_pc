@@ -1,13 +1,11 @@
 FROM rust:1.67.1-slim-bookworm
 
-COPY ./src /
+COPY ./kakaku_api/src /
 
 WORKDIR /src
 
 RUN cargo build -r
 
-COPY ../.env ./target/release/
+COPY ./.env ./target/release/
 
-COPY ../crontab /etc/
-
-CMD ["cron", "-f"]
+CMD ["./target/release/kakaku_api"]

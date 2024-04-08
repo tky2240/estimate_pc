@@ -2,8 +2,8 @@ FROM node:18-alpine as npm_builder
 
 WORKDIR /app
 
-COPY ./* /app
-COPY ../.env /src/
+COPY ./kakaku_front/* /app
+COPY ./.env /app/
 
 RUN npm build
 

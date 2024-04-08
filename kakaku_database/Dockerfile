@@ -1,6 +1,6 @@
 FROM rust:1.67.1-slim-bookworm
 
-COPY /src /
+COPY ./kakaku_database/src /
 
 WORKDIR /src
 
@@ -11,8 +11,10 @@ RUN apt-get update && apt-get install -y \
 
 RUN cargo build -r
 
-COPY ../.env ./
+COPY ./.env ./
 
-RUN cp ./target/release/kakaku_database ./
+COPY ./crontab /etc/
 
-CMD ["./target/release/kakaku_database"]
+RUN cp ./build/release/kakaku_database ./
+
+CMD ["cron", "-f"]
