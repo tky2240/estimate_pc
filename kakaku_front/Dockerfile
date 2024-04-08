@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY ./kakaku_front/src /app/src
 COPY ./kakaku_front/public /app/public
-COPY ./tsconfig.json /app
-COPY ./package.json /app
+COPY ./kakaku_front/tsconfig.json /app
+COPY ./kakaku_front/package.json /app
 
 COPY ./.env /app
 
