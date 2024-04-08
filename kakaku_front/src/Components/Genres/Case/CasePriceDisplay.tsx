@@ -21,7 +21,8 @@ import { ItemShortDescription, GenreSummary } from "../GenreList";
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { Buffer } from 'buffer';
-import * as CSV from 'csv-string';
+// import * as CSV from 'csv-string';
+import Papa, { ParseResult } from 'papaparse';
 
 
 type Props = {
@@ -44,23 +45,21 @@ const CasePriceDisplay = (props: Props) => {
     };
     const [caseDescriptionAndCounts, setCaseDescriptionAndCounts] = useState<(CaseDescriptionAndCount[])>([]);
     const location = useLocation();
+
     useEffect(() => {
         const inner = async () => {
             try {
-
-                const itemShortDescriptions = CSV.parse(
+                const itemShortDescriptions = Papa.parse<string[]>(
                     Buffer.from(
                         queryString.parse(location.search).Case as string, 'base64'
-                    ).toString()
-                )
-                    .map((itemShortDescriptionArray): ItemShortDescription => (
-                        {
-                            item_id: itemShortDescriptionArray[0],
-                            price: parseInt(itemShortDescriptionArray[1]),
-                            count: parseInt(itemShortDescriptionArray[2])
-                        }
-                    ))
-                    .filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
+                    ).toString().trim().trim(),
+                ).data.map((itemShortDescriptionArray): ItemShortDescription => (
+                    {
+                        item_id: itemShortDescriptionArray[0],
+                        price: parseInt(itemShortDescriptionArray[1]),
+                        count: parseInt(itemShortDescriptionArray[2])
+                    }
+                )).filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
                 if (itemShortDescriptions.length === 0) {
                     return;
                 }

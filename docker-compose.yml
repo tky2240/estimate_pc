@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+  shrink:
+    image: ghcr.io/shlinkio/shlink:stable
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - ./initdb.d:/docker-entrypoint-initdb.d
+  front:
+    build:
+      context: .
+      dockerfile: ./kakaku_front/Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - .env
+  back:
+    build:
+      context: .
+      dockerfile: ./kakaku_api/Dockerfile
+  scraping:
+    build:
+      context: .
+      dockerfile: ./kakaku_database/Dockerfile

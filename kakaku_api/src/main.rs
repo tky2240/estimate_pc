@@ -8,6 +8,7 @@ use axum::routing;
 use axum::Router;
 use axum::{error_handling::HandleErrorLayer, BoxError};
 use axum_macros::debug_handler;
+use dotenvy;
 use http::header::CONTENT_TYPE;
 use kakaku_api::db;
 use kakaku_api::search::search::SearchFromItemIdParameter;
@@ -17,6 +18,7 @@ use kakaku_api::*;
 use sea_orm::prelude::Date;
 use sea_orm::DatabaseConnection;
 use serde::{Deserialize, Serialize};
+use std::env;
 use std::net::SocketAddr;
 use std::time::Duration;
 use tower::buffer::BufferLayer;
@@ -26,6 +28,7 @@ use tower_http::cors::{Any, CorsLayer};
 
 #[tokio::main]
 async fn main() {
+    dotenvy::dotenv().ok();
     tracing_subscriber::fmt::init();
     let db = db::create_db_connection()
         .await
@@ -73,7 +76,10 @@ async fn main() {
                 .layer(RateLimitLayer::new(20, Duration::from_secs(1))),
         )
         .with_state(state);
-    let addr = SocketAddr::from(([0, 0, 0, 0], 3340));
+    let addr = SocketAddr::from((
+        [0, 0, 0, 0],
+        env::var("API_LISTEN_PORT").unwrap().parse().unwrap(),
+    ));
     println!("listening on {}", addr);
     axum::Server::bind(&addr)
         .serve(router.into_make_service())

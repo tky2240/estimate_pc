@@ -15,7 +15,8 @@ import SsdPriceDisplay from './Ssd/SsdPriceDisplay';
 import HddPriceDisplay from './Hdd/HddPriceDisplay';
 import CasePriceDisplay from './Case/CasePriceDisplay';
 import PowerSupplyPriceDisplay from './PowerSupply/PowerSupplyPriceDisplay';
-import * as CSV from 'csv-string';
+// import * as CSV from 'csv-string';
+import { stringify } from 'csv-stringify/browser/esm/sync';
 import { Buffer } from 'buffer';
 import { Share, ContentCopy } from '@mui/icons-material'
 import Snackbar from '@mui/material/Snackbar';
@@ -127,9 +128,9 @@ const GenreList = (props: Props) => {
         //console.log(baseUrl);
         const parseParameter = (partGenre: PartGenre) => {
             return Buffer.from(
-                CSV.stringify(
+                stringify(
                     genreSummaries.filter((genreSummary) => genreSummary.Genre === partGenre)[0].ItemShortDescriptions
-                        .map((itemShortDescription => [itemShortDescription.item_id, itemShortDescription.price, itemShortDescription.count]))
+                        .map((itemShortDescription => [itemShortDescription.item_id, itemShortDescription.price, itemShortDescription.count])),
                 )
             ).toString('base64');
         };

@@ -71,30 +71,30 @@ const CaseDescriptionList = (props: Props) => {
     );
 }
 
-const listContainer = ({ listRef, style, children }: { listRef: RefObject<HTMLUListElement>, style: React.CSSProperties, children: ReactNode }) => {
-    return (
-        <List ref={listRef} style={{ ...style, padding: 0 }}>
-            {children}
-        </List>
-    );
-};
+// const listContainer = ({ listRef, style, children }: { listRef: RefObject<HTMLUListElement>, style: React.CSSProperties, children: ReactNode }) => {
+//     return (
+//         <List ref={listRef} style={{ ...style, padding: 0 }}>
+//             {children}
+//         </List>
+//     );
+// };
 
-const itemContainer = ({ children, ...props }: { children: ReactNode, props: {} }) => {
-    return (
-        <ListItem {...props} style={{ margin: 0 }}>
-            {children}
-        </ListItem>
-    );
-};
+// const itemContainer = ({ children, ...props }: { children: ReactNode, props: {} }) => {
+//     return (
+//         <ListItem {...props} style={{ margin: 0 }}>
+//             {children}
+//         </ListItem>
+//     );
+// };
 
-const MUIComponents: Components = {
-    List: React.forwardRef<HTMLDivElement, ListProps>(({ style, children }, listRef) => {
-        return (
-            <List style={{ padding: 0, ...style, margin: 0 }} component="div" ref={listRef}>
-                {children}
-            </List>
-        )
-    }),
-}
+// const MUIComponents: Components = {
+//     List: React.forwardRef<HTMLDivElement, ListProps>(({ style, children }, listRef) => {
+//         return (
+//             <List style={{ padding: 0, ...style, margin: 0 }} component="div" ref={listRef}>
+//                 {children}
+//             </List>
+//         )
+//     }),
+// }
 
 export default CaseDescriptionList;
