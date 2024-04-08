@@ -9,6 +9,7 @@ COPY ./kakaku_front/package.json /app
 
 COPY ./.env /app
 
+RUN npm install
 RUN npm run build
 
 FROM php:7.4-fpm
