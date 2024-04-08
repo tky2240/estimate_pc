@@ -1,7 +1,7 @@
 FROM rust:1.67.1-slim-bookworm
 
-COPY ./kakaku_api/src /app
-COPY ./Cargo.toml /app
+COPY ./kakaku_api/src /app/
+COPY ./kakaku_api/Cargo.toml /app
 
 WORKDIR /app
 
