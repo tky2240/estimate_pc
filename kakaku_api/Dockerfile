@@ -1,6 +1,6 @@
 FROM rust:1.67.1-slim-bookworm
 
-COPY /src /
+COPY ./src /
 
 WORKDIR /src
 
