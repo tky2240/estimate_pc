@@ -1,25 +1,24 @@
-FROM rust:1.67.1-bookworm
-
-COPY ./kakaku_database/src /app/src
-COPY ./kakaku_database/Cargo.toml /app
-COPY ./kakaku_database/scraping_kakaku /app/scraping_kakaku
+FROM rust:1.67.1-bookworm as rust_build
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    python3-pip
+COPY ./kakaku_database/src /app/src
+COPY ./kakaku_database/Cargo.toml /app
+
+RUN cargo build -r
+
+FROM python:3.10.14-slim-bookworm
+
+WORKDIR /app
+COPY --from=rust_build /app/target/release/kakaku_database /app
+COPY ./.env ./
+COPY ./kakaku_database/scraping_kakaku /app/scraping_kakaku
 
 RUN pip3 install -r ./scraping_kakaku/requirements.txt
 
 RUN apt-get update && apt-get install -y \
     cron
 
-RUN cargo build -r
-
-COPY ./.env ./
-
 COPY ./crontab /etc/
-
-RUN cp ./build/release/kakaku_database ./
 
 CMD ["cron", "-f"]
