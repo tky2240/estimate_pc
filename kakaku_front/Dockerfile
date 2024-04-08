@@ -2,8 +2,12 @@ FROM node:18-alpine as npm_builder
 
 WORKDIR /app
 
-COPY ./kakaku_front/* /app
-COPY ./.env /app/
+COPY ./kakaku_front/src /app/src
+COPY ./kakaku_front/public /app/public
+COPY ./tsconfig.json /app
+COPY ./package.json /app
+
+COPY ./.env /app
 
 RUN npm build
 
@@ -24,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     caddy
 
 COPY ./Caddyfile /etc/Caddyfile
-COPY --from=npm_builder /src/build/* /srv/
+COPY --from=npm_builder /app/src/build/* /srv/
 
 CMD ["/usr/bin/caddy", "--conf", "/etc/Caddyfile", "--log", "stdout"]
 
