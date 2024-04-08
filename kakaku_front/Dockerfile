@@ -22,7 +22,7 @@ WORKDIR /src
 RUN curl -o ./composer-setup.php https://getcomposer.org/installer
 RUN php ./composer-setup.php
 RUN mv ./composer.phar /usr/local/bin/composer
-RUN composer require -d /usr/share/php "ivopetkov/html5-dom-document-php:2.*"
+RUN composer require "ivopetkov/html5-dom-document-php:2.*"
 
 RUN apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
 RUN curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
