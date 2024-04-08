@@ -25,7 +25,7 @@
 # Refer to the Caddy docs for more information:
 # https://caddyserver.com/docs/caddyfile
 
-${FRONT_FQDN} {
+{$FRONT_FQDN} {
         handle /v1/search/* {
                 reverse_proxy :3340
         }
@@ -51,7 +51,7 @@ ${FRONT_FQDN} {
         }
 }
 
-${SHORT_FQDN} {
+{$SHORT_FQDN} {
         @short_path path_regexp /[0-9a-zA-Z]{5}$
         handle @short_path {
                reverse_proxy :3000
