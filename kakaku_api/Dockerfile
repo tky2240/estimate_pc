@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     pkg-config
 RUN cargo build -r
 
-COPY ./.env ./target/release/
+COPY ./.env ./
+RUN cp ./target/release/kakaku_api ./
 
-CMD ["./target/release/kakaku_api"]
+CMD ["./kakaku_api"]
