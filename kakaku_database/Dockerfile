@@ -5,6 +5,9 @@ WORKDIR /app
 COPY ./kakaku_database/src /app/src
 COPY ./kakaku_database/Cargo.toml /app
 
+RUN apt-get update && apt-get install -y \
+    python3-dev
+
 RUN cargo build -r
 
 FROM python:3.10.14-slim-bookworm
