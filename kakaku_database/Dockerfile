@@ -4,7 +4,7 @@ COPY ./kakaku_database/src /app/src
 COPY ./kakaku_database/Cargo.toml /app
 COPY ./kakaku_database/scraping_kakaku /app/scraping_kakaku
 
-WORKDIR /src
+WORKDIR /pp
 
 RUN pip3 insrall -r ./scraping_kakaku/requirements.txt
 
