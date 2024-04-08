@@ -1,6 +1,8 @@
 FROM rust:1.67.1-slim-bookworm
 
-COPY ./kakaku_database/* /src
+COPY ./kakaku_database/src /app/
+COPY ./kakaku_database/Cargo.toml /app
+COPY ./kakaku_database/scraping_kakaku /app/
 
 WORKDIR /src
 

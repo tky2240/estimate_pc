@@ -1,8 +1,9 @@
 FROM rust:1.67.1-slim-bookworm
 
-COPY ./kakaku_api/* /src
+COPY ./kakaku_api/src /app
+COPY ./Cargo.toml /app
 
-WORKDIR /src
+WORKDIR /app
 
 RUN cargo build -r
 
