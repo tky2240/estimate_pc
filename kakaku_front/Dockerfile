@@ -12,8 +12,6 @@ FROM php:7.4-fpm
 RUN apt-get update && apt-get install -y \
     php-dom
 
-WORKDIR /srv
-
 RUN wget -O composer-setup.php https://getcomposer.org/installer
 
 RUN composer require -d /usr/share/php "ivopetkov/html5-dom-document-php:2.*"

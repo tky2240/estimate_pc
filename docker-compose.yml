@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  shrink:
+  shlink:
     image: ghcr.io/shlinkio/shlink:stable
     ports:
       - "8080:8080"
@@ -24,11 +24,20 @@ services:
       - "443:443"
     env_file:
       - .env
+    depends_on:
+      - back
+      - shlink
   back:
     build:
       context: .
       dockerfile: ./kakaku_api/Dockerfile
+    depends_on:
+      - shlink
+      - db
   scraping:
     build:
       context: .
       dockerfile: ./kakaku_database/Dockerfile
+    depends_on:
+      - db
+      - back
