@@ -1,6 +1,6 @@
 FROM rust:1.67.1-slim-bookworm
 
-COPY ./kakaku_database/src /
+COPY ./kakaku_database/* /src
 
 WORKDIR /src
 
