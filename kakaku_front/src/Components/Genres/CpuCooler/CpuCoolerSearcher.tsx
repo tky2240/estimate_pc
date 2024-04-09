@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { CpuCoolerDescription } from './CpuCoolerPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
     ChangeCpuCoolerDescriptions: (cpuCoolerDescriptions: CpuCoolerDescription[]) => void;
@@ -30,6 +31,12 @@ const CpuCoolerSearcher = (props: Props) => {
         max_price: null,
         sort_order: "PriceAsc",
     });
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const searchHandler = async function () {
+        setIsSearching(true);
+        props.ChangeCpuCoolerDescriptions(await SearchCpuCooler(searchCpuCoolerParameter));
+        setIsSearching(false);
+    }
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2.5} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
@@ -188,7 +195,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={2}
                         suffix={'mm以下'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, height: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -208,7 +215,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'W以上'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, max_tdp: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -228,7 +235,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -248,7 +255,7 @@ const CpuCoolerSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchCpuCoolerParameter({ ...searchCpuCoolerParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -273,7 +280,7 @@ const CpuCoolerSearcher = (props: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
-                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeCpuCoolerDescriptions(await SearchCpuCooler(searchCpuCoolerParameter))}>検索</Button>
+                    <LoadingButton variant='outlined' endIcon={<Search />} loading={isSearching} fullWidth onClick={searchHandler}>検索</LoadingButton>
                 </Grid>
             </Grid>
         </Box>

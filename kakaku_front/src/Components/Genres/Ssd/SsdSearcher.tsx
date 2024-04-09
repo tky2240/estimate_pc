@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { SsdDescription } from './SsdPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
     ChangeSsdDescriptions: (ssdDescriptions: SsdDescription[]) => void;
@@ -29,6 +30,12 @@ const SsdSearcher = (props: Props) => {
         max_price: null,
         sort_order: "PriceAsc",
     });
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const searchHandler = async function () {
+        setIsSearching(true);
+        props.ChangeSsdDescriptions(await SearchSsd(searchSsdParameter));
+        setIsSearching(false);
+    }
     return (
         <Box sx={{ width: '100%', height: "100%", alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
@@ -214,7 +221,7 @@ const SsdSearcher = (props: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid xs={12} display="flex" justifyContent="start" alignItems="center">
-                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeSsdDescriptions(await SearchSsd(searchSsdParameter))}>検索</Button>
+                    <LoadingButton variant='outlined' endIcon={<Search />} loading={isSearching} fullWidth onClick={searchHandler}>検索</LoadingButton>
                 </Grid>
             </Grid>
         </Box>

@@ -23,7 +23,6 @@ import queryString from 'query-string';
 import { Buffer } from 'buffer';
 import Papa from 'papaparse';
 
-
 type Props = {
     ChangeGenreSummary: (genreSummary: GenreSummary) => void;
 }

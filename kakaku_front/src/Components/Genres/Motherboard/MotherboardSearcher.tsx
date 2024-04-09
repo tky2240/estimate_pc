@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { MotherboardDescription } from './MotherboardPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
     ChangeMotherboardDescriptions: (motherboardDescriptions: MotherboardDescription[]) => void;
@@ -30,6 +31,12 @@ const MotherboardSearcher = (props: Props) => {
         max_price: null,
         sort_order: "PriceAsc",
     });
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const searchHandler = async function () {
+        setIsSearching(true);
+        props.ChangeMotherboardDescriptions(await SearchMotherboard(searchMotherboardParameter));
+        setIsSearching(false);
+    }
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
@@ -251,7 +258,7 @@ const MotherboardSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchMotherboardParameter({ ...searchMotherboardParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -271,7 +278,7 @@ const MotherboardSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchMotherboardParameter({ ...searchMotherboardParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -296,7 +303,7 @@ const MotherboardSearcher = (props: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
-                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeMotherboardDescriptions(await SearchMotherboard(searchMotherboardParameter))}>検索</Button>
+                    <LoadingButton variant='outlined' endIcon={<Search />} loading={isSearching} fullWidth onClick={searchHandler}>検索</LoadingButton>
                 </Grid>
             </Grid>
         </Box>

@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { HddDescription } from './HddPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
     ChangeHddDescriptions: (hddDescriptions: HddDescription[]) => void;
@@ -28,6 +29,12 @@ const HddSearcher = (props: Props) => {
         max_price: null,
         sort_order: "PriceAsc",
     });
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const searchHandler = async function () {
+        setIsSearching(true);
+        props.ChangeHddDescriptions(await SearchHdd(searchHddParameter));
+        setIsSearching(false);
+    }
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
@@ -86,7 +93,7 @@ const HddSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'GB以上'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
@@ -125,7 +132,7 @@ const HddSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -145,7 +152,7 @@ const HddSearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchHddParameter({ ...searchHddParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -170,7 +177,7 @@ const HddSearcher = (props: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
-                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeHddDescriptions(await SearchHdd(searchHddParameter))}>検索</Button>
+                    <LoadingButton variant='outlined' endIcon={<Search />} loading={isSearching} fullWidth onClick={searchHandler}>検索</LoadingButton>
                 </Grid>
             </Grid>
         </Box>

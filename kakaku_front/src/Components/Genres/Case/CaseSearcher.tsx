@@ -14,6 +14,7 @@ import { CaseDescription } from './CasePriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
 import CheckBox from '@mui/material/Checkbox';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
     ChangeCaseDescriptions: (caseDescriptions: CaseDescription[]) => void;
@@ -30,6 +31,12 @@ const CaseSearcher = (props: Props) => {
         max_price: null,
         sort_order: "PriceAsc",
     });
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const searchHandler = async function(){
+        setIsSearching(true);
+        props.ChangeCaseDescriptions(await SearchCase(searchCaseParameter));
+        setIsSearching(false);
+    }
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2.5} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
@@ -207,7 +214,7 @@ const CaseSearcher = (props: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
-                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangeCaseDescriptions(await SearchCase(searchCaseParameter))}>検索</Button>
+                    <LoadingButton variant='outlined' endIcon={<Search />} loading={isSearching} fullWidth onClick={searchHandler}>検索</LoadingButton>
                 </Grid>
             </Grid>
         </Box>

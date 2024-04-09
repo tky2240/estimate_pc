@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { PowerSupplyDescription } from './PowerSupplyPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
     ChangePowerSupplyDescriptions: (powerSupplyDescriptions: PowerSupplyDescription[]) => void;
@@ -31,6 +32,12 @@ const PowerSupplySearcher = (props: Props) => {
         max_price: null,
         sort_order: "PriceAsc",
     });
+    const [isSearching, setIsSearching] = useState<boolean>(false);
+    const searchHandler = async function () {
+        setIsSearching(true);
+        props.ChangePowerSupplyDescriptions(await SearchPowerSupply(searchPowerSupplyParameter));
+        setIsSearching(false);
+    }
     return (
         <Box sx={{ width: '100%', alignItems: "center", justifyContent: "center" }}>
             <Grid container spacing={2} sx={{ width: "100%", paddingRight: 1, paddingLeft: 4, paddingBottom: 1, paddingTop: 1 }} wrap="wrap" >
@@ -133,7 +140,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'W以上'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, capacity: e.floatValue ?? 0 })}
                     />
                 </Grid>
@@ -176,7 +183,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, min_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -196,7 +203,7 @@ const PowerSupplySearcher = (props: Props) => {
                         fullWidth={true}
                         decimalScale={0}
                         suffix={'円'}
-                        inputProps={{inputMode: "decimal"}}
+                        inputProps={{ inputMode: "decimal" }}
                         onValueChange={(e) => setSearchPowerSupplyParameter({ ...searchPowerSupplyParameter, max_price: e.floatValue === undefined ? null : e.floatValue })}
                     />
                 </Grid>
@@ -221,7 +228,7 @@ const PowerSupplySearcher = (props: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid xs={12} sm={12} display="flex" justifyContent="start" alignItems="center">
-                    <Button variant='outlined' endIcon={<Search />} fullWidth onClick={async () => props.ChangePowerSupplyDescriptions(await SearchPowerSupply(searchPowerSupplyParameter))}>検索</Button>
+                    <LoadingButton variant='outlined' endIcon={<Search />} loading={isSearching} fullWidth onClick={searchHandler}>検索</LoadingButton>
                 </Grid>
             </Grid>
         </Box>
