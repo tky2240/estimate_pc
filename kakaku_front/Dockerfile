@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install dom
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN composer require "ivopetkov/html5-dom-document-php:2.*"
+RUN composer require -d /usr/local/lib/php "ivopetkov/html5-dom-document-php:2.*"
 
 COPY ./Caddyfile /etc/caddy/Caddyfile
 COPY --from=npm_builder /app/build/* /srv/
