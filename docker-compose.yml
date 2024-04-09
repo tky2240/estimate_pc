@@ -5,6 +5,7 @@ services:
     image: ghcr.io/shlinkio/shlink:stable
     env_file:
       - .env
+    restart: unless-stopped
   db:
     image: mysql
     env_file:
@@ -16,6 +17,7 @@ services:
       timeout: 5s
       interval: 5s
       retries: 10
+    restart: unless-stopped
   front:
     build:
       context: .
@@ -28,6 +30,7 @@ services:
     depends_on:
       - back
       - shlink
+    restart: unless-stopped
   back:
     build:
       context: .
@@ -35,6 +38,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
   scraping:
     build:
       context: .
@@ -42,4 +46,5 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    restart: unless-stopped
       
