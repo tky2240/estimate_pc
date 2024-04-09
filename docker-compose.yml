@@ -15,7 +15,6 @@ services:
       - .env
     volumes:
       - ./initdb.d:/docker-entrypoint-initdb.d
-    command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD"
       timeout: 5s
