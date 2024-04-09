@@ -24,7 +24,7 @@ RUN docker-php-ext-install dom
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer require "ivopetkov/html5-dom-document-php:2.*"
 
-COPY ./Caddyfile /etc/Caddyfile
+COPY ./Caddyfile /etc/caddy/Caddyfile
 COPY --from=npm_builder /app/build/* /srv/
 
 # CMD ["/usr/bin/caddy", "run", "--config", "/etc/Caddyfile"]
