@@ -5,5 +5,4 @@
 - https://estimate-pc.uouo.fish/
 
 # TODO
-- ~構成に名前を付けられるようにする~
-- ~ショートリンクを送ったときにDescriptionで構成が見えるようにする~
+- 上部のバーを固定する
