@@ -26,4 +26,6 @@ COPY ./.env ./
 
 COPY ./crontab /etc/
 
+RUN crontab /etc/crontab
+
 CMD ["cron", "-f"]
