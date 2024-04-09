@@ -3,14 +3,10 @@ version: "3.8"
 services:
   shlink:
     image: ghcr.io/shlinkio/shlink:stable
-    ports:
-      - "8080:8080"
     env_file:
       - .env
   db:
     image: mysql
-    ports:
-      - "3306:3306"
     env_file:
       - .env
     volumes:
