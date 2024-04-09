@@ -10,7 +10,7 @@ COPY ./kakaku_database/Cargo.toml /app
 
 RUN cargo build -r
 
-FROM python:3.10.14-slim-bookworm
+FROM python:3.11.9-slim-bookworm
 
 RUN apt-get update && apt-get install -y \
     cron \
