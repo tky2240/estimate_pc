@@ -7,9 +7,10 @@ COPY ./kakaku_front/public /app/public
 COPY ./kakaku_front/tsconfig.json /app
 COPY ./kakaku_front/package.json /app
 
+RUN npm install
+
 COPY ./.env /app
 
-RUN npm install
 RUN npm run build
 
 FROM dunglas/frankenphp
