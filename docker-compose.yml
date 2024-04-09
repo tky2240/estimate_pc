@@ -32,12 +32,13 @@ services:
       context: .
       dockerfile: ./kakaku_api/Dockerfile
     depends_on:
-      - shlink
-      - db
+      db:
+        condition: service_healthy
   scraping:
     build:
       context: .
       dockerfile: ./kakaku_database/Dockerfile
     depends_on:
-      - db
-      - back
+      db:
+        condition: service_healthy
+      
