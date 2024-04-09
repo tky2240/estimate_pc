@@ -1,16 +1,19 @@
-FROM rust:1.67.1-slim-bookworm
+FROM rust:1.67.1-slim-bookworm as rust_build
+
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    pkg-config
 
 COPY ./kakaku_api/src /app/src
 COPY ./kakaku_api/Cargo.toml /app
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    libssl-dev \
-    pkg-config
 RUN cargo build -r
 
+FROM debian:bookworm-slim
+
 COPY ./.env ./
-RUN cp ./target/release/kakaku_api ./
+COPY --from=rust_build /app/target/release/kakaku_api ./
 
 CMD ["./kakaku_api"]
