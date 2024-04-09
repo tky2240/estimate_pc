@@ -13,7 +13,8 @@ RUN cargo build -r
 FROM python:3.10.14-slim-bookworm
 
 RUN apt-get update && apt-get install -y \
-    cron
+    cron \
+    python3-dev
 
 WORKDIR /app
 
@@ -22,7 +23,6 @@ RUN pip3 install -r ./scraping_kakaku/requirements.txt
 
 COPY --from=rust_build /app/target/release/kakaku_database /app
 COPY ./.env ./
-
 
 COPY ./crontab /etc/
 
