@@ -11,7 +11,6 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { PowerSupplyDescription } from './PowerSupplyPriceDisplay'
 import { SortOrder } from '../GenreList';
-//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 
 type Props = {

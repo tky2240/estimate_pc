@@ -12,7 +12,6 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import { GpuDescription } from './GpuPriceDisplay'
 import { SortOrder } from '../GenreList';
-//import urlJoin from 'url-join';
 import { NumericFormat } from 'react-number-format';
 import CheckBox from '@mui/material/Checkbox'
 

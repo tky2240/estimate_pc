@@ -5,12 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { ListChildComponentProps, FixedSizeList } from 'react-window';
 import { HddDescription } from './HddPriceDisplay'
 
-
 type Props = {
     HddDescriptions: HddDescription[];
     AddHddDescriptionAndCount: (hddDescription: HddDescription) => void;
 }
-
 
 function renderRow(props: ListChildComponentProps<{ HddDescriptions: HddDescription[]; AddHddDescriptionAndCount: (hddDescription: HddDescription) => void; }>) {
     const { style, index, data } = props;

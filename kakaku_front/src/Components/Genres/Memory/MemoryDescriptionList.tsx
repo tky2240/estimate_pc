@@ -5,12 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { ListChildComponentProps, FixedSizeList } from 'react-window';
 import { MemoryDescription } from './MemoryPriceDisplay'
 
-
 type Props = {
     MemoryDescriptions: MemoryDescription[];
     AddMemoryDescriptionAndCount: (memoryDescription: MemoryDescription) => void;
 }
-
 
 function renderRow(props: ListChildComponentProps<{ MemoryDescriptions: MemoryDescription[]; AddMemoryDescriptionAndCount: (memoryDescription: MemoryDescription) => void; }>) {
     const { style, index, data } = props;

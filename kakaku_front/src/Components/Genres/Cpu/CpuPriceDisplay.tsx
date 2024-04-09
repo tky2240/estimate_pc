@@ -21,8 +21,7 @@ import { ItemShortDescription, GenreSummary } from "../GenreList";
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { Buffer } from 'buffer';
-// import * as CSV from 'csv-string';
-import Papa, { ParseResult } from 'papaparse';
+import Papa from 'papaparse';
 
 type Props = {
     ChangeGenreSummary: (genreSummary: GenreSummary) => void;
@@ -103,9 +102,6 @@ const CpuPriceDisplay = (props: Props) => {
                 (cpuDescriptionAndCount): ItemShortDescription => ({ item_id: cpuDescriptionAndCount.CpuDescription.item_id, price: cpuDescriptionAndCount.CpuDescription.price, count: cpuDescriptionAndCount.Count }
                 ))
         });
-        //console.log(cpuDescriptionAndCounts);
-        //console.log(cpuDescriptionAndCounts.reduce((total, cpuDescriptionAndCount) => total + cpuDescriptionAndCount.CpuDescription.price * cpuDescriptionAndCount.Count, 0));
-        //console.log(JSON.stringify(cpuDescriptionAndCounts));
     }, [cpuDescriptionAndCounts]);
     return (
         <Box sx={{ width: "100%" }}>

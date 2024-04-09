@@ -121,7 +121,6 @@ function App() {
     const [totalPrice, setTotalPrice] = useState(0);
     const changeTotalPrice = (price: number) => {
         setTotalPrice(price);
-        //console.log(`合計金額 ${price}`);
     }
     const [compositionName, setCompositionName] = useState("");
     const location = useLocation();

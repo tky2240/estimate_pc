@@ -5,12 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { ListChildComponentProps, FixedSizeList } from 'react-window';
 import { SsdDescription } from './SsdPriceDisplay'
 
-
 type Props = {
     SsdDescriptions: SsdDescription[];
     AddSsdDescriptionAndCount: (ssdDescription: SsdDescription) => void;
 }
-
 
 function renderRow(props: ListChildComponentProps<{ SsdDescriptions: SsdDescription[]; AddSsdDescriptionAndCount: (ssdDescription: SsdDescription) => void; }>) {
     const { style, index, data } = props;

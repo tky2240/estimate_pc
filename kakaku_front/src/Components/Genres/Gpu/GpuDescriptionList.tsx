@@ -5,12 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { ListChildComponentProps, FixedSizeList } from 'react-window';
 import { GpuDescription } from './GpuPriceDisplay'
 
-
 type Props = {
     GpuDescriptions: GpuDescription[];
     AddGpuDescriptionAndCount: (gpuDescription: GpuDescription) => void;
 }
-
 
 function renderRow(props: ListChildComponentProps<{ GpuDescriptions: GpuDescription[]; AddGpuDescriptionAndCount: (gpuDescription: GpuDescription) => void; }>) {
     const { style, index, data } = props;

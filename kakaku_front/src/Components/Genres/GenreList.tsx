@@ -15,12 +15,10 @@ import SsdPriceDisplay from './Ssd/SsdPriceDisplay';
 import HddPriceDisplay from './Hdd/HddPriceDisplay';
 import CasePriceDisplay from './Case/CasePriceDisplay';
 import PowerSupplyPriceDisplay from './PowerSupply/PowerSupplyPriceDisplay';
-// import * as CSV from 'csv-string';
 import { stringify } from 'csv-stringify/browser/esm/sync';
 import { Buffer } from 'buffer';
 import { Share, ContentCopy } from '@mui/icons-material'
 import Snackbar from '@mui/material/Snackbar';
-import queryString from 'query-string';
 import { useLocation } from 'react-router-dom';
 
 type Props = {
@@ -30,16 +28,6 @@ type Props = {
 }
 
 const GenreList = (props: Props) => {
-    // { Genre: "Cpu", ItemShortDescriptions: [] },
-    //     { Genre: "CpuCooler", ItemShortDescriptions: [] },
-    //     { Genre: "Motherboard", ItemShortDescriptions: [] },
-    //     { Genre: "Memory", ItemShortDescriptions: [] },
-    //     { Genre: "Gpu", ItemShortDescriptions: [] },
-    //     { Genre: "Ssd", ItemShortDescriptions: [] },
-    //     { Genre: "Hdd", ItemShortDescriptions: [] },
-    //     { Genre: "Case", ItemShortDescriptions: [] },
-    //     { Genre: "PowerSupply", ItemShortDescriptions: [] },
-    const location = useLocation()
     const [genreSummaries, setGenreSummaries] = useState<GenreSummary[]>([
         { Genre: "Cpu", ItemShortDescriptions: [] },
         { Genre: "CpuCooler", ItemShortDescriptions: [] },
@@ -51,54 +39,7 @@ const GenreList = (props: Props) => {
         { Genre: "Case", ItemShortDescriptions: [] },
         { Genre: "PowerSupply", ItemShortDescriptions: [] },
     ]);
-    // useEffect(() => {
-    //     try {
-    //         const parseToItemShortDescriptions = (genre: PartGenre): ItemShortDescription[] => {
-    //             return CSV.parse(
-    //                 Buffer.from(
-    //                     Reflect.get(queryString.parse(location.search), genre) as string, 'base64url'
-    //                 ).toString()
-    //             ).map((itemShortDescriptionArray): ItemShortDescription => (
-    //                 {
-    //                     item_id: itemShortDescriptionArray[0],
-    //                     price: parseInt(itemShortDescriptionArray[1]),
-    //                     count: parseInt(itemShortDescriptionArray[2])
-    //                 }
-    //             )).filter((itemIdShortDescription) => !isNaN(itemIdShortDescription.count));
-    //         }
-    //         const initialGenreSummaries: GenreSummary[] = [
-    //             { Genre: "Cpu", ItemShortDescriptions: parseToItemShortDescriptions("Cpu") },
-    //             { Genre: "CpuCooler", ItemShortDescriptions: parseToItemShortDescriptions("CpuCooler") },
-    //             { Genre: "Motherboard", ItemShortDescriptions: parseToItemShortDescriptions("Motherboard") },
-    //             { Genre: "Memory", ItemShortDescriptions: parseToItemShortDescriptions("Memory") },
-    //             { Genre: "Gpu", ItemShortDescriptions: parseToItemShortDescriptions("Gpu") },
-    //             { Genre: "Ssd", ItemShortDescriptions: parseToItemShortDescriptions("Ssd") },
-    //             { Genre: "Hdd", ItemShortDescriptions: parseToItemShortDescriptions("Hdd") },
-    //             { Genre: "Case", ItemShortDescriptions: parseToItemShortDescriptions("Case") },
-    //             { Genre: "PowerSupply", ItemShortDescriptions: parseToItemShortDescriptions("PowerSupply") },
-    //         ];
-    //         setGenreSummaries(initialGenreSummaries);
-    //         // const totalPrice = initialGenreSummaries.reduce(
-    //         //     (total, genreSummary) => total + genreSummary.ItemShortDescriptions.reduce(
-    //         //         (itemTotal, itemShortDescription) => itemTotal + itemShortDescription.price * itemShortDescription.count, 0)
-    //         //     , 0);
-    //         // props.ChangeTotalPrice(totalPrice);
-    //         //console.log(totalPrice);
-    //     } catch (e) {
-    //         //console.log(e);
-    //         setGenreSummaries([
-    //             { Genre: "Cpu", ItemShortDescriptions: [] },
-    //             { Genre: "CpuCooler", ItemShortDescriptions: [] },
-    //             { Genre: "Motherboard", ItemShortDescriptions: [] },
-    //             { Genre: "Memory", ItemShortDescriptions: [] },
-    //             { Genre: "Gpu", ItemShortDescriptions: [] },
-    //             { Genre: "Ssd", ItemShortDescriptions: [] },
-    //             { Genre: "Hdd", ItemShortDescriptions: [] },
-    //             { Genre: "Case", ItemShortDescriptions: [] },
-    //             { Genre: "PowerSupply", ItemShortDescriptions: [] },
-    //         ]);
-    //     }
-    // }, [])
+
     const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
     const handleDialogOpen = () => {
         setIsShareDialogOpen(!isShareDialogOpen);
@@ -109,10 +50,7 @@ const GenreList = (props: Props) => {
     }
     const [shareUrl, setShareUrl] = useState("");
     const changeGenreSummary = (genreSummary: GenreSummary) => {
-        //const filteredGenreSummaries = genreSummaries;
         setGenreSummaries((previousGenreSummaries) => [...previousGenreSummaries.filter((previousGenreSummaries) => previousGenreSummaries.Genre !== genreSummary.Genre), genreSummary]);
-        //console.log(genreSummary);
-        //console.log(genreSummaries);
     };
     const copyLink = () => {
         navigator.clipboard.writeText(shareUrl);
@@ -125,7 +63,6 @@ const GenreList = (props: Props) => {
         }
         processingShareUrl.current = true;
         const baseUrl = window.location.href.split('?')[0];
-        //console.log(baseUrl);
         const parseParameter = (partGenre: PartGenre) => {
             return Buffer.from(
                 stringify(
@@ -151,19 +88,15 @@ const GenreList = (props: Props) => {
         const longUrl = new URL(baseUrl);
         longUrl.search = shareParameters.toString();
         const createdShortUrl = CreateShortUrl(longUrl.toString());
-        //console.log(createdShortUrl);
         setShareUrl(await createdShortUrl);
         processingShareUrl.current = false;
         handleDialogOpen();
     }
     useEffect(() => {
-        //console.log(`changed from genre change, genre summery`);
-        //console.log(genreSummaries);
         const totalPrice = genreSummaries.reduce(
             (total, genreSummary) => total + genreSummary.ItemShortDescriptions.reduce(
                 (itemTotal, itemShortDescription) => itemTotal + itemShortDescription.price * itemShortDescription.count, 0)
             , 0);
-        //console.log(`changed from genre change, total price : ${totalPrice}`)
         props.ChangeTotalPrice(totalPrice);
     }, [genreSummaries]);
     return (
@@ -171,11 +104,6 @@ const GenreList = (props: Props) => {
             <Paper>
                 <List
                     sx={{ margin: "auto", alignContent: "center", width: '100%', maxWidth: "1000px" }}
-                // subheader={
-                //     <ListSubheader component="div">
-                //         PC Parts
-                //     </ListSubheader>
-                // }
                 >
                     <CpuPriceDisplay ChangeGenreSummary={changeGenreSummary} />
                     <Divider />

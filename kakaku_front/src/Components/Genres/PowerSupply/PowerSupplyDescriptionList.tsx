@@ -5,12 +5,10 @@ import ListItemText from '@mui/material/ListItemText';
 import { ListChildComponentProps, FixedSizeList } from 'react-window';
 import { PowerSupplyDescription } from './PowerSupplyPriceDisplay'
 
-
 type Props = {
     PowerSupplyDescriptions: PowerSupplyDescription[];
     AddPowerSupplyDescriptionAndCount: (powerSupplyDescription: PowerSupplyDescription) => void;
 }
-
 
 function renderRow(props: ListChildComponentProps<{ PowerSupplyDescriptions: PowerSupplyDescription[]; AddPowerSupplyDescriptionAndCount: (powerSupplyDescription: PowerSupplyDescription) => void; }>) {
     const { style, index, data } = props;
