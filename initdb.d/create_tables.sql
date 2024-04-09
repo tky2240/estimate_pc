@@ -1,7 +1,6 @@
 CREATE DATABASE IF NOT EXISTS `estimate_pc`;
-USE `estimate_pc`;
 
-CREATE TABLE IF NOT EXISTS `case` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`case` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -23,14 +22,14 @@ CREATE TABLE IF NOT EXISTS `case` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='pc case information';
 
-CREATE TABLE IF NOT EXISTS `case_support_form_factor` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`case_support_form_factor` (
   `case_item_id` varchar(100) NOT NULL,
   `form_factor` varchar(100) NOT NULL,
   PRIMARY KEY (`case_item_id`,`form_factor`),
   CONSTRAINT `FK__case` FOREIGN KEY (`case_item_id`) REFERENCES `case` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='case suppot motherboard form factor';
 
-CREATE TABLE IF NOT EXISTS `cpu` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`cpu` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -50,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `cpu` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='cpus information';
 
-CREATE TABLE IF NOT EXISTS `cpu_cooler` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`cpu_cooler` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -68,14 +67,14 @@ CREATE TABLE IF NOT EXISTS `cpu_cooler` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='cpu coolers information';
 
-CREATE TABLE IF NOT EXISTS `cpu_cooler_socket` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`cpu_cooler_socket` (
   `cpu_cooler_item_id` varchar(100) NOT NULL,
   `socket_name` varchar(100) NOT NULL,
   PRIMARY KEY (`cpu_cooler_item_id`,`socket_name`) USING BTREE,
   CONSTRAINT `FK__cpu_cooler` FOREIGN KEY (`cpu_cooler_item_id`) REFERENCES `cpu_cooler` (`item_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='supported information for cpu coolers';
 
-CREATE TABLE IF NOT EXISTS `gpu` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`gpu` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -104,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `gpu` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='gpu information';
 
-CREATE TABLE IF NOT EXISTS `hdd` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`hdd` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -119,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `hdd` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='hdd information';
 
-CREATE TABLE IF NOT EXISTS `memory` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`memory` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -136,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `memory` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='memory module information';
 
-CREATE TABLE IF NOT EXISTS `motherboard` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`motherboard` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -160,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `motherboard` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='motherboard information';
 
-CREATE TABLE IF NOT EXISTS `power_supply` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`power_supply` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
@@ -185,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `power_supply` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='power supply information';
 
-CREATE TABLE IF NOT EXISTS `ssd` (
+CREATE TABLE IF NOT EXISTS `estimate_pc`.`ssd` (
   `item_id` varchar(100) NOT NULL,
   `name` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
