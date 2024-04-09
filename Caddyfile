@@ -32,47 +32,48 @@
 	order php_server before file_server
 }
 
+:80 {
+        {$FRONT_FQDN} {
+                handle /v1/search/* {
+                        reverse_proxy :3340
+                }
+                handle /v1/create/* {
+                        reverse_proxy :3340
+                }
+                @not_root not {
+                        path /
+                }
+                handle @not_root {
+                        root /* /srv
+                        file_server
+                }
+                handle {
+                        root /* /srv
+                        php_server
+                }
+                log {
+                        output file /var/log/caddy/{$FRONT_FQDN}.log {
+                                roll_keep_for 24h
+                        }
+                        format console
+                }
+        }
 
-{$FRONT_FQDN} {
-        handle /v1/search/* {
-                reverse_proxy :3340
-        }
-        handle /v1/create/* {
-                reverse_proxy :3340
-        }
-        @not_root not {
-                path /
-        }
-        handle @not_root {
-                root /* /srv
-                file_server
-        }
-        handle {
-                root /* /srv
-                php_server
-        }
-        log {
-                output file /var/log/caddy/{$FRONT_FQDN}.log {
-                        roll_keep_for 24h
+        {$SHORT_FQDN} {
+                @short_path path_regexp /[0-9a-zA-Z]{5}$
+                handle @short_path {
+                reverse_proxy :3000
                 }
-                format console
+                handle {
+                        respond 404 {
+                                close
+                        }
         }
-}
-
-{$SHORT_FQDN} {
-        @short_path path_regexp /[0-9a-zA-Z]{5}$
-        handle @short_path {
-               reverse_proxy :3000
-        }
-        handle {
-                respond 404 {
-                        close
+                log {
+                        output file /var/log/caddy/{$SHORT_FQDN}.log {
+                                roll_keep_for 24h
+                        }
+                        format console
                 }
-}
-        log {
-                output file /var/log/caddy/{$SHORT_FQDN}.log {
-                        roll_keep_for 24h
-                }
-                format console
         }
 }
