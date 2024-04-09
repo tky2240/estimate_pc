@@ -13,6 +13,10 @@ RUN cargo build -r
 
 FROM debian:bookworm-slim
 
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    pkg-config
+
 COPY ./.env ./
 COPY --from=rust_build /app/target/release/kakaku_api ./
 
