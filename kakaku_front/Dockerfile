@@ -25,7 +25,7 @@ COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN composer require -d /usr/local/lib/php "ivopetkov/html5-dom-document-php:2.*"
 
 COPY ./Caddyfile /etc/caddy/Caddyfile
-COPY --from=npm_builder /app/build/* /srv/
+COPY --from=npm_builder /app/build /srv
 
 # CMD ["/usr/bin/caddy", "run", "--config", "/etc/Caddyfile"]
 
