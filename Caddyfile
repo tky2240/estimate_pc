@@ -34,10 +34,10 @@
 
 {$FRONT_FQDN}:80 {
         handle /v1/search/* {
-                reverse_proxy :3340
+                reverse_proxy back:3340
         }
         handle /v1/create/* {
-                reverse_proxy :3340
+                reverse_proxy back:3340
         }
         @not_root not {
                 path /
@@ -61,7 +61,7 @@
 {$SHORT_FQDN}:80 {
         @short_path path_regexp /[0-9a-zA-Z]{5}$
         handle @short_path {
-        reverse_proxy :3000
+        reverse_proxy shlink:8080
         }
         handle {
                 respond 404 {
