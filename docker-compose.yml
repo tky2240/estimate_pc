@@ -1,6 +1,8 @@
 services:
   shlink:
     image: ghcr.io/shlinkio/shlink:stable
+    ports:
+      - "8080:8080"
     env_file:
       - .env
     restart: unless-stopped
@@ -41,6 +43,8 @@ services:
     build:
       context: .
       dockerfile: ./kakaku_database/Dockerfile
+    env_file:
+      - .env
     depends_on:
       db:
         condition: service_healthy
