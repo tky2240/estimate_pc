@@ -6,8 +6,8 @@
 # ホスト方法
 - 短縮URLに違うドメインを使う場合
 ```
-cp example/separeted_url/example.env ./.env
-cp example/separeted_url/Caddyfile ./Caddyfile
+cp example/separated_url/example.env ./.env
+cp example/separated_url/Caddyfile ./Caddyfile
 docker compose up -d
 ```
 - 短縮URLに同じドメインを使う場合
