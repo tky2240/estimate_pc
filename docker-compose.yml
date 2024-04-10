@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   shlink:
     image: ghcr.io/shlinkio/shlink:stable
