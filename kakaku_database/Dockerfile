@@ -1,4 +1,4 @@
-FROM rust:1.67.1-bookworm as rust_build
+FROM rust:1.77.2-bookworm as rust_build
 
 RUN apt-get update && apt-get install -y \
     python3-dev
