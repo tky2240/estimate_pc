@@ -28,4 +28,6 @@ COPY ./crontab /etc/
 
 RUN crontab /etc/crontab
 
-CMD ["cron", "-f"]
+COPY ./docker-entrypoint.sh ./
+
+ENTRYPOINT [ "./docker-entrypoint.sh" ]
