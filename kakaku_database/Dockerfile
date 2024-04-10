@@ -28,6 +28,6 @@ COPY ./crontab /etc/
 
 RUN crontab /etc/crontab
 
-COPY ./docker-entrypoint.sh ./
+COPY ./kakaku_database/docker-entrypoint.sh ./
 
 ENTRYPOINT [ "./docker-entrypoint.sh" ]
