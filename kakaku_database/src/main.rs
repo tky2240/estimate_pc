@@ -1,10 +1,3 @@
-use ssh_jumper::{
-    model::{AuthMethod, HostAddress, HostSocketParams, JumpHostAuthParams, SshTunnelParams},
-    SshJumper,
-};
-use std::net::IpAddr;
-use std::{borrow::Cow, str::FromStr};
-
 use dotenvy::dotenv;
 
 use kakaku_database::models::prelude::*;
@@ -46,34 +39,9 @@ async fn main() {
         Err(why) => panic!("couldn't read {}", why),
         Ok(_) => println!("Successfully read json file"),
     }
-    //println!("{}", json_string);
     let pc_information: PcInformation =
         serde_json::from_str(&json_string).expect("failed to deserialize");
     dotenv().ok();
-    // if env::var("IS_USE_SSH").unwrap().parse().unwrap() {
-    //     let username = env::var("USERNAME").unwrap();
-    //     let password = env::var("PASSWORD").unwrap();
-    //     let database_host_ip_string = env::var("DATABASE_HOST_IP").unwrap();
-    //     let (_local_socket_addr, _ssh_forwarder_end_rx) = {
-    //         let jump_host =
-    //             HostAddress::IpAddr(IpAddr::from_str(&database_host_ip_string).unwrap());
-    //         let jump_host_auth_params = JumpHostAuthParams {
-    //             user_name: Cow::Borrowed(&username),
-    //             auth_method: AuthMethod::Password {
-    //                 password: Cow::Borrowed(&password),
-    //             },
-    //         };
-    //         let target_socket = HostSocketParams {
-    //             address: HostAddress::HostName(Cow::Borrowed("localhost")),
-    //             port: 3306,
-    //         };
-    //         let ssh_params = SshTunnelParams::new(jump_host, jump_host_auth_params, target_socket)
-    //             .with_local_port(3306);
-    //         SshJumper::open_tunnel(&ssh_params)
-    //             .await
-    //             .expect("failed to create tunnel error")
-    //     };
-    // }
     let db_uri = env::var("DATABASE_URL").unwrap();
     let mut opt = ConnectOptions::new(db_uri.to_owned());
     opt.max_connections(150)
