@@ -1,4 +1,5 @@
 .env
+/Caddyfile
 target/
 
 settings.yml
