@@ -30,4 +30,4 @@ RUN crontab /etc/crontab
 
 COPY ./kakaku_database/docker-entrypoint.sh ./
 
-ENTRYPOINT [ "./docker-entrypoint.sh" ]
+ENTRYPOINT [ "sh", "-c", "./docker-entrypoint.sh ${SHOULD_INITIAL_SCRAPING}" ]

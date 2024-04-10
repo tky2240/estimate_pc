@@ -1,6 +1,7 @@
 #!/bin/bash
 
-if [ $SHOULD_INITIAL_SCRAPING -eq 1 ]; then
+if [ $1 -eq 1 ]; then
+    echo "start initial scraping"
     /app/kakaku_database
 fi
 
