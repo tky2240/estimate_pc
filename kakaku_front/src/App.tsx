@@ -138,7 +138,7 @@ function App() {
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppBar position="static">
+            <AppBar position="sticky">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: "start" }}>
                         PC Estimate
