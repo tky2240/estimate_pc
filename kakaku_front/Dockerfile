@@ -17,9 +17,7 @@ FROM dunglas/frankenphp
 
 RUN apt-get update && apt-get install -y \
     libxml2-dev \
-    git \
-    unzip \
-    ca-certificates
+    git
 
 RUN docker-php-ext-install dom
 
