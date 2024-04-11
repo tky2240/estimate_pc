@@ -43,6 +43,7 @@ docker compose up -d
 | SHOULD_INITIAL_SCRAPING       | 起動時にデータをスクレイピングしてくるかどうか | TRUE=1, FALSE=0                              |
 
 # TODO
-- ~~上部のバーを固定する~~
-- ~~短縮用ドメイン使わないバージョンのdocker~~
-- ~~readmeをちゃんと書く~~
+- 区分の追加
+  - ディスプレイ
+  - キーボード
+  - マウスの追加
