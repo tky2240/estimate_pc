@@ -12,6 +12,8 @@ import { CpuCoolerDescription } from './CpuCoolerPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
 import LoadingButton from '@mui/lab/LoadingButton';
+import fs from 'fs';
+import { Env } from '../../../env';
 
 type Props = {
     ChangeCpuCoolerDescriptions: (cpuCoolerDescriptions: CpuCoolerDescription[]) => void;
@@ -302,7 +304,9 @@ export type SearchCpuCoolerParameter = {
 
 export const SearchCpuCooler = async (searchCpuCoolerParameter: SearchCpuCoolerParameter): Promise<CpuCoolerDescription[]> => {
     try {
-        const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
+        const jsonEnvString: string = fs.readFileSync('react_app_env.json', 'utf-8');
+        const env = JSON.parse(jsonEnvString) as Env;
+        const urlBase = env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(new URL("cpu_cooler", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuCoolerParameter) });
         if (!response.ok) {
             return [];

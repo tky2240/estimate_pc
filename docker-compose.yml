@@ -18,11 +18,13 @@ services:
     restart: unless-stopped
   front:
     build:
-      context: .
       dockerfile: ./kakaku_front/Dockerfile
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./react_app_env.json:/srv/react_app_env.json
+      - ./Caddyfile:/etc/caddy/Caddyfile
     env_file:
       - .env
     depends_on:
@@ -31,16 +33,19 @@ services:
     restart: unless-stopped
   back:
     build:
-      context: .
       dockerfile: ./kakaku_api/Dockerfile
+    volumes:
+      - ./.env:/app/.env
     depends_on:
       db:
         condition: service_healthy
     restart: unless-stopped
   scraping:
     build:
-      context: .
       dockerfile: ./kakaku_database/Dockerfile
+    volumes:
+      - ./.env:/app/.env
+      - ./crontab:/etc/crontab
     env_file:
       - .env
     depends_on:

@@ -5,8 +5,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-COPY ./kakaku_database/src /app/src
-COPY ./kakaku_database/Cargo.toml /app
+COPY ./src /app/src
+COPY ./Cargo.toml /app
 
 RUN cargo build -r
 
@@ -18,13 +18,10 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-COPY ./kakaku_database/scraping_kakaku /app/scraping_kakaku
+COPY ./scraping_kakaku /app/scraping_kakaku
 RUN pip3 install -r ./scraping_kakaku/requirements.txt
 
 COPY --from=rust_build /app/target/release/kakaku_database /app
-COPY ./.env ./
-
-COPY ./crontab /etc/
 
 RUN crontab /etc/crontab
 

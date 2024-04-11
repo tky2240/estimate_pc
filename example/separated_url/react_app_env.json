@@ -1,0 +1,4 @@
+{
+    "REACT_APP_SEARCH_API_URL_BASE": "http://localhost/v1/search/",
+    "REACT_APP_CREATE_API_URL_BASE": "http://localhost/v1/create/"
+}

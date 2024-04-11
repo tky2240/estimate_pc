@@ -200,3 +200,56 @@ CREATE TABLE IF NOT EXISTS `ssd` (
   `is_exist` bit(1) NOT NULL,
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='ssd information';
+
+CREATE TABLE IF NOT EXISTS `monitor` (
+  `item_id` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `price` int(11) NOT NULL,
+  `popular_rank` int(11) DEFAULT NULL,
+  `maker_name` varchar(100) NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `size_inch` double NOT NULL,
+  `screen_shape` varchar(100) NOT NULL,
+  `panel_type` varchar(100) NOT NULL,
+  `width_resolution` int(11) NOT NULL,
+  `height_resolution` int(11) NOT NULL,
+  `refresh_rate` int(11) NOT NULL,
+  `can_vesa_mount` bit(1) NOT NULL,
+  `release_date` date DEFAULT NULL,
+  `is_exist` bit(1) NOT NULL,
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='monitor information';
+
+CREATE TABLE IF NOT EXISTS `keyboard` (
+  `item_id` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `price` int(11) NOT NULL,
+  `popular_rank` int(11) DEFAULT NULL,
+  `maker_name` varchar(100) NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `connection_type` varchar(100) NOT NULL,
+  `layout` varchar(100) NOT NULL,
+  `key_switch` varchar(100) NOT NULL,
+  `shaft_type` varchar(100) default NULL,
+  `has_numeric_keypad` bit(1) NOT NULL,
+  `interface` varchar(100) NOT NULL,
+  `release_date` date DEFAULT NULL,
+  `is_exist` bit(1) NOT NULL,
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='keyboard information';
+
+CREATE TABLE IF NOT EXISTS `mouse` (
+  `item_id` varchar(100) NOT NULL,
+  `name` varchar(200) NOT NULL,
+  `price` int(11) NOT NULL,
+  `popular_rank` int(11) DEFAULT NULL,
+  `maker_name` varchar(100) NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `mouse_type` varchar(100) NOT NULL,
+  `connection_type` varchar(100) NOT NULL,
+  `resolution_dpi` int(11) NOT NULL,
+  `weight` double NOT NULL,
+  `release_date` date DEFAULT NULL,
+  `is_exist` bit(1) NOT NULL,
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='mouse information';

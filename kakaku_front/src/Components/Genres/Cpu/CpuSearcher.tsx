@@ -12,6 +12,8 @@ import { CpuDescription } from './CpuPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
 import LoadingButton from '@mui/lab/LoadingButton';
+import fs from 'fs';
+import { Env } from '../../../env';
 
 type Props = {
     ChangeCpuDescriptions: (cpuDescriptions: CpuDescription[]) => void;
@@ -180,7 +182,9 @@ export type SearchCpuParameter = {
 export const SearchCpu = async (searchCpuParameter: SearchCpuParameter): Promise<CpuDescription[]> => {
 
     try {
-        const urlBase = process.env.REACT_APP_SEARCH_API_URL_BASE ?? "";
+        const jsonEnvString: string = fs.readFileSync('react_app_env.json', 'utf-8');
+        const env = JSON.parse(jsonEnvString) as Env;
+        const urlBase = env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(new URL("cpu", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchCpuParameter) });
         if (!response.ok) {
             return [];
