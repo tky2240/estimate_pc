@@ -12,7 +12,6 @@ import { MotherboardDescription } from './MotherboardPriceDisplay'
 import { SortOrder } from '../GenreList';
 import { NumericFormat } from 'react-number-format';
 import LoadingButton from '@mui/lab/LoadingButton';
-import fs from 'fs';
 import { Env } from '../../../env';
 
 type Props = {
@@ -327,8 +326,11 @@ export type SearchMotherboardParameter = {
 
 export const SearchMotherboard = async (searchMotherboardParameter: SearchMotherboardParameter): Promise<MotherboardDescription[]> => {
     try {
-        const jsonEnvString: string = fs.readFileSync('react_app_env.json', 'utf-8');
-        const env = JSON.parse(jsonEnvString) as Env;
+        const jsonEnvStringResponse = await fetch(new URL("react_app_env.json", window.location.origin), { method: "GET" });
+        if (!jsonEnvStringResponse.ok) {
+            return [];
+        }
+        const env = await jsonEnvStringResponse.json() as Env;
         const urlBase = env.REACT_APP_SEARCH_API_URL_BASE ?? "";
         const response = await fetch(new URL("motherboard", urlBase), { method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(searchMotherboardParameter) });
         if (!response.ok) {

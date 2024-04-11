@@ -4,8 +4,8 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     pkg-config
 
-COPY ./kakaku_api/src /app/src
-COPY ./kakaku_api/Cargo.toml /app
+COPY ./src /app/src
+COPY ./Cargo.toml /app
 
 WORKDIR /app
 
@@ -16,6 +16,8 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y \
     libssl-dev \
     pkg-config
+
+WORKDIR /app
 
 COPY --from=rust_build /app/target/release/kakaku_api ./
 

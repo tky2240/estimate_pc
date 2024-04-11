@@ -25,6 +25,6 @@ COPY --from=rust_build /app/target/release/kakaku_database /app
 
 RUN crontab /etc/crontab
 
-COPY ./kakaku_database/docker-entrypoint.sh ./
+COPY ./docker-entrypoint.sh ./
 
 ENTRYPOINT [ "sh", "-c", "./docker-entrypoint.sh ${SHOULD_INITIAL_SCRAPING}" ]

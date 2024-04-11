@@ -19,7 +19,6 @@ import { stringify } from 'csv-stringify/browser/esm/sync';
 import { Buffer } from 'buffer';
 import { Share, ContentCopy } from '@mui/icons-material'
 import Snackbar from '@mui/material/Snackbar';
-import fs from 'fs';
 import { Env } from '../../env';
 
 type Props = {
@@ -164,8 +163,11 @@ const GenreList = (props: Props) => {
 
 const CreateShortUrl = async (long_url: string): Promise<string> => {
     try {
-        const jsonEnvString: string = fs.readFileSync('react_app_env.json', 'utf-8');
-        const env = JSON.parse(jsonEnvString) as Env;
+        const jsonEnvStringResponse = await fetch(new URL("react_app_env.json", window.location.origin), { method: "GET" });
+        if (!jsonEnvStringResponse.ok) {
+            return '';
+        }
+        const env = await jsonEnvStringResponse.json() as Env;
         const urlBase = env.REACT_APP_CREATE_API_URL_BASE ?? "";
         const response = await fetch(new URL("short_url", urlBase), { method: "POST", headers: { 'Content-Type': 'text/plain' }, body: long_url });
         if (!response.ok) {

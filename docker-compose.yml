@@ -18,7 +18,8 @@ services:
     restart: unless-stopped
   front:
     build:
-      dockerfile: ./kakaku_front/Dockerfile
+      context: ./kakaku_front
+      #dockerfile: ./kakaku_front/Dockerfile
     ports:
       - "80:80"
       - "443:443"
@@ -33,7 +34,8 @@ services:
     restart: unless-stopped
   back:
     build:
-      dockerfile: ./kakaku_api/Dockerfile
+      context: ./kakaku_api
+      #dockerfile: ./kakaku_api/Dockerfile
     volumes:
       - ./.env:/app/.env
     depends_on:
@@ -42,7 +44,8 @@ services:
     restart: unless-stopped
   scraping:
     build:
-      dockerfile: ./kakaku_database/Dockerfile
+      context: ./kakaku_database
+      #dockerfile: ./kakaku_database/Dockerfile
     volumes:
       - ./.env:/app/.env
       - ./crontab:/etc/crontab
