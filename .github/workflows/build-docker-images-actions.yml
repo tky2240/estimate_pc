@@ -29,6 +29,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: get tag version
+        run: echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
       # 並列でContainer Imageをビルド
       - name: Build and push Docker image
@@ -36,6 +38,6 @@ jobs:
         with:
           context: ./${{ matrix.target }}
           push: true
-          tags: ghcr.io/tky2240/${{ matrix.target }}:${{ github.ref }}
+          tags: ghcr.io/tky2240/${{ matrix.target }}:${{ env.TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
