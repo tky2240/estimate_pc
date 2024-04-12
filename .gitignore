@@ -2,6 +2,7 @@
 /Caddyfile
 target/
 /react_app_env.json
+test.json
 
 settings.yml
 __pycache__
