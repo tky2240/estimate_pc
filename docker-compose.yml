@@ -12,6 +12,7 @@ services:
       - ./initdb.d:/docker-entrypoint-initdb.d
     healthcheck:
       test: "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD"
+      start_period: 30s
       timeout: 5s
       interval: 5s
       retries: 10
@@ -19,7 +20,6 @@ services:
   front:
     build:
       context: ./kakaku_front
-      #dockerfile: ./kakaku_front/Dockerfile
     ports:
       - "80:80"
       - "443:443"
@@ -35,7 +35,6 @@ services:
   back:
     build:
       context: ./kakaku_api
-      #dockerfile: ./kakaku_api/Dockerfile
     volumes:
       - ./.env:/app/.env
     depends_on:
@@ -45,7 +44,6 @@ services:
   scraping:
     build:
       context: ./kakaku_database
-      #dockerfile: ./kakaku_database/Dockerfile
     volumes:
       - ./.env:/app/.env
       - ./crontab:/etc/crontab
