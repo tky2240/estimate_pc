@@ -2,12 +2,16 @@ FROM node:18-alpine as npm_builder
 
 WORKDIR /app
 
+COPY ./package.json /app
+COPY ./package-lock.json /app
+
+RUN npm install
+
 COPY ./src /app/src
 COPY ./public /app/public
 COPY ./tsconfig.json /app
-COPY ./package.json /app
 
-RUN npm install
+
 RUN npm run build
 
 FROM dunglas/frankenphp
