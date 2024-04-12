@@ -20,6 +20,7 @@ import { Buffer } from 'buffer';
 import { Share, ContentCopy } from '@mui/icons-material'
 import Snackbar from '@mui/material/Snackbar';
 import { Env } from '../../env';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
     TotalPrice: number;
@@ -56,12 +57,9 @@ const GenreList = (props: Props) => {
         navigator.clipboard.writeText(shareUrl);
         handleSnackBarOpen();
     }
-    const processingShareUrl = useRef(false);
+    const [isCreatingShareUrl, setIsCreatingShareUrl] = useState(false);
     const CreateShareURL = async () => {
-        if (processingShareUrl.current) {
-            return;
-        }
-        processingShareUrl.current = true;
+        setIsCreatingShareUrl(true);
         const baseUrl = window.location.href.split('?')[0];
         const parseParameter = (partGenre: PartGenre) => {
             return Buffer.from(
@@ -89,8 +87,8 @@ const GenreList = (props: Props) => {
         longUrl.search = shareParameters.toString();
         const createdShortUrl = CreateShortUrl(longUrl.toString());
         setShareUrl(await createdShortUrl);
-        processingShareUrl.current = false;
         handleDialogOpen();
+        setIsCreatingShareUrl(false);
     }
     useEffect(() => {
         const totalPrice = genreSummaries.reduce(
@@ -124,9 +122,9 @@ const GenreList = (props: Props) => {
                     <PowerSupplyPriceDisplay ChangeGenreSummary={changeGenreSummary} />
                 </List>
             </Paper>
-            <Button variant='outlined' startIcon={<Share />} onClick={(async () => await CreateShareURL())}>
+            <LoadingButton variant='outlined' loading={isCreatingShareUrl} startIcon={<Share />} onClick={(async () => await CreateShareURL())}>
                 共有リンク作成
-            </Button>
+            </LoadingButton>
             <Dialog
                 fullWidth={true}
                 maxWidth={false}
