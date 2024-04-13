@@ -18,8 +18,7 @@ services:
       retries: 10
     restart: unless-stopped
   front:
-    build:
-      context: ./kakaku_front
+    image: ghcr.io/tky2240/kakaku_front:v1.0.0-3
     ports:
       - "80:80"
       - "443:443"
@@ -33,8 +32,7 @@ services:
       - shlink
     restart: unless-stopped
   back:
-    build:
-      context: ./kakaku_api
+    image: ghcr.io/tky2240/kakaku_api:v1.0.0-3
     volumes:
       - ./.env:/app/.env
     depends_on:
@@ -42,8 +40,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
   scraping:
-    build:
-      context: ./kakaku_database
+    image: ghcr.io/tky2240/kakaku_database:v1.0.0-3
     volumes:
       - ./.env:/app/.env
       - ./crontab:/etc/crontab
