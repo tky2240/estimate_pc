@@ -3,6 +3,7 @@
 target/
 /react_app_env.json
 test.json
+docker-compose_dev.yml
 
 settings.yml
 __pycache__

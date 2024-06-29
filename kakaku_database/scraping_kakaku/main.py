@@ -31,7 +31,7 @@ def run(csv_path, json_path):
         item_data_dictionary = dict()
         for genre in reader:
             print(f"name: {genre['name']} code: {genre['code']}")
-            # if genre["name"] != "hdd":
+            # if genre["name"] != "mouse":
             #     continue
             time.sleep(random.uniform(2, 10))
             current_genre_url = urllib.parse.urljoin(base_url, genre["code"] + "/")
@@ -120,6 +120,7 @@ def run(csv_path, json_path):
             ]
 
             for i in range(2, page_count + 1):
+                break
                 print(f"{i} / {page_count}...")
                 time.sleep(random.uniform(2, 10))
                 if not response.ok:
@@ -227,18 +228,18 @@ def run(csv_path, json_path):
                 item_data_dictionary[genre["name"]] = update_power_supply_information(
                     item_tables
                 )
-            # elif genre["name"] == "monitor":
-            #     item_data_dictionary[genre["name"]] = update_monitor_information(
-            #         item_tables
-            #     )
-            # elif genre["name"] == "keyboard":
-            #     item_data_dictionary[genre["name"]] = update_keyboard_information(
-            #         item_tables
-            #     )
-            # elif genre["name"] == "mouse":
-            #     item_data_dictionary[genre["name"]] = update_mouse_information(
-            #         item_tables
-            #     )
+            elif genre["name"] == "monitor":
+                item_data_dictionary[genre["name"]] = update_monitor_information(
+                    item_tables
+                )
+            elif genre["name"] == "keyboard":
+                item_data_dictionary[genre["name"]] = update_keyboard_information(
+                    item_tables
+                )
+            elif genre["name"] == "mouse":
+                item_data_dictionary[genre["name"]] = update_mouse_information(
+                    item_tables
+                )
         with codecs.open(json_path, "w", "utf-8") as json_file:
             json.dump(
                 item_data_dictionary, json_file, default=json_serial, ensure_ascii=False
@@ -1227,8 +1228,6 @@ def update_monitor_information(item_tables: List[Tag]):
         for table_row in table_rows:
             try:
                 table_data: List[Tag] = table_row.find_all("td")
-                for i, table in enumerate(table_data):
-                    print(i, table)
                 monitor_data_dictionary = {
                     "item_id": re.findall(
                         r"/item/(\w+)/", table_data[1].find("a").get("href")
@@ -1254,18 +1253,18 @@ def update_monitor_information(item_tables: List[Tag]):
                     "screen_shape": table_data[10].text.strip(),
                     "panel_type": table_data[20].text.strip(),
                     "width_resolution": int(
-                        re.findall(r"(\d)x\d", table_data[21].text.strip())[0]
+                        re.findall(r"(\d+)x\d+", table_data[21].text.strip())[0]
                     ),
                     "height_resolution": int(
-                        re.findall(r"\dx(\d)", table_data[21].text.strip())[0]
+                        re.findall(r"\d+x(\d+)", table_data[21].text.strip())[0]
                     ),
                     "refresh_rate": int(
-                        re.findall(r"(\d) Hz", table_data[29].text.strip())[0]
+                        re.findall(r"(\d+) Hz", table_data[29].text.strip())[0]
                     ),
                     "can_vesa_mount": table_data[54] != "",
                     "release_date": (
                         None
-                        if table_data[29].text.strip() == ""
+                        if table_data[61].text.strip() == ""
                         else (
                             datetime.datetime.strptime(
                                 re.sub(r"\s", "", table_data[61].text), "%Y年%m月%d日"
@@ -1293,6 +1292,147 @@ def update_monitor_information(item_tables: List[Tag]):
                 continue
             monitor_data_dictionaries.append(monitor_data_dictionary)
     return monitor_data_dictionaries
+
+
+def update_keyboard_information(item_tables: List[Tag]):
+    keyboard_data_dictionaries = []
+    for item_table in item_tables:
+        table_rows = item_table.select("tr:not(.bgColor03.vt):not(.bgColor02)")
+        for table_row in table_rows:
+            try:
+                table_data: List[Tag] = table_row.find_all("td")
+                keyboard_data_dictionary = {
+                    "item_id": re.findall(
+                        r"/item/(\w+)/", table_data[1].find("a").get("href")
+                    )[0],
+                    "name": table_data[2].text.strip(),
+                    "price": int(
+                        re.findall(r"¥([,\d]+)", table_data[3].find("a").text.strip())[
+                            0
+                        ].replace(",", "")
+                    ),
+                    "popular_rank": (
+                        None
+                        if table_data[5].text == "-"
+                        else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0])
+                    ),
+                    "maker_name": table_data[2].find_all("strong")[0].text.strip(),
+                    "product_name": table_data[2]
+                    .find_all("strong")[1]
+                    .text.strip()[:100],
+                    "connection_type": table_data[8].text.strip(),
+                    "layout": re.findall(r"(\D+)", table_data[9].text.strip()),
+                    "key_switch": table_data[10].text.strip(),
+                    "shaft_type": table_data[14].text.strip(),
+                    "has_numeric_keypad": table_data[17].text.strip() == "あり",
+                    "interface": table_data[18].text.strip(),
+                    "size_inch": float(
+                        re.findall(r"([\d.]+)型", table_data[8].text.strip())[0]
+                    ),
+                    "release_date": (
+                        None
+                        if table_data[42].text.strip() == ""
+                        else (
+                            datetime.datetime.strptime(
+                                re.sub(r"\s", "", table_data[42].text), "%Y年%m月%d日"
+                            ).date()
+                            if re.match(
+                                r"\d+年\d+月\d+日",
+                                re.sub(r"\s", "", table_data[42].text),
+                            )
+                            is not None
+                            else datetime.datetime.strptime(
+                                re.findall(
+                                    r"(\d+年\d+月)",
+                                    re.sub(r"\s", "", table_data[42].text),
+                                )[0],
+                                "%Y年%m月",
+                            ).date()
+                        )
+                    ),
+                    "is_exist": True,
+                }
+            except Exception as exception:
+                print(f"table data count: {len(table_data)}")
+                print(f"error with {exception}")
+                print(traceback.format_exc())
+                continue
+            keyboard_data_dictionaries.append(keyboard_data_dictionary)
+    return keyboard_data_dictionaries
+
+
+def update_mouse_information(item_tables: List[Tag]):
+    mouse_data_dictionaries = []
+    for item_table in item_tables:
+        table_rows = item_table.select("tr:not(.bgColor03.vt):not(.bgColor02)")
+        for table_row in table_rows:
+            try:
+                table_data: List[Tag] = table_row.find_all("td")
+                # for i, table in enumerate(table_data):
+                #     print(i, table)
+                mouse_data_dictionary = {
+                    "item_id": re.findall(
+                        r"/item/(\w+)/", table_data[1].find("a").get("href")
+                    )[0],
+                    "name": table_data[2].text.strip(),
+                    "price": int(
+                        re.findall(r"¥([,\d]+)", table_data[3].find("a").text.strip())[
+                            0
+                        ].replace(",", "")
+                    ),
+                    "popular_rank": (
+                        None
+                        if table_data[5].text == "-"
+                        else int(re.findall(r"(\d+)位", table_data[5].text.strip())[0])
+                    ),
+                    "maker_name": table_data[2].find_all("strong")[0].text.strip(),
+                    "product_name": table_data[2]
+                    .find_all("strong")[1]
+                    .text.strip()[:100],
+                    "mouse_type": table_data[8].text.strip(),
+                    "connection_type": table_data[9].text.strip(),
+                    "resolution_dpi": (
+                        None
+                        if table_data[11].text.strip() == ""
+                        else int(re.findall(r"(\d+)dpi", table_data[11].text.strip()))
+                    ),
+                    "weight": (
+                        None
+                        if table_data[15].text.strip() == ""
+                        else float(
+                            re.findall(r"([\d.]+)g", table_data[15].text.strip())
+                        )
+                    ),
+                    "release_date": (
+                        None
+                        if table_data[19].text.strip() == ""
+                        else (
+                            datetime.datetime.strptime(
+                                re.sub(r"\s", "", table_data[19].text), "%Y年%m月%d日"
+                            ).date()
+                            if re.match(
+                                r"\d+年\d+月\d+日",
+                                re.sub(r"\s", "", table_data[19].text),
+                            )
+                            is not None
+                            else datetime.datetime.strptime(
+                                re.findall(
+                                    r"(\d+年\d+月)",
+                                    re.sub(r"\s", "", table_data[19].text),
+                                )[0],
+                                "%Y年%m月",
+                            ).date()
+                        )
+                    ),
+                    "is_exist": True,
+                }
+            except Exception as exception:
+                print(f"table data count: {len(table_data)}")
+                print(f"error with {exception}")
+                print(traceback.format_exc())
+                continue
+            mouse_data_dictionaries.append(mouse_data_dictionary)
+    return mouse_data_dictionaries
 
 
 if __name__ == "__main__":
